@@ -9,7 +9,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="home-page">
 
   <header class="site-header">
     <div class="header-inner">
@@ -31,42 +31,87 @@
     <section class="home-hero">
       <img src="imagens/templo.jpeg" alt="Templo da Igreja de Jesus Cristo dos Santos dos Últimos Dias">
       <div class="home-hero-content">
-        <div class="home-hero-rule"></div>
+        <div class="home-hero-mark"></div>
         <h1>Estaca Salvador Brasil Norte</h1>
-        <p>A Igreja de Jesus Cristo dos Santos dos Últimos Dias</p>
+        <p class="home-hero-sub">A Igreja de Jesus Cristo dos Santos dos Últimos Dias</p>
       </div>
-    </section>
-
-    <section class="home-intro">
-      <p>Este site reúne, em um só lugar, as informações de referência da estaca: o calendário do ano, quem serve em cada chamado e os materiais de treinamento para líderes e secretários.</p>
+      <div class="hero-scroll">
+        <span>Conheça</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5">
+          <polyline points="6 9 12 15 18 9"/>
+        </svg>
+      </div>
     </section>
 
     <section class="home-sections">
 
-      <a href="calendario.html" class="section-row">
-        <div class="section-row-text">
-          <h2>Calendário 2026</h2>
+      <div class="home-sections-lead">
+        <h2>Informações da estaca</h2>
+        <p>Calendário, chamados e materiais de treinamento reunidos em um só lugar.</p>
+      </div>
+
+      <div class="section-grid">
+
+        <a href="calendario.html" class="section-box">
+          <div class="section-box-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="5" width="18" height="16" rx="2"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+              <line x1="8" y1="3" x2="8" y2="7"/>
+              <line x1="16" y1="3" x2="16" y2="7"/>
+            </svg>
+          </div>
+          <h3>Calendário 2026</h3>
           <p>Conferências, reuniões de liderança e atividades programadas para o ano.</p>
-        </div>
-        <span class="section-row-action">Ver calendário</span>
-      </a>
+          <div class="section-box-action">
+            <span>Ver calendário</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </div>
+        </a>
 
-      <a href="lideranca.html" class="section-row">
-        <div class="section-row-text">
-          <h2>Liderança</h2>
+        <a href="lideranca.html" class="section-box">
+          <div class="section-box-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M16 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/>
+              <circle cx="9.5" cy="7" r="3.5"/>
+              <path d="M21 20v-2a4 4 0 0 0-3-3.87"/>
+              <path d="M16.5 3.6a3.5 3.5 0 0 1 0 6.8"/>
+            </svg>
+          </div>
+          <h3>Liderança</h3>
           <p>Presidência da estaca, secretariado e os doze membros do sumo conselho.</p>
-        </div>
-        <span class="section-row-action">Ver liderança</span>
-      </a>
+          <div class="section-box-action">
+            <span>Ver liderança</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </div>
+        </a>
 
-      <a href="treinamentos.html" class="section-row">
-        <div class="section-row-text">
-          <h2>Treinamentos</h2>
+        <a href="treinamentos.html" class="section-box">
+          <div class="section-box-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z"/>
+              <line x1="8" y1="8" x2="15" y2="8"/>
+              <line x1="8" y1="12" x2="13" y2="12"/>
+            </svg>
+          </div>
+          <h3>Treinamentos</h3>
           <p>Materiais de capacitação para bispos, secretários de ala e de estaca.</p>
-        </div>
-        <span class="section-row-action">Ver treinamentos</span>
-      </a>
+          <div class="section-box-action">
+            <span>Ver treinamentos</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </div>
+        </a>
 
+      </div>
     </section>
 
   </main>
@@ -74,6 +119,13 @@
   <footer class="site-footer">
     Estaca Salvador Brasil Norte &middot; 2026
   </footer>
+
+  <script>
+    const header = document.querySelector('.site-header');
+    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 40);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  </script>
 
 </body>
 </html>
