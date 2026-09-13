@@ -123,6 +123,52 @@ main {
   min-height: calc(100vh - var(--header-height) - 80px);
 }
 
+/* ===== HOME BANNER ===== */
+.home-banner {
+  position: relative;
+  width: 100%;
+  height: 360px;
+  overflow: hidden;
+  background: var(--navy-dark);
+}
+
+.home-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  opacity: 0.55;
+}
+
+.home-banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+}
+
+.home-banner-overlay h1 {
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 8px;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.home-banner-overlay p {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.9);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
 .page-hero {
   background: var(--gray-50);
   border-bottom: 1px solid var(--gray-100);
@@ -379,6 +425,18 @@ main {
 
   .page-hero h1 {
     font-size: 22px;
+  }
+
+  .home-banner {
+    height: 240px;
+  }
+
+  .home-banner-overlay h1 {
+    font-size: 22px;
+  }
+
+  .home-banner-overlay p {
+    font-size: 14px;
   }
 
   .container {
