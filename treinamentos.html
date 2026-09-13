@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Treinamentos – Estaca Salvador Brasil Norte</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="index.html" class="site-logo">Estaca Salvador Brasil Norte</a>
+      <button class="menu-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="calendario.html">Calendário</a></li>
+        <li><a href="lideranca.html">Liderança</a></li>
+        <li><a href="treinamentos.html" class="active">Treinamentos</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <h1>Treinamentos</h1>
+      <p>Materiais de capacitação para líderes e secretários</p>
+    </section>
+
+    <div class="container">
+      <div class="accordion">
+
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <div>
+              <div class="accordion-title">Treinamento de Novos Bispos</div>
+              <div class="accordion-subtitle">Orientações para bispos recém-chamados</div>
+            </div>
+            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <div class="embed-wrapper">
+                <!-- SUBSTITUIR pelo embed do Canva -->
+                <div class="embed-placeholder">
+                  <div class="placeholder-icon">📋</div>
+                  <p>Insira aqui o embed do Canva com o treinamento.</p>
+                  <code>&lt;iframe src="https://www.canva.com/design/SEU-ID/view?embed" width="100%" height="600" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <div>
+              <div class="accordion-title">Treinamento de Secretários de Ala</div>
+              <div class="accordion-subtitle">Procedimentos e boas práticas para secretários de ala</div>
+            </div>
+            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <div class="embed-wrapper">
+                <div class="embed-placeholder">
+                  <div class="placeholder-icon">📋</div>
+                  <p>Insira aqui o embed do Canva com o treinamento.</p>
+                  <code>&lt;iframe src="https://www.canva.com/design/SEU-ID/view?embed" width="100%" height="600" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <div>
+              <div class="accordion-title">Treinamento de Secretários de Estaca</div>
+              <div class="accordion-subtitle">Atribuições e fluxo de trabalho do secretariado da estaca</div>
+            </div>
+            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <div class="embed-wrapper">
+                <div class="embed-placeholder">
+                  <div class="placeholder-icon">📋</div>
+                  <p>Insira aqui o embed do Canva com o treinamento.</p>
+                  <code>&lt;iframe src="https://www.canva.com/design/SEU-ID/view?embed" width="100%" height="600" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <div>
+              <div class="accordion-title">Treinamento de Secretários Financeiros</div>
+              <div class="accordion-subtitle">Procedimentos financeiros e prestação de contas</div>
+            </div>
+            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <div class="embed-wrapper">
+                <div class="embed-placeholder">
+                  <div class="placeholder-icon">📋</div>
+                  <p>Insira aqui o embed do Canva com o treinamento.</p>
+                  <code>&lt;iframe src="https://www.canva.com/design/SEU-ID/view?embed" width="100%" height="600" frameborder="0" allowfullscreen&gt;&lt;/iframe&gt;</code>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    Estaca Salvador Brasil Norte &middot; 2026
+  </footer>
+
+  <script>
+    function toggleAccordion(header) {
+      const item = header.parentElement;
+      const body = item.querySelector('.accordion-body');
+      const isOpen = item.classList.contains('open');
+
+      // Fecha todos os outros
+      document.querySelectorAll('.accordion-item.open').forEach(openItem => {
+        if (openItem !== item) {
+          openItem.classList.remove('open');
+          openItem.querySelector('.accordion-body').style.maxHeight = null;
+        }
+      });
+
+      // Toggle o clicado
+      if (isOpen) {
+        item.classList.remove('open');
+        body.style.maxHeight = null;
+      } else {
+        item.classList.add('open');
+        body.style.maxHeight = body.scrollHeight + 'px';
+      }
+    }
+  </script>
+
+</body>
+</html>
