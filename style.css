@@ -123,50 +123,142 @@ main {
   min-height: calc(100vh - var(--header-height) - 80px);
 }
 
-/* ===== HOME BANNER ===== */
-.home-banner {
+/* ===== HOME: HERO EDITORIAL ===== */
+.home-hero {
   position: relative;
   width: 100%;
-  height: 360px;
+  min-height: 520px;
+  display: flex;
+  align-items: flex-end;
   overflow: hidden;
   background: var(--navy-dark);
 }
 
-.home-banner img {
+.home-hero img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
-  display: block;
-  opacity: 0.55;
+  object-position: center 40%;
 }
 
-.home-banner-overlay {
+.home-hero::after {
+  content: "";
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 24px;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(18, 40, 64, 0.92) 0%,
+    rgba(18, 40, 64, 0.72) 38%,
+    rgba(18, 40, 64, 0.28) 100%
+  );
 }
 
-.home-banner-overlay h1 {
-  font-size: 32px;
-  font-weight: 700;
+.home-hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px 64px;
+}
+
+.home-hero-rule {
+  width: 56px;
+  height: 2px;
+  background: var(--gold);
+  margin-bottom: 24px;
+}
+
+.home-hero h1 {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 46px;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
   color: var(--white);
-  margin-bottom: 8px;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  max-width: 15ch;
+  margin-bottom: 16px;
 }
 
-.home-banner-overlay p {
+.home-hero p {
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.9);
-  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 46ch;
+}
+
+/* ===== HOME: MENSAGEM DE ABERTURA ===== */
+.home-intro {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 72px 24px 8px;
+}
+
+.home-intro p {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 21px;
+  line-height: 1.65;
+  color: var(--gray-800);
+  max-width: 56ch;
+}
+
+/* ===== HOME: SEÇÕES EM LINHAS ===== */
+.home-sections {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 48px 24px 88px;
+}
+
+.section-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 32px;
+  padding: 30px 0;
+  border-top: 1px solid var(--gray-200);
+  transition: border-color 0.25s;
+}
+
+.section-row:last-child {
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.section-row:hover {
+  border-top-color: var(--navy);
+}
+
+.section-row:last-child:hover {
+  border-bottom-color: var(--navy);
+}
+
+.section-row-text h2 {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 6px;
+}
+
+.section-row-text p {
+  font-size: 15px;
+  color: var(--gray-600);
+  max-width: 52ch;
+}
+
+.section-row-action {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+  white-space: nowrap;
+  border-bottom: 1.5px solid transparent;
+  padding-bottom: 2px;
+  transition: border-color 0.25s;
+}
+
+.section-row:hover .section-row-action {
+  border-bottom-color: var(--gold);
 }
 
 .page-hero {
@@ -427,16 +519,44 @@ main {
     font-size: 22px;
   }
 
-  .home-banner {
-    height: 240px;
+  .home-hero {
+    min-height: 420px;
   }
 
-  .home-banner-overlay h1 {
-    font-size: 22px;
+  .home-hero-content {
+    padding: 0 20px 44px;
   }
 
-  .home-banner-overlay p {
-    font-size: 14px;
+  .home-hero h1 {
+    font-size: 31px;
+    max-width: 18ch;
+  }
+
+  .home-hero p {
+    font-size: 15px;
+  }
+
+  .home-intro {
+    padding: 48px 20px 4px;
+  }
+
+  .home-intro p {
+    font-size: 18px;
+  }
+
+  .home-sections {
+    padding: 32px 20px 64px;
+  }
+
+  .section-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 24px 0;
+  }
+
+  .section-row-text h2 {
+    font-size: 20px;
   }
 
   .container {

@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Estaca Salvador Brasil Norte</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -13,7 +14,7 @@
   <header class="site-header">
     <div class="header-inner">
       <a href="index.html" class="site-logo">Estaca Salvador Brasil Norte</a>
-      <button class="menu-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+      <button class="menu-toggle" aria-label="Abrir menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links">
@@ -26,36 +27,48 @@
   </header>
 
   <main>
-    <section class="home-banner">
-      <img src="imagens/templo.jpeg" alt="Templo – A Igreja de Jesus Cristo dos Santos dos Últimos Dias">
-      <div class="home-banner-overlay">
+
+    <section class="home-hero">
+      <img src="imagens/templo.jpeg" alt="Templo da Igreja de Jesus Cristo dos Santos dos Últimos Dias">
+      <div class="home-hero-content">
+        <div class="home-hero-rule"></div>
         <h1>Estaca Salvador Brasil Norte</h1>
         <p>A Igreja de Jesus Cristo dos Santos dos Últimos Dias</p>
       </div>
     </section>
 
-    <div class="container">
-      <div class="quick-links">
-        <a href="calendario.html" class="quick-card">
-          <div class="icon">📅</div>
-          <h3>Calendário 2026</h3>
-          <p>Eventos, atividades e datas importantes da estaca</p>
-          <span class="btn">Acessar</span>
-        </a>
-        <a href="lideranca.html" class="quick-card">
-          <div class="icon">👤</div>
-          <h3>Liderança</h3>
-          <p>Presidência da estaca e membros do sumo conselho</p>
-          <span class="btn">Acessar</span>
-        </a>
-        <a href="treinamentos.html" class="quick-card">
-          <div class="icon">📋</div>
-          <h3>Treinamentos</h3>
-          <p>Materiais de capacitação para líderes e secretários</p>
-          <span class="btn">Acessar</span>
-        </a>
-      </div>
-    </div>
+    <section class="home-intro">
+      <p>Este site reúne, em um só lugar, as informações de referência da estaca: o calendário do ano, quem serve em cada chamado e os materiais de treinamento para líderes e secretários.</p>
+    </section>
+
+    <section class="home-sections">
+
+      <a href="calendario.html" class="section-row">
+        <div class="section-row-text">
+          <h2>Calendário 2026</h2>
+          <p>Conferências, reuniões de liderança e atividades programadas para o ano.</p>
+        </div>
+        <span class="section-row-action">Ver calendário</span>
+      </a>
+
+      <a href="lideranca.html" class="section-row">
+        <div class="section-row-text">
+          <h2>Liderança</h2>
+          <p>Presidência da estaca, secretariado e os doze membros do sumo conselho.</p>
+        </div>
+        <span class="section-row-action">Ver liderança</span>
+      </a>
+
+      <a href="treinamentos.html" class="section-row">
+        <div class="section-row-text">
+          <h2>Treinamentos</h2>
+          <p>Materiais de capacitação para bispos, secretários de ala e de estaca.</p>
+        </div>
+        <span class="section-row-action">Ver treinamentos</span>
+      </a>
+
+    </section>
+
   </main>
 
   <footer class="site-footer">
