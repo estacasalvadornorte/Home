@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ester · Plano de Aula · Primária</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#2A2140;
+    --ink-soft:#544970;
+    --ink-faint:#8E86A6;
+    --parchment:#FAF6EF;
+    --parchment-deep:#F0EADE;
+    --panel:#FFFFFF;
+    --royal:#6A4A9C;       /* roxo real, a rainha, a coragem */
+    --royal-deep:#513A7E;  /* roxo profundo */
+    --royal-bright:#8B6BC0;/* roxo claro, realces no escuro */
+    --gold:#BE9A2E;        /* ouro, o cetro e o favor do rei */
+    --gold-bright:#D9B84A;
+    --line:#E7E0D3;
+    --line-soft:#EFEADD;
+    --shadow:0 1px 2px rgba(42,33,64,.04), 0 8px 30px rgba(42,33,64,.06);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--parchment); color:var(--ink);
+    font-family:"Hanken Grotesk", system-ui, sans-serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:860px; margin:0 auto; padding:0 22px;}
+
+  .eyebrow{ font-size:.72rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--royal); }
+  .label{ font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-soft); }
+  .key{ color:var(--royal); font-weight:600; }
+
+  /* ---------- Hero ---------- */
+  .hero{ position:relative; background:var(--ink); color:var(--parchment); overflow:hidden; border-bottom:3px solid var(--gold); }
+  .hero__glow{
+    position:absolute; inset:0; pointer-events:none;
+    background:
+      radial-gradient(110% 92% at 50% -14%, rgba(217,184,74,.32) 0%, rgba(106,74,156,.34) 30%, rgba(81,58,126,.14) 52%, transparent 68%),
+      repeating-linear-gradient(45deg, rgba(217,184,74,.045) 0px, rgba(217,184,74,.045) 1px, transparent 1px, transparent 27px),
+      repeating-linear-gradient(-45deg, rgba(217,184,74,.045) 0px, rgba(217,184,74,.045) 1px, transparent 1px, transparent 27px);
+  }
+  .hero__inner{ position:relative; padding:58px 0 52px; }
+  .hero .eyebrow{ color:var(--gold-bright); }
+  .hero h1{
+    font-family:"Fraunces", serif; font-weight:700;
+    font-size:clamp(3rem, 9vw, 4.8rem); line-height:1.0;
+    letter-spacing:-.01em; margin:.3em 0 .16em;
+  }
+  .hero__theme{
+    font-family:"Fraunces", serif; font-style:italic; font-weight:500;
+    font-size:clamp(1.3rem, 3.8vw, 1.85rem); color:var(--gold-bright); margin:0 0 1.1rem;
+  }
+  .hero__verse{
+    font-family:"Fraunces", serif; font-style:italic;
+    font-size:clamp(1.05rem,2.6vw,1.25rem); line-height:1.45; color:#ECE8DC;
+    max-width:34ch; margin:0 0 .4rem; opacity:.94;
+  }
+  .hero__ref{ font-size:.85rem; letter-spacing:.04em; color:var(--gold-bright); font-weight:600; }
+  .hero__meta{ display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
+  .chip{
+    display:inline-flex; align-items:center; gap:7px;
+    border:1px solid rgba(217,184,74,.38); background:rgba(217,184,74,.08);
+    color:#F1EAD9; padding:7px 13px; border-radius:100px;
+    font-size:.8rem; font-weight:600; letter-spacing:.02em;
+  }
+  .chip .dot{ width:6px; height:6px; border-radius:50%; background:var(--gold-bright); }
+
+  /* ---------- Section shell ---------- */
+  section{ padding:44px 0; border-bottom:1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+  .sec-head{ margin-bottom:24px; }
+  .sec-head h2{ font-family:"Fraunces", serif; font-weight:600; font-size:1.85rem; line-height:1.1; margin:.25em 0 0; letter-spacing:-.01em; }
+  .sec-head p{ margin:.5em 0 0; color:var(--ink-soft); font-size:.98rem; max-width:62ch; }
+
+  /* ---------- Doctrine feature ---------- */
+  .doctrine{ position:relative; background:var(--ink); color:var(--parchment); border-radius:14px; padding:34px 32px; overflow:hidden; box-shadow:var(--shadow); }
+  .doctrine__glow{ position:absolute; inset:0; pointer-events:none; background:radial-gradient(90% 130% at 100% 0%, rgba(217,184,74,.24), transparent 55%); }
+  .doctrine .inner{ position:relative; }
+  .doctrine .eyebrow{ color:var(--gold-bright); }
+  .doctrine p.statement{ font-family:"Fraunces", serif; font-weight:500; font-size:clamp(1.4rem,3.4vw,1.75rem); line-height:1.32; margin:.5em 0 .9em; }
+  .doctrine .anchor{ display:inline-flex; align-items:center; gap:9px; font-size:.82rem; letter-spacing:.06em; font-weight:600; color:var(--gold-bright); border-top:1px solid rgba(217,184,74,.26); padding-top:14px; }
+
+  /* ---------- Reading summary ---------- */
+  .reading{ display:grid; gap:2px; }
+  .ch{ display:grid; grid-template-columns:104px 1fr; gap:22px; padding:20px 0; border-top:1px solid var(--line-soft); align-items:start; }
+  .ch:first-child{ border-top:none; }
+  .ch__tag{ padding-top:2px; }
+  .ch__tag .num{ font-family:"Fraunces",serif; font-weight:600; font-size:1rem; color:var(--ink); line-height:1.05; display:block; }
+  .ch__tag .cap{ font-size:.64rem; letter-spacing:.11em; text-transform:uppercase; color:var(--ink-faint); font-weight:700; margin-top:5px; display:block; }
+  .ch__body h3{ font-family:"Fraunces",serif; font-weight:600; font-size:1.12rem; margin:0 0 .3em; color:var(--ink); }
+  .ch__body p{ margin:0; color:var(--ink-soft); font-size:.95rem; }
+  .star{ color:var(--gold); font-weight:700; }
+
+  .thread{ margin-top:26px; padding:18px 22px; background:var(--parchment-deep); border-left:3px solid var(--royal); border-radius:0 10px 10px 0; }
+  .thread .label{ display:block; margin-bottom:5px; }
+  .thread p{ margin:0; font-family:"Fraunces",serif; font-style:italic; font-size:1.02rem; color:var(--ink); }
+
+  .note{ margin-top:14px; padding:14px 18px; background:#fff; border:1px dashed var(--gold); border-radius:10px; }
+  .note p{ margin:0; font-size:.93rem; color:var(--ink-soft); }
+  .note b{ color:var(--royal); }
+
+  /* ---------- Materials ---------- */
+  .materials{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:26px 28px; box-shadow:var(--shadow); }
+  .materials ul{ list-style:none; margin:14px 0 0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:11px 26px; }
+  .materials li{ display:flex; gap:11px; align-items:flex-start; font-size:.93rem; color:var(--ink-soft); }
+  .materials li .box{ flex:none; width:16px; height:16px; margin-top:3px; border:1.6px solid var(--royal); border-radius:4px; }
+  .materials li b{ color:var(--ink); font-weight:600; }
+  .materials a{ color:var(--royal); text-decoration:underline; text-underline-offset:2px; }
+
+  /* ---------- Phases / timeline ---------- */
+  .plan-intro{ display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:6px; }
+  .budget{ font-size:.82rem; color:var(--ink-faint); font-weight:600; letter-spacing:.02em; }
+  .budget b{ color:var(--royal); }
+
+  .phases{ position:relative; margin-top:10px; }
+  .phase{ position:relative; display:grid; grid-template-columns:74px 1fr; gap:24px; padding:22px 0; }
+  .phase::before{ content:""; position:absolute; left:36px; top:0; bottom:0; width:2px; background:var(--line); }
+  .phase:first-child::before{ top:34px; }
+  .phase:last-child::before{ bottom:calc(100% - 34px); }
+  .phase__marker{ position:relative; z-index:1; display:flex; flex-direction:column; align-items:center; gap:8px; }
+  .phase__num{
+    width:52px; height:52px; border-radius:50%; background:var(--parchment); border:2px solid var(--royal);
+    color:var(--royal); font-family:"Fraunces",serif; font-weight:600; font-size:1.5rem;
+    display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 5px var(--parchment);
+  }
+  .phase--core .phase__num{ background:var(--royal); color:#fff; border-color:var(--royal); }
+  .phase__time{ font-size:.68rem; font-weight:700; letter-spacing:.03em; color:var(--ink-soft); background:var(--parchment-deep); padding:3px 9px; border-radius:100px; white-space:nowrap; }
+  .phase--core .phase__time{ background:#E7DDF3; color:var(--royal-deep); }
+
+  .phase__body{ padding-top:4px; }
+  .phase__body h3{ font-family:"Fraunces",serif; font-weight:600; font-size:1.28rem; margin:0 0 .35em; color:var(--ink); line-height:1.15; }
+  .phase__body h3 .tag{
+    font-family:"Hanken Grotesk",sans-serif; font-size:.62rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+    color:#fff; background:var(--royal-deep); padding:3px 8px; border-radius:5px; vertical-align:middle; margin-left:9px; position:relative; top:-2px;
+  }
+  .phase__body p{ margin:0 0 .7em; color:var(--ink-soft); font-size:.96rem; }
+  .phase__body p:last-child{ margin-bottom:0; }
+
+  .say{
+    font-family:"Fraunces",serif; font-style:italic; color:var(--ink); font-size:1rem; line-height:1.5;
+    border-left:3px solid var(--gold); background:var(--parchment-deep); padding:12px 16px; border-radius:0 8px 8px 0; margin:.2em 0 .9em;
+  }
+  .say .who{ display:block; font-family:"Hanken Grotesk",sans-serif; font-style:normal; font-size:.64rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--royal); margin-bottom:6px; }
+
+  .steps{ margin:.3em 0 .8em; padding-left:0; list-style:none; }
+  .steps li{ position:relative; padding:5px 0 5px 26px; color:var(--ink-soft); font-size:.94rem; }
+  .steps li::before{ content:""; position:absolute; left:6px; top:12px; width:7px; height:7px; border-radius:50%; background:var(--royal); }
+  .steps li b{ color:var(--ink); }
+
+  .subblock{ background:#fff; border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:.5em 0; box-shadow:var(--shadow); }
+  .subblock .label{ display:block; margin-bottom:6px; color:var(--royal-deep); }
+  .subblock p{ margin:0; }
+
+  .gestures{ margin:.4em 0 0; padding:0; list-style:none; display:grid; gap:6px; }
+  .gestures li{ display:grid; grid-template-columns:auto 1fr; gap:12px; align-items:baseline; font-size:.92rem; }
+  .gestures .g{ font-family:"Fraunces",serif; font-style:italic; font-weight:600; color:var(--ink); white-space:nowrap; }
+  .gestures .m{ color:var(--ink-soft); }
+
+  /* ---------- Variants ---------- */
+  .variants{ display:grid; gap:16px; }
+  .variant{ background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:22px 24px; box-shadow:var(--shadow); border-top:3px solid var(--royal); }
+  .variant .eyebrow{ color:var(--ink-faint); }
+  .variant h3{ font-family:"Fraunces",serif; font-weight:600; font-size:1.2rem; margin:.3em 0 .5em; }
+  .variant p{ margin:0 0 .55em; color:var(--ink-soft); font-size:.94rem; }
+  .variant p:last-child{ margin-bottom:0; }
+  .variant .doc{ font-family:"Fraunces",serif; font-style:italic; color:var(--ink); }
+
+  /* ---------- Footer ---------- */
+  footer{ background:var(--ink); color:#D6D2E1; padding:40px 0 44px; text-align:center; border-top:3px solid var(--gold); }
+  footer .eyebrow{ color:var(--gold-bright); }
+  footer p{ font-family:"Fraunces",serif; font-style:italic; font-size:1.15rem; line-height:1.5; max-width:46ch; margin:.7em auto 0; color:#EBE7DB; }
+  footer .sig{ margin-top:22px; font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; color:var(--ink-faint); font-weight:600; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:600px){
+    .hero__inner{ padding:44px 0 40px; }
+    .materials ul{ grid-template-columns:1fr; }
+    .ch{ grid-template-columns:1fr; gap:8px; }
+    .ch__tag{ display:flex; align-items:baseline; gap:10px; }
+    .ch__tag .cap{ margin-top:0; }
+    .phase{ grid-template-columns:60px 1fr; gap:16px; }
+    .phase::before{ left:29px; }
+    .phase__num{ width:44px; height:44px; font-size:1.25rem; }
+    .doctrine, .materials{ padding:24px 20px; }
+    .gestures li{ grid-template-columns:1fr; gap:1px; }
+  }
+
+  @media (prefers-reduced-motion:reduce){ *{ scroll-behavior:auto; } }
+
+  /* ---------- Print ---------- */
+  @media print{
+    :root{ --shadow:none; }
+    @page{ margin:14mm; }
+    body{ background:#fff; font-size:11.4px; line-height:1.42; }
+    .wrap{ max-width:none; padding:0; }
+    section{ padding:16px 0; border-bottom:1px solid var(--line); }
+
+    .hero{ background:#fff; color:var(--ink); border-bottom:2.5px solid var(--gold); }
+    .hero__glow, .doctrine__glow{ display:none; }
+    .hero__inner{ padding:6px 0 18px; }
+    .hero .eyebrow, .hero__ref, .hero__theme{ color:var(--royal-deep); }
+    .hero__verse{ color:var(--ink); }
+    .chip{ color:var(--ink-soft); border-color:var(--line); background:#fff; }
+    .chip .dot{ background:var(--royal); }
+
+    .doctrine{ background:var(--parchment-deep); color:var(--ink); border:1px solid var(--line); border-left:4px solid var(--royal); }
+    .doctrine .eyebrow, .doctrine .anchor{ color:var(--royal-deep); }
+    .doctrine .anchor{ border-top-color:var(--line); }
+
+    .materials, .subblock, .variant, .doctrine, .phase, .note{ page-break-inside:avoid; break-inside:avoid; }
+    .phase__num{ box-shadow:none; }
+    .phase--core .phase__num{ background:var(--royal); color:#fff; }
+
+    footer{ background:#fff; color:var(--ink); border-top:2px solid var(--gold); }
+    footer p{ color:var(--ink); }
+    footer .eyebrow{ color:var(--royal-deep); }
+
+    *{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="hero__glow"></div>
+    <div class="wrap hero__inner">
+      <span class="eyebrow">Primária · Classe dos Valorosos · Vem, e Segue-Me</span>
+      <h1>Ester</h1>
+      <p class="hero__theme">Para tal tempo como este chegaste</p>
+      <p class="hero__verse">“Quem sabe se para tal tempo como este chegaste a este reino?”</p>
+      <span class="hero__ref">Ester 4:14 · A coragem da rainha Ester</span>
+      <div class="hero__meta">
+        <span class="chip"><span class="dot"></span>25 minutos</span>
+        <span class="chip"><span class="dot"></span>~12 crianças</span>
+        <span class="chip"><span class="dot"></span>3 a 9 de agosto</span>
+        <span class="chip"><span class="dot"></span>Foco: Ester 3 e 4</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- ============ DOUTRINA CENTRAL ============ -->
+    <section>
+      <div class="doctrine">
+        <div class="doctrine__glow"></div>
+        <div class="inner">
+          <span class="eyebrow">Doutrina central da aula</span>
+          <p class="statement">O Senhor me colocou onde estou “para tal tempo como este”, e me ajuda a ser corajoso para fazer o que é certo, mesmo quando estou com medo.</p>
+          <span class="anchor">◆ Versículo-âncora · Ester 4:14 (ver também 4:16)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ RESUMO DA LEITURA ============ -->
+    <section>
+      <div class="sec-head">
+        <span class="eyebrow">Antes de ensinar</span>
+        <h2>Resumo detalhado da leitura</h2>
+        <p>O livro de Ester se passa na Pérsia e conta como uma jovem judia órfã se torna rainha e salva o seu povo de um massacre. À primeira vista parece tudo sorte ou coincidência, mas por trás de cada detalhe está a mão de um Pai Celestial amoroso, guiando os acontecimentos.</p>
+      </div>
+
+      <div class="reading">
+        <div class="ch">
+          <div class="ch__tag"><span class="num">Ester 1</span><span class="cap">Susã</span></div>
+          <div class="ch__body">
+            <h3>A rainha Vasti perde o trono</h3>
+            <p>O rei da Pérsia, Assuero, faz um grande banquete. A rainha Vasti se recusa a comparecer quando é chamada e perde o trono. Assim se abre caminho para a escolha de uma nova rainha.</p>
+          </div>
+        </div>
+
+        <div class="ch">
+          <div class="ch__tag"><span class="num">Ester 2</span><span class="cap">Ester</span></div>
+          <div class="ch__body">
+            <h3>Uma órfã judia se torna rainha</h3>
+            <p>Ester, uma menina judia órfã criada pelo primo Mardoqueu, é escolhida como a nova rainha. Seguindo o conselho de Mardoqueu, ela mantém em segredo que é judia. Mardoqueu descobre um plano para matar o rei e o denuncia, e o fato fica registrado.</p>
+          </div>
+        </div>
+
+        <div class="ch">
+          <div class="ch__tag"><span class="num">Ester 3</span><span class="cap">Hamã</span></div>
+          <div class="ch__body">
+            <h3>A trama de Hamã contra os judeus</h3>
+            <p>Hamã é promovido, e todos se curvam diante dele. Mardoqueu se recusa a curvar-se. Cheio de ódio, Hamã trama destruir não só Mardoqueu, mas todo o povo judeu, e consegue um decreto do rei, escolhendo o dia por sorteio (o “pur”).</p>
+          </div>
+        </div>
+
+        <div class="ch">
+          <div class="ch__tag"><span class="num">Ester 4</span><span class="cap">Chave</span></div>
+          <div class="ch__body">
+            <h3>“Para tal tempo como este” <span class="star">★</span></h3>
+            <p>Diante da ameaça, Mardoqueu pede que Ester interceda junto ao rei. Ester tem medo, porque chegar ao rei sem ser chamada podia custar a vida. Então Mardoqueu diz a frase que dá nome à semana (4:14). Ester decide: <span class="key">“se perecer, pereci”</span> (4:16), e pede que todos os judeus jejuem três dias por ela.</p>
+          </div>
+        </div>
+
+        <div class="ch">
+          <div class="ch__tag"><span class="num">Ester 5–7</span><span class="cap">Chave</span></div>
+          <div class="ch__body">
+            <h3>Coragem e a grande reviravolta <span class="star">★</span></h3>
+            <p>Ester se apresenta ao rei, que estende o <span class="key">cetro de ouro</span> e a aceita. Ela convida o rei e Hamã para dois banquetes. Enquanto isso, Hamã manda construir uma forca para Mardoqueu. Mas o rei acaba honrando Mardoqueu publicamente e, no banquete, Ester revela a maldade de Hamã. Hamã acaba morto na própria forca que havia preparado.</p>
+          </div>
+        </div>
+
+        <div class="ch">
+          <div class="ch__tag"><span class="num">Ester 8–10</span><span class="cap">Purim</span></div>
+          <div class="ch__body">
+            <h3>Livramento e um dia de alegria</h3>
+            <p>Um novo decreto permite que os judeus se defendam, e o povo é salvo. É instituída a Festa de Purim, dias de grande alegria pela libertação. Mardoqueu é engrandecido no reino.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="note">
+        <p><b>Curiosidade para guardar:</b> em todo o livro de Ester, o nome de Deus nunca aparece uma única vez. Ainda assim, a mão Dele está em cada “coincidência”. Nada ali aconteceu por acaso.</p>
+      </div>
+
+      <div class="thread">
+        <span class="label">O fio condutor de toda a leitura</span>
+        <p>A mão invisível de Deus colocou Ester no lugar certo “para tal tempo como este”. Pela coragem dela e pelo jejum do povo, Ele os livrou. Mesmo quando parece ausente, Deus cuida dos detalhes e faz de pessoas dispostas e corajosas os Seus instrumentos.</p>
+      </div>
+    </section>
+
+    <!-- ============ MATERIAIS ============ -->
+    <section>
+      <div class="sec-head">
+        <span class="eyebrow">Preparação prévia</span>
+        <h2>Materiais necessários</h2>
+      </div>
+      <div class="materials">
+        <ul>
+          <li><span class="box"></span><span>Gravura <b>“A Rainha Ester”</b> (Minerva Teichert) ou <b>“O Povo de Jeová É Salvo pela Rainha Ester”</b> (Sam Lawlor)</span></li>
+          <li><span class="box"></span><span>Escrituras marcadas em <b>Ester 4:14 e 4:16</b></span></li>
+          <li><span class="box"></span><span><b>Cartões de cenários</b> (pré-escritos) para o jogo “De pé pela coragem”</span></li>
+          <li><span class="box"></span><span>Cartaz com as frases: <b>“Mardoqueu foi corajoso quando…”</b>, <b>“Ester foi corajosa quando…”</b>, <b>“Serei corajoso ao…”</b></span></li>
+          <li><span class="box"></span><span><i>Opcional:</i> hino <b>“Ouse ser bom”</b> (Músicas para Crianças, p. 80)</span></li>
+          <li><span class="box"></span><span><i>Opcional:</i> um <b>instrumento musical</b> de verdade (ou a gravura de uma ferramenta), para explicar “instrumento nas mãos de Deus”</span></li>
+          <li><span class="box"></span><span><i>Opcional:</i> vídeo <b>“A rainha Ester”</b> (2:44) da Biblioteca do Evangelho</span></li>
+          <li><span class="box"></span><span><i>Opcional:</i> <a href="https://assets.churchofjesuschrist.org/4d/qa/4dqad88t02wgmlmvv1bxrf5u75j2cf4wabk2u9vo/come_follow_me.pdf">Página de atividades da Primária</a> — “O Senhor pode me ajudar a ser corajoso”</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ PLANO DE AULA ============ -->
+    <section>
+      <div class="sec-head">
+        <div class="plan-intro">
+          <div>
+            <span class="eyebrow">Roteiro da aula</span>
+            <h2>Plano de aula · 25 minutos</h2>
+          </div>
+          <span class="budget">Orçamento de tempo: <b>2 + 3 + 5 + 5 + 8 + 2</b> min</span>
+        </div>
+        <p>O arco das últimas semanas continua: vimos o exército de Deus (2 Reis), aprendemos a olhar para Ele em oração (2 Crônicas) e a não largar a Sua obra (Neemias). Agora, com Ester, vem a coragem de agir como instrumento de Deus. A dinâmica central põe todas as 12 crianças de pé, ensaiando no corpo a decisão de escolher o certo mesmo com medo.</p>
+      </div>
+
+      <div class="phases">
+
+        <!-- Fase 1 -->
+        <article class="phase">
+          <div class="phase__marker"><div class="phase__num">1</div><span class="phase__time">2 min</span></div>
+          <div class="phase__body">
+            <h3>Gancho de abertura</h3>
+            <p>Comece com um dilema forte e deixe as crianças reagirem em voz alta.</p>
+            <div class="say"><span class="who">Diga</span>Imaginem que só vocês podem salvar todo o seu povo de um perigo enorme. Mas, para isso, precisam fazer uma coisa muito assustadora, que pode até colocar vocês em perigo. Vocês teriam coragem de fazer?</div>
+            <p>Depois das reações, revele: “Foi bem essa a escolha de uma rainha muito corajosa chamada Ester. Vamos ver o que ela fez.”</p>
+          </div>
+        </article>
+
+        <!-- Fase 2 -->
+        <article class="phase">
+          <div class="phase__marker"><div class="phase__num">2</div><span class="phase__time">3 min</span></div>
+          <div class="phase__body">
+            <h3>Resumo da leitura</h3>
+            <p>Conte rápido, só o suficiente para chegar ao momento da coragem:</p>
+            <div class="say"><span class="who">Diga</span>Faz muito tempo, na Pérsia, uma menina judia órfã chamada Ester se tornou rainha. Ninguém sabia que ela era judia. Um homem muito mau, o Hamã, fez um plano terrível para destruir todo o povo de Ester. E só ela, a rainha, podia tentar impedir. O problema é que isso era muito perigoso.</div>
+            <p><b>Participação relâmpago:</b> faça um <span class="key">“corajoso ou com medo?”</span>. Você cita uma atitude e todos mostram juntos cara de corajoso (punho para cima) ou de medo (mãos no rosto).</p>
+          </div>
+        </article>
+
+        <!-- Fase 3 -->
+        <article class="phase phase--core">
+          <div class="phase__marker"><div class="phase__num">3</div><span class="phase__time">5 min</span></div>
+          <div class="phase__body">
+            <h3>Doutrina central + princípio</h3>
+            <p>Conte o coração da história com emoção: Ester ficou com muito medo, porque ir falar com o rei sem ser chamada podia custar a vida dela. Foi aí que Mardoqueu disse a ela algo importante (leia Ester 4:14): talvez Deus a tivesse feito rainha justamente para aquele momento, para salvar o povo. Ester então orou, pediu que todos jejuassem, teve coragem e foi falar com o rei. E deu certo: o rei estendeu o cetro de ouro, aceitou Ester, e o povo dela foi salvo.</p>
+            <div class="say"><span class="who">Amarre a doutrina</span>Ester estava com medo, mas confiou em Deus e foi corajosa. Deus a tinha colocado ali por um motivo e a ajudou. Com a gente é igual: Deus nos coloca em certos lugares por um motivo, e nos dá coragem para fazer o certo, mesmo quando dá medo.</div>
+          </div>
+        </article>
+
+        <!-- Fase 4 -->
+        <article class="phase">
+          <div class="phase__marker"><div class="phase__num">4</div><span class="phase__time">5 min</span></div>
+          <div class="phase__body">
+            <h3>Aplicação prática</h3>
+            <p>Pergunte: “Quando é que vocês precisam de coragem para fazer o certo, mesmo com medo?” Ajude com exemplos:</p>
+            <ul class="steps">
+              <li>Defender um coleguinha de quem estão zombando</li>
+              <li>Falar a verdade quando é difícil</li>
+              <li>Dizer não quando os amigos querem fazer algo errado</li>
+              <li>Ser bondoso com quem está sozinho ou de fora</li>
+            </ul>
+            <p>Depois, apresente a ideia de ser um <span class="key">instrumento nas mãos de Deus</span>: Ele colocou vocês na sua sala, na sua casa, no seu time por um motivo. Às vezes você é a única pessoa que consegue ajudar alguém. (Se quiser, mostre um instrumento musical de verdade: assim como alguém toca uma música bonita num instrumento, Deus faz coisas boas por meio de nós quando aceitamos ajudar.)</p>
+          </div>
+        </article>
+
+        <!-- Fase 5 -->
+        <article class="phase phase--core">
+          <div class="phase__marker"><div class="phase__num">5</div><span class="phase__time">8 min</span></div>
+          <div class="phase__body">
+            <h3>Dinâmica de fixação <span class="tag">Coração da aula</span></h3>
+            <p>O naco maior da aula. Tenha em mãos os cartões de cenários e o cartaz das frases de coragem.</p>
+
+            <div class="subblock">
+              <span class="label">Parte A — “De pé pela coragem” · 5 min</span>
+              <p>Você lê um cenário do dia a dia (por exemplo: “estão zombando de um coleguinha na frente de todos”, “seu amigo quer que você minta para a professora”, “você quebrou algo sem querer e ninguém viu”). Para cada um, todas as crianças <b>ficam de pé, bem eretas, como Ester diante do rei</b>, e dizem juntas a frase de coragem, depois falam ou fazem a atitude certa. Passe por 4 ou 5 cenários, num ritmo animado. Ao final, complete rapidinho o cartaz: cada criança termina a frase <b>“Serei corajoso ao…”</b> com uma coisa que exige coragem.</p>
+              <p style="margin-top:8px;"><b>Frase de coragem (todos juntos):</b> <span class="key">“Com a ajuda do Senhor, eu escolho o certo!”</span></p>
+            </div>
+
+            <div class="subblock">
+              <span class="label">Parte B — Versículo com gestos · 3 min</span>
+              <p style="margin-bottom:10px;">Para gravar Ester 4:14, criem gestos e repitam juntos, cada vez mais firme:</p>
+              <ul class="gestures">
+                <li><span class="g">“Para tal tempo”</span><span class="m">apontar para o pulso, como quem mostra o relógio</span></li>
+                <li><span class="g">“como este”</span><span class="m">apontar firme para o chão: este momento, aqui e agora</span></li>
+                <li><span class="g">“chegaste”</span><span class="m">abrir os braços e apontar para si: estou aqui por um motivo</span></li>
+              </ul>
+              <p style="margin-top:10px;">Façam 3 ou 4 vezes, terminando com todos dizendo a frase bem alto. <span class="key">Repetição, movimento e eles mesmos falando: é isso que fixa.</span></p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Fase 6 -->
+        <article class="phase">
+          <div class="phase__marker"><div class="phase__num">6</div><span class="phase__time">2 min</span></div>
+          <div class="phase__body">
+            <h3>Testemunho e encerramento</h3>
+            <p>Compartilhe, de forma curta e pessoal, uma vez em que <b>você</b> precisou de coragem para fazer o certo, ou em que sentiu que Deus tinha colocado você no lugar certo para ajudar alguém. Testifique que o Pai Celestial ajuda cada um a ser corajoso e convide-os:</p>
+            <div class="say"><span class="who">Convite da semana</span>Esta semana, sejam corajosos para fazer o certo. E lembrem: talvez Deus tenha colocado vocês bem onde estão “para tal tempo como este”.</div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ============ VARIANTES ============ -->
+    <section>
+      <div class="sec-head">
+        <span class="eyebrow">Se preferir outro princípio</span>
+        <h2>Variantes da semana</h2>
+        <p>Os outros dois princípios do <i>Vem, e Segue-Me</i> para as crianças, prontos para expandir caso você queira mudar o foco da aula.</p>
+      </div>
+
+      <div class="variants">
+        <div class="variant">
+          <span class="eyebrow">Ester 4:1–3, 10–17</span>
+          <h3>O jejum traz as bênçãos do Senhor</h3>
+          <p>Leia por que Ester e os judeus decidiram jejuar. Pergunte às crianças como elas explicariam o jejum a um amigo que nunca jejuou. Diga por que você jejua e ajude-as a ver o jejum como uma forma de mostrar que confiamos em Deus e dependemos Dele. Incentive cada criança a pensar em algo para o qual precisa da ajuda do Senhor e a incluir isso no próximo domingo de jejum.</p>
+          <p class="doc">Doutrina: o jejum mostra que confio no Senhor e me aproxima das Suas bênçãos.</p>
+        </div>
+
+        <div class="variant">
+          <span class="eyebrow">Ester 2:5–7</span>
+          <h3>Posso servir à minha família</h3>
+          <p>Conte como Mardoqueu cuidou da prima Ester, que era órfã, criando-a como filha. Depois, ajude as crianças a pensar em familiares que talvez precisem de ajuda agora. Façam juntos um plano simples para ajudar essas pessoas durante a semana.</p>
+          <p class="doc">Doutrina: posso cuidar e servir os membros da minha família, como Mardoqueu fez.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============ RODAPÉ ============ -->
+  <footer>
+    <div class="wrap">
+      <span class="eyebrow">O objetivo maior</span>
+      <p>Que as crianças aprendam a doutrina desde cedo, saibam que Deus as colocou aqui por um motivo e tenham coragem para fazer o certo diante dos desafios que virão.</p>
+      <div class="sig">Primária · Classe dos Valorosos · Livro de Ester</div>
+    </div>
+  </footer>
+
+</body>
+</html>
