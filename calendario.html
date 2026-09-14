@@ -17,34 +17,48 @@
 
   <main>
     <section class="page-hero">
-      <h1>Calendário 2026</h1>
-      <p>Eventos e atividades programadas para a estaca</p>
+      <h1>Calendário da Estaca</h1>
+      <p>Reuniões, conferências, treinamentos e atividades</p>
     </section>
 
     <div class="container">
 
       <!--
-        ╔══════════════════════════════════════════════════════════╗
-        ║  COMO TROCAR O CALENDÁRIO DO CANVA:                     ║
-        ║                                                          ║
-        ║  1. Abra o design do calendário no Canva                 ║
-        ║  2. Clique em "Compartilhar" (canto superior direito)    ║
-        ║  3. Clique em "Mais..."                                  ║
-        ║  4. Clique em "Incorporar"                               ║
-        ║  5. Clique em "Código de incorporação inteligente"       ║
-        ║  6. Copie TODO o código que aparece                      ║
-        ║  7. Apague tudo entre INICIO e FIM abaixo               ║
-        ║  8. Cole o código copiado no lugar                       ║
-        ╚══════════════════════════════════════════════════════════╝
+        ╔══════════════════════════════════════════════════════════════════╗
+        ║  COMO ALTERAR OS EVENTOS DESTE CALENDÁRIO                        ║
+        ║                                                                  ║
+        ║  Você NÃO edita nada nesta página.                               ║
+        ║  Todos os eventos ficam no arquivo:  calendario.csv              ║
+        ║                                                                  ║
+        ║  PARA EDITAR NO GITHUB:                                          ║
+        ║    1. Abra o arquivo calendario.csv no repositório               ║
+        ║    2. Clique no ícone de lápis (editar)                          ║
+        ║    3. Escolha a aba "Edit" para ver em formato de tabela         ║
+        ║    4. Altere, acrescente ou apague linhas                        ║
+        ║    5. Clique em "Commit changes"                                 ║
+        ║                                                                  ║
+        ║  O calendário atualiza sozinho em 1 a 2 minutos.                 ║
+        ╚══════════════════════════════════════════════════════════════════╝
       -->
 
-      <!-- ========== INICIO DO EMBED DO CANVA (apague daqui...) ========== -->
-      <div style="position: relative; width: 100%; height: 0; padding-top: 177.7778%; padding-bottom: 0; overflow: hidden; border-radius: 8px;">
-        <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0; margin: 0;"
-          src="https://www.canva.com/design/DAG5wwxgOUs/4sTj_qe10l7FVxP4sgf1yg/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
-        </iframe>
+      <div class="cal-abas">
+        <button class="cal-aba ativo" data-visao="proximos">Próximos</button>
+        <button class="cal-aba" data-visao="mes">Por mês</button>
+        <button class="cal-aba" data-visao="ano">Ano inteiro</button>
       </div>
-      <!-- ========== FIM DO EMBED DO CANVA (...até aqui) ========== -->
+
+      <div class="cal-filtros" id="cal-filtros"></div>
+
+      <div id="cal-conteudo">
+        <p class="cal-vazio">Carregando calendário...</p>
+      </div>
+
+      <div class="cal-legenda">
+        <span class="cal-legenda-item tipo-reuniao">Reunião</span>
+        <span class="cal-legenda-item tipo-treinamento">Treinamento</span>
+        <span class="cal-legenda-item tipo-conferencia">Conferência</span>
+        <span class="cal-legenda-item tipo-atividade">Atividade</span>
+      </div>
 
     </div>
   </main>
@@ -53,5 +67,6 @@
   <div id="rodape"></div>
 
   <script src="componentes.js"></script>
+  <script src="calendario.js"></script>
 </body>
 </html>

@@ -1,0 +1,25 @@
+data,horario,tipo,evento,local,publico,responsavel
+18/01/2026,09:00,Reunião,Conselho da Estaca,Cabula,Presidência e Sumo Conselho,Estaca
+25/01/2026,08:00,Conferência,Conferência de Estaca,Cabula,Todos os membros,Estaca
+08/02/2026,14:00,Treinamento,Treinamento de Novos Bispos,Cabula,Bispos e conselheiros,Estaca
+15/02/2026,09:00,Reunião,Conselho da Estaca,Cabula,Presidência e Sumo Conselho,Estaca
+15/03/2026,09:00,Reunião,Conselho da Estaca,Cabula,Presidência e Sumo Conselho,Estaca
+21/03/2026,08:00,Treinamento,Treinamento de Secretários,Cabula,Secretários de ala e estaca,Estaca
+04/04/2026,14:00,Conferência,Conferência Geral,Transmissão,Todos os membros,Igreja
+05/04/2026,14:00,Conferência,Conferência Geral,Transmissão,Todos os membros,Igreja
+19/04/2026,09:00,Reunião,Conselho da Estaca,Cabula,Presidência e Sumo Conselho,Estaca
+17/05/2026,09:00,Reunião,Conselho da Estaca,Cabula,Presidência e Sumo Conselho,Estaca
+21/06/2026,09:00,Reunião,Conselho da Estaca,Cabula,Presidência e Sumo Conselho,Estaca
+19/07/2026,09:00,Reunião,Conselho da Estaca,Cabula,Presidência e Sumo Conselho,Estaca
+16/08/2026,09:00,Reunião,Conselho da Estaca,Cabula,Presidência e Sumo Conselho,Estaca
+29/08/2026,15:00,Atividade,Excursão ao Templo,Templo,Membros com recomendação,Estaca
+13/09/2026,07:30,Reunião,Sumo Conselho,Cabula,Sumo Conselho,Estaca
+20/09/2026,16:00,Treinamento,Treinamento das Organizações,Cabula,Líderes,Estaca
+27/09/2026,07:30,Reunião,Sumo Conselho,Cabula,Sumo Conselho,Estaca
+27/09/2026,16:30,Reunião,Conselho da Estaca,Cabula,Liderança da Estaca,Estaca
+03/10/2026,14:00,Conferência,Conferência Geral,Transmissão,Todos os membros,Igreja
+04/10/2026,14:00,Conferência,Conferência Geral,Transmissão,Todos os membros,Igreja
+18/10/2026,09:00,Reunião,Conselho da Estaca,Cabula,Presidência e Sumo Conselho,Estaca
+15/11/2026,09:00,Reunião,Conselho da Estaca,Cabula,Presidência e Sumo Conselho,Estaca
+06/12/2026,19:00,Atividade,Devocional de Natal da Estaca,Cabula,Todos os membros,Estaca
+20/12/2026,09:00,Reunião,Conselho da Estaca,Cabula,Presidência e Sumo Conselho,Estaca
