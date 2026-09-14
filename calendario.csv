@@ -1,25 +1,34 @@
-data,horario,tipo,evento,local,publico,responsavel
-18/01/2026,09:00,ReuniÃ£o,Conselho da Estaca,Cabula,PresidÃªncia e Sumo Conselho,Estaca
-25/01/2026,08:00,ConferÃªncia,ConferÃªncia de Estaca,Cabula,Todos os membros,Estaca
-08/02/2026,14:00,Treinamento,Treinamento de Novos Bispos,Cabula,Bispos e conselheiros,Estaca
-15/02/2026,09:00,ReuniÃ£o,Conselho da Estaca,Cabula,PresidÃªncia e Sumo Conselho,Estaca
-15/03/2026,09:00,ReuniÃ£o,Conselho da Estaca,Cabula,PresidÃªncia e Sumo Conselho,Estaca
-21/03/2026,08:00,Treinamento,Treinamento de SecretÃ¡rios,Cabula,SecretÃ¡rios de ala e estaca,Estaca
-04/04/2026,14:00,ConferÃªncia,ConferÃªncia Geral,TransmissÃ£o,Todos os membros,Igreja
-05/04/2026,14:00,ConferÃªncia,ConferÃªncia Geral,TransmissÃ£o,Todos os membros,Igreja
-19/04/2026,09:00,ReuniÃ£o,Conselho da Estaca,Cabula,PresidÃªncia e Sumo Conselho,Estaca
-17/05/2026,09:00,ReuniÃ£o,Conselho da Estaca,Cabula,PresidÃªncia e Sumo Conselho,Estaca
-21/06/2026,09:00,ReuniÃ£o,Conselho da Estaca,Cabula,PresidÃªncia e Sumo Conselho,Estaca
-19/07/2026,09:00,ReuniÃ£o,Conselho da Estaca,Cabula,PresidÃªncia e Sumo Conselho,Estaca
-16/08/2026,09:00,ReuniÃ£o,Conselho da Estaca,Cabula,PresidÃªncia e Sumo Conselho,Estaca
-29/08/2026,15:00,Atividade,ExcursÃ£o ao Templo,Templo,Membros com recomendaÃ§Ã£o,Estaca
-13/09/2026,07:30,ReuniÃ£o,Sumo Conselho,Cabula,Sumo Conselho,Estaca
-20/09/2026,16:00,Treinamento,Treinamento das OrganizaÃ§Ãµes,Cabula,LÃ­deres,Estaca
-27/09/2026,07:30,ReuniÃ£o,Sumo Conselho,Cabula,Sumo Conselho,Estaca
-27/09/2026,16:30,ReuniÃ£o,Conselho da Estaca,Cabula,LideranÃ§a da Estaca,Estaca
-03/10/2026,14:00,ConferÃªncia,ConferÃªncia Geral,TransmissÃ£o,Todos os membros,Igreja
-04/10/2026,14:00,ConferÃªncia,ConferÃªncia Geral,TransmissÃ£o,Todos os membros,Igreja
-18/10/2026,09:00,ReuniÃ£o,Conselho da Estaca,Cabula,PresidÃªncia e Sumo Conselho,Estaca
-15/11/2026,09:00,ReuniÃ£o,Conselho da Estaca,Cabula,PresidÃªncia e Sumo Conselho,Estaca
-06/12/2026,19:00,Atividade,Devocional de Natal da Estaca,Cabula,Todos os membros,Estaca
-20/12/2026,09:00,ReuniÃ£o,Conselho da Estaca,Cabula,PresidÃªncia e Sumo Conselho,Estaca
+data;horario;tipo;evento;local;publico;responsavel
+06/09/2026;19:00;Reunião;Entrevista dos Bispos com o Pres. da Estaca;Cabula;Bispos;Estaca
+13/09/2026;07:30;Reunião;Reunião com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
+26/09/2026;17:00;Reunião;Treinamento das Organizações;Cabula;Sociedade de Socorro Moças Primária e Escola Dominical;Estaca
+27/09/2026;16:00;Reunião;Reunião com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
+27/09/2026;16:30;Reunião;Conselho da Estaca;Cabula;Conselho da Estaca;Estaca
+03/10/2026;13:00;Conferência;Conferência Geral;Cabula;Todos;Sede
+04/10/2026;13:00;Conferência;Conferência Geral;Cabula;Todos;Sede
+10/10/2026;15:00;Atividade;Primeiro momento: Reunião de Preparação para Crescer. Segundo momento: Atividade de Show de Talento para Valorosos das Alas.;Cabula;Primária;Primária
+11/10/2026;09:00;Apresentação;Apresentação da Primária - Ala Tancredo Neves;Tancredo Neves;Conselho da Estaca;Ala
+18/10/2026;09:00;Apresentação;Apresentação da Primária - Ala Cajazeiras;Cajazeiras;Conselho da Estaca;Ala
+18/10/2026;19:00;Reunião;Entrevista dos Bispos com o Pres. da Estaca;Cabula;Bispos;Estaca
+18/10/2026;07:30;Reunião;Reunião com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
+25/10/2026;09:00;Apresentação;Apresentação da Primária - Ala Jaguaripe;Jaguaripe;Conselho da Estaca;Ala
+25/10/2026;16:00;Reunião;Reunião com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
+25/10/2026;16:30;Reunião;Conselho da Estaca;Cabula;Conselho da Estaca;Estaca
+08/11/2026;09:00;Apresentação;Apresentação da Primária - Ala Sete de Abril;Sete de Abril;Conselho da Estaca;Ala
+08/11/2026;19:00;Reunião;Entrevista dos Bispos com o Pres. da Estaca;Cabula;Bispos;Estaca
+15/11/2026;09:00;Apresentação;Apresentação da Primária - Ala Engomadeira;Engomadeira;Conselho da Estaca;Ala
+15/11/2026;16:00;Reunião;Reunião com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
+15/11/2026;17:00;Reunião;Reunião Geral do Sacerdócio;Cabula;Portadores do Sacerdócio;Estaca
+22/11/2026;09:00;Apresentação;Apresentação da Primária - Ala Cabula;Cabula;Conselho da Estaca;Ala
+22/11/2026;16:00;Reunião;Reunião com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
+22/11/2026;16:30;Reunião;Conselho da Estaca;Cabula;Conselho da Estaca;Estaca
+29/11/2026;09:00;Apresentação;Apresentação da Primária - Ala Pernambués;Pernambués;Conselho da Estaca;Ala
+29/11/2026;16:00;Reunião;Conselho dos Bispados Estendido;Cabula;Bispados e Secretários;Estaca
+06/12/2026;07:30;Reunião;Reunião com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
+06/12/2026;16:00;Reunião;Entrevista dos Bispos com o Pres. da Estaca;Cabula;Bispos;Estaca
+07/12/2026;20:00;Transmissão;Devocional de Natal da Primeira Presidência (Transmissão);Cabula;Todos;Sede
+08/12/2026;08:30;Atividade;The Champions;Cabula;Rapazes;Rapazes
+12/12/2026;16:00;Reunião;Treinamento para os Bispos;Cabula;Bispados e Secretários;Estaca
+13/12/2026;16:00;Reunião;Reunião com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
+13/12/2026;16:30;Reunião;Conselho da Estaca;Cabula;Conselho da Estaca;Estaca
+19/12/2026;18:00;Apresentação;Cantata de Natal;Cabula;Todos;Estaca
