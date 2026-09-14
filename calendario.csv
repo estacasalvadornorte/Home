@@ -1,34 +1,34 @@
-data;horario;tipo;evento;local;publico;responsavel
-06/09/2026;19:00;Reuni„o;Entrevista dos Bispos com o Pres. da Estaca;Cabula;Bispos;Estaca
-13/09/2026;07:30;Reuni„o;Reuni„o com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
-26/09/2026;17:00;Reuni„o;Treinamento das OrganizaÁıes;Cabula;Sociedade de Socorro MoÁas Prim·ria e Escola Dominical;Estaca
-27/09/2026;16:00;Reuni„o;Reuni„o com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
-27/09/2026;16:30;Reuni„o;Conselho da Estaca;Cabula;Conselho da Estaca;Estaca
-03/10/2026;13:00;ConferÍncia;ConferÍncia Geral;Cabula;Todos;Sede
-04/10/2026;13:00;ConferÍncia;ConferÍncia Geral;Cabula;Todos;Sede
-10/10/2026;15:00;Atividade;Primeiro momento: Reuni„o de PreparaÁ„o para Crescer. Segundo momento: Atividade de Show de Talento para Valorosos das Alas.;Cabula;Prim·ria;Prim·ria
-11/10/2026;09:00;ApresentaÁ„o;ApresentaÁ„o da Prim·ria - Ala Tancredo Neves;Tancredo Neves;Conselho da Estaca;Ala
-18/10/2026;09:00;ApresentaÁ„o;ApresentaÁ„o da Prim·ria - Ala Cajazeiras;Cajazeiras;Conselho da Estaca;Ala
-18/10/2026;19:00;Reuni„o;Entrevista dos Bispos com o Pres. da Estaca;Cabula;Bispos;Estaca
-18/10/2026;07:30;Reuni„o;Reuni„o com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
-25/10/2026;09:00;ApresentaÁ„o;ApresentaÁ„o da Prim·ria - Ala Jaguaripe;Jaguaripe;Conselho da Estaca;Ala
-25/10/2026;16:00;Reuni„o;Reuni„o com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
-25/10/2026;16:30;Reuni„o;Conselho da Estaca;Cabula;Conselho da Estaca;Estaca
-08/11/2026;09:00;ApresentaÁ„o;ApresentaÁ„o da Prim·ria - Ala Sete de Abril;Sete de Abril;Conselho da Estaca;Ala
-08/11/2026;19:00;Reuni„o;Entrevista dos Bispos com o Pres. da Estaca;Cabula;Bispos;Estaca
-15/11/2026;09:00;ApresentaÁ„o;ApresentaÁ„o da Prim·ria - Ala Engomadeira;Engomadeira;Conselho da Estaca;Ala
-15/11/2026;16:00;Reuni„o;Reuni„o com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
-15/11/2026;17:00;Reuni„o;Reuni„o Geral do SacerdÛcio;Cabula;Portadores do SacerdÛcio;Estaca
-22/11/2026;09:00;ApresentaÁ„o;ApresentaÁ„o da Prim·ria - Ala Cabula;Cabula;Conselho da Estaca;Ala
-22/11/2026;16:00;Reuni„o;Reuni„o com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
-22/11/2026;16:30;Reuni„o;Conselho da Estaca;Cabula;Conselho da Estaca;Estaca
-29/11/2026;09:00;ApresentaÁ„o;ApresentaÁ„o da Prim·ria - Ala PernambuÈs;PernambuÈs;Conselho da Estaca;Ala
-29/11/2026;16:00;Reuni„o;Conselho dos Bispados Estendido;Cabula;Bispados e Secret·rios;Estaca
-06/12/2026;07:30;Reuni„o;Reuni„o com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
-06/12/2026;16:00;Reuni„o;Entrevista dos Bispos com o Pres. da Estaca;Cabula;Bispos;Estaca
-07/12/2026;20:00;Transmiss„o;Devocional de Natal da Primeira PresidÍncia (Transmiss„o);Cabula;Todos;Sede
-08/12/2026;08:30;Atividade;The Champions;Cabula;Rapazes;Rapazes
-12/12/2026;16:00;Reuni„o;Treinamento para os Bispos;Cabula;Bispados e Secret·rios;Estaca
-13/12/2026;16:00;Reuni„o;Reuni„o com o Sumo Conselho;Cabula;Sumo Conselho;Estaca
-13/12/2026;16:30;Reuni„o;Conselho da Estaca;Cabula;Conselho da Estaca;Estaca
-19/12/2026;18:00;ApresentaÁ„o;Cantata de Natal;Cabula;Todos;Estaca
+data,horario,tipo,evento,local,publico,responsavel
+06/09/2026,19:00,Reuni√£o,Entrevista dos Bispos com o Pres. da Estaca,Cabula,Bispos,Estaca
+13/09/2026,07:30,Reuni√£o,Reuni√£o com o Sumo Conselho,Cabula,Sumo Conselho,Estaca
+26/09/2026,17:00,Reuni√£o,Treinamento das Organiza√ß√µes,Cabula,Sociedade de Socorro Mo√ßas Prim√°ria e Escola Dominical,Estaca
+27/09/2026,16:00,Reuni√£o,Reuni√£o com o Sumo Conselho,Cabula,Sumo Conselho,Estaca
+27/09/2026,16:30,Reuni√£o,Conselho da Estaca,Cabula,Conselho da Estaca,Estaca
+03/10/2026,13:00,Confer√™ncia,Confer√™ncia Geral,Cabula,Todos,Sede
+04/10/2026,13:00,Confer√™ncia,Confer√™ncia Geral,Cabula,Todos,Sede
+10/10/2026,15:00,Atividade,Primeiro momento: Reuni√£o de Prepara√ß√£o para Crescer. Segundo momento: Atividade de Show de Talento para Valorosos das Alas.,Cabula,Prim√°ria,Prim√°ria
+11/10/2026,09:00,Apresenta√ß√£o,Apresenta√ß√£o da Prim√°ria - Ala Tancredo Neves,Tancredo Neves,Conselho da Estaca,Ala
+18/10/2026,09:00,Apresenta√ß√£o,Apresenta√ß√£o da Prim√°ria - Ala Cajazeiras,Cajazeiras,Conselho da Estaca,Ala
+18/10/2026,19:00,Reuni√£o,Entrevista dos Bispos com o Pres. da Estaca,Cabula,Bispos,Estaca
+18/10/2026,07:30,Reuni√£o,Reuni√£o com o Sumo Conselho,Cabula,Sumo Conselho,Estaca
+25/10/2026,09:00,Apresenta√ß√£o,Apresenta√ß√£o da Prim√°ria - Ala Jaguaripe,Jaguaripe,Conselho da Estaca,Ala
+25/10/2026,16:00,Reuni√£o,Reuni√£o com o Sumo Conselho,Cabula,Sumo Conselho,Estaca
+25/10/2026,16:30,Reuni√£o,Conselho da Estaca,Cabula,Conselho da Estaca,Estaca
+08/11/2026,09:00,Apresenta√ß√£o,Apresenta√ß√£o da Prim√°ria - Ala Sete de Abril,Sete de Abril,Conselho da Estaca,Ala
+08/11/2026,19:00,Reuni√£o,Entrevista dos Bispos com o Pres. da Estaca,Cabula,Bispos,Estaca
+15/11/2026,09:00,Apresenta√ß√£o,Apresenta√ß√£o da Prim√°ria - Ala Engomadeira,Engomadeira,Conselho da Estaca,Ala
+15/11/2026,16:00,Reuni√£o,Reuni√£o com o Sumo Conselho,Cabula,Sumo Conselho,Estaca
+15/11/2026,17:00,Reuni√£o,Reuni√£o Geral do Sacerd√≥cio,Cabula,Portadores do Sacerd√≥cio,Estaca
+22/11/2026,09:00,Apresenta√ß√£o,Apresenta√ß√£o da Prim√°ria - Ala Cabula,Cabula,Conselho da Estaca,Ala
+22/11/2026,16:00,Reuni√£o,Reuni√£o com o Sumo Conselho,Cabula,Sumo Conselho,Estaca
+22/11/2026,16:30,Reuni√£o,Conselho da Estaca,Cabula,Conselho da Estaca,Estaca
+29/11/2026,09:00,Apresenta√ß√£o,Apresenta√ß√£o da Prim√°ria - Ala Pernambu√©s,Pernambu√©s,Conselho da Estaca,Ala
+29/11/2026,16:00,Reuni√£o,Conselho dos Bispados Estendido,Cabula,Bispados e Secret√°rios,Estaca
+06/12/2026,07:30,Reuni√£o,Reuni√£o com o Sumo Conselho,Cabula,Sumo Conselho,Estaca
+06/12/2026,16:00,Reuni√£o,Entrevista dos Bispos com o Pres. da Estaca,Cabula,Bispos,Estaca
+07/12/2026,20:00,Transmiss√£o,Devocional de Natal da Primeira Presid√™ncia (Transmiss√£o),Cabula,Todos,Sede
+08/12/2026,08:30,Atividade,The Champions,Cabula,Rapazes,Rapazes
+12/12/2026,16:00,Reuni√£o,Treinamento para os Bispos,Cabula,Bispados e Secret√°rios,Estaca
+13/12/2026,16:00,Reuni√£o,Reuni√£o com o Sumo Conselho,Cabula,Sumo Conselho,Estaca
+13/12/2026,16:30,Reuni√£o,Conselho da Estaca,Cabula,Conselho da Estaca,Estaca
+19/12/2026,18:00,Apresenta√ß√£o,Cantata de Natal,Cabula,Todos,Estaca
