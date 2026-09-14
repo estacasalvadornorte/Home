@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Editor de Designações – Estaca Salvador Brasil Norte</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="editor-page">
+
+  <header class="editor-topo">
+    <div class="editor-topo-inner">
+      <div>
+        <span class="editor-etiqueta">Uso interno</span>
+        <h1>Editor de Designações</h1>
+      </div>
+      <a href="../lideranca.html" class="editor-link-sair">Ver a página pública</a>
+    </div>
+  </header>
+
+  <main class="editor-main">
+    <div id="editor-conteudo">
+      <p class="cal-vazio">Carregando dados...</p>
+    </div>
+  </main>
+
+  <script src="../csv.js"></script>
+  <script>
+  /* ═══════════════════════════════════════════════════════════════════
+     EDITOR DE DESIGNAÇÕES
+     Lê pessoas.csv e designacoes.csv, deixa você montar os vínculos
+     e gera o conteúdo do vinculos.csv para colar no GitHub.
+
+     Esta página NÃO altera nada sozinha. Quem publica é você.
+     ═══════════════════════════════════════════════════════════════════ */
+
+  let PESSOAS = [];
+  let DESIGNACOES = [];
+  let VINCULOS = [];        // { designacao, chamado, excecao }
+  let excecoesAbertas = {}; // designacoes com a terceira vaga visivel
+
+  const escapar = function (t) {
+    const d = document.createElement('div');
+    d.textContent = t || '';
+    return d.innerHTML;
+  };
+
+  const presidencia = function () {
+    return PESSOAS.filter(function (p) { return p.grupo === 'Presidência'; });
+  };
+  const sumo = function () {
+    return PESSOAS.filter(function (p) { return p.grupo === 'Sumo Conselho'; });
+  };
+
+  const rotuloPessoa = function (p) {
+    const nome = (p.nome && p.nome.toLowerCase() !== 'a definir') ? p.nome : null;
+    return nome ? p.chamado + ' — ' + nome : p.chamado;
+  };
+
+  // Vinculos de uma designacao separados por grupo
+  function ocupantes(designacao) {
+    const ligados = VINCULOS.filter(function (v) { return v.designacao === designacao; });
+    const pres = [];
+    const sum = [];
+    ligados.forEach(function (v) {
+      const p = PESSOAS.find(function (x) { return x.chamado === v.chamado; });
+      if (!p) return;
+      if (p.grupo === 'Presidência') pres.push(v);
+      else sum.push(v);
+    });
+
+    // A vaga normal vem sempre antes da vaga de exceção.
+    // Sem isto a posição dependeria da ordem do arquivo, e ao trocar
+    // uma pessoa as duas vagas poderiam inverter de lugar.
+    sum.sort(function (a, b) {
+      return (a.excecao === 'sim' ? 1 : 0) - (b.excecao === 'sim' ? 1 : 0);
+    });
+
+    return { pres: pres, sum: sum };
+  }
+
+  function definirVinculo(designacao, grupo, posicao, chamado) {
+    const oc = ocupantes(designacao);
+    const lista = (grupo === 'pres') ? oc.pres : oc.sum;
+    const atual = lista[posicao];
+
+    // remove o vinculo anterior daquela vaga
+    if (atual) {
+      VINCULOS = VINCULOS.filter(function (v) { return v !== atual; });
+    }
+    if (chamado) {
+      VINCULOS.push({
+        designacao: designacao,
+        chamado: chamado,
+        excecao: (grupo === 'sum' && posicao === 1) ? 'sim' : ''
+      });
+    }
+    desenhar();
+  }
+
+  function selecionar(designacao, grupo, posicao, opcoes, selecionado, rotuloVazio) {
+    let html = '<select class="ed-select" data-desig="' + escapar(designacao) +
+               '" data-grupo="' + grupo + '" data-pos="' + posicao + '">';
+    html += '<option value="">' + rotuloVazio + '</option>';
+    opcoes.forEach(function (p) {
+      const sel = (p.chamado === selecionado) ? ' selected' : '';
+      html += '<option value="' + escapar(p.chamado) + '"' + sel + '>' +
+              escapar(rotuloPessoa(p)) + '</option>';
+    });
+    html += '</select>';
+    return html;
+  }
+
+  function cargaDe(chamado) {
+    return VINCULOS.filter(function (v) { return v.chamado === chamado; }).length;
+  }
+
+  function desenhar() {
+    const area = document.getElementById('editor-conteudo');
+
+    // ---------- Painel de resumo ----------
+    const total = DESIGNACOES.length;
+    let completas = 0, parciais = 0, vazias = 0;
+    DESIGNACOES.forEach(function (d) {
+      const oc = ocupantes(d.designacao);
+      if (oc.pres.length && oc.sum.length) completas++;
+      else if (!oc.pres.length && !oc.sum.length) vazias++;
+      else parciais++;
+    });
+
+    let html = '' +
+      '<div class="ed-resumo">' +
+        '<div class="ed-resumo-item estado-completo"><strong>' + completas + '</strong><span>completas</span></div>' +
+        '<div class="ed-resumo-item estado-parcial"><strong>' + parciais + '</strong><span>faltando uma vaga</span></div>' +
+        '<div class="ed-resumo-item estado-vazio"><strong>' + vazias + '</strong><span>sem ninguém</span></div>' +
+        '<div class="ed-resumo-item"><strong>' + total + '</strong><span>designações</span></div>' +
+      '</div>';
+
+    html += '<div class="ed-colunas">';
+
+    // ---------- Coluna esquerda: designacoes ----------
+    html += '<div class="ed-coluna">';
+    html += '<h2 class="ed-coluna-titulo">Designações</h2>';
+
+    const grupos = [];
+    DESIGNACOES.forEach(function (d) {
+      const g = d.grupo || 'Outras';
+      if (grupos.indexOf(g) === -1) grupos.push(g);
+    });
+
+    grupos.forEach(function (grupo) {
+      html += '<h3 class="ed-subgrupo">' + escapar(grupo) + '</h3>';
+
+      DESIGNACOES.filter(function (d) { return (d.grupo || 'Outras') === grupo; })
+        .forEach(function (d) {
+          const nome = d.designacao;
+          const oc = ocupantes(nome);
+          const completo = oc.pres.length > 0 && oc.sum.length > 0;
+          const vazio = oc.pres.length === 0 && oc.sum.length === 0;
+          const estado = completo ? 'completo' : (vazio ? 'vazio' : 'parcial');
+          const temExtra = oc.sum.length > 1;
+          const mostrarExtra = temExtra || excecoesAbertas[nome];
+
+          html += '<div class="ed-desig estado-' + estado + '">';
+          html += '<div class="ed-desig-nome">' + escapar(nome) + '</div>';
+
+          html += '<div class="ed-vagas">';
+          html += '<label class="ed-vaga">' +
+                    '<span>Presidência</span>' +
+                    selecionar(nome, 'pres', 0, presidencia(),
+                               oc.pres[0] ? oc.pres[0].chamado : '', 'A definir') +
+                  '</label>';
+          html += '<label class="ed-vaga">' +
+                    '<span>Sumo conselho</span>' +
+                    selecionar(nome, 'sum', 0, sumo(),
+                               oc.sum[0] ? oc.sum[0].chamado : '', 'A definir') +
+                  '</label>';
+
+          if (mostrarExtra) {
+            html += '<label class="ed-vaga ed-vaga-excecao">' +
+                      '<span>Sumo conselho <em>exceção</em></span>' +
+                      selecionar(nome, 'sum', 1, sumo(),
+                                 oc.sum[1] ? oc.sum[1].chamado : '', 'Nenhum') +
+                    '</label>';
+          }
+          html += '</div>';
+
+          if (!mostrarExtra) {
+            html += '<button class="ed-abrir-excecao" data-abrir="' + escapar(nome) + '">' +
+                      '+ abrir exceção' +
+                    '</button>';
+          } else if (!temExtra) {
+            html += '<button class="ed-abrir-excecao" data-fechar="' + escapar(nome) + '">' +
+                      'cancelar exceção' +
+                    '</button>';
+          }
+
+          html += '</div>';
+        });
+    });
+    html += '</div>';
+
+    // ---------- Coluna direita: pessoas ----------
+    html += '<div class="ed-coluna">';
+    html += '<h2 class="ed-coluna-titulo">Distribuição por pessoa</h2>';
+
+    ['Presidência', 'Sumo Conselho'].forEach(function (grupo) {
+      html += '<h3 class="ed-subgrupo">' + grupo + '</h3>';
+      PESSOAS.filter(function (p) { return p.grupo === grupo; }).forEach(function (p) {
+        const suas = VINCULOS.filter(function (v) { return v.chamado === p.chamado; });
+        html += '<div class="ed-pessoa">';
+        html += '<div class="ed-pessoa-topo">' +
+                  '<strong>' + escapar(rotuloPessoa(p)) + '</strong>' +
+                  '<span class="ed-contador">' + suas.length + '</span>' +
+                '</div>';
+        if (suas.length) {
+          html += '<div class="ed-pessoa-tags">';
+          suas.forEach(function (v) {
+            html += '<span class="ed-tag' + (v.excecao === 'sim' ? ' ed-tag-excecao' : '') + '">' +
+                    escapar(v.designacao) + '</span>';
+          });
+          html += '</div>';
+        } else {
+          html += '<p class="ed-pessoa-vazio">Sem designação</p>';
+        }
+        html += '</div>';
+      });
+    });
+    html += '</div>';
+    html += '</div>';
+
+    // ---------- Saida ----------
+    html += '' +
+      '<div class="ed-saida">' +
+        '<h2>Publicar as alterações</h2>' +
+        '<p>Copie o conteúdo abaixo e cole no arquivo ' +
+        '<code>lideranca/vinculos.csv</code> no GitHub, substituindo tudo que estiver lá.</p>' +
+        '<textarea id="ed-csv" readonly rows="10"></textarea>' +
+        '<div class="ed-botoes">' +
+          '<button class="ed-btn" id="ed-copiar">Copiar conteúdo</button>' +
+          '<button class="ed-btn ed-btn-secundario" id="ed-baixar">Baixar vinculos.csv</button>' +
+        '</div>' +
+        '<p class="ed-aviso">Esta página não altera nada sozinha. ' +
+        'Nada muda no site até você salvar o arquivo no GitHub.</p>' +
+      '</div>';
+
+    area.innerHTML = html;
+
+    // ---------- Eventos ----------
+    area.querySelectorAll('.ed-select').forEach(function (sel) {
+      sel.addEventListener('change', function () {
+        definirVinculo(
+          sel.getAttribute('data-desig'),
+          sel.getAttribute('data-grupo'),
+          parseInt(sel.getAttribute('data-pos'), 10),
+          sel.value
+        );
+      });
+    });
+
+    area.querySelectorAll('[data-abrir]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        excecoesAbertas[b.getAttribute('data-abrir')] = true;
+        desenhar();
+      });
+    });
+
+    area.querySelectorAll('[data-fechar]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        delete excecoesAbertas[b.getAttribute('data-fechar')];
+        desenhar();
+      });
+    });
+
+    // Texto do CSV, na ordem do catalogo
+    const ordenados = [];
+    DESIGNACOES.forEach(function (d) {
+      VINCULOS.filter(function (v) { return v.designacao === d.designacao; })
+        .forEach(function (v) { ordenados.push(v); });
+    });
+    const texto = csvEscrever(['designacao', 'chamado', 'excecao'], ordenados);
+    document.getElementById('ed-csv').value = texto;
+
+    document.getElementById('ed-copiar').addEventListener('click', function () {
+      const campo = document.getElementById('ed-csv');
+      campo.select();
+      campo.setSelectionRange(0, 999999);
+      try {
+        navigator.clipboard.writeText(campo.value);
+      } catch (e) {
+        document.execCommand('copy');
+      }
+      const btn = document.getElementById('ed-copiar');
+      btn.textContent = 'Copiado';
+      setTimeout(function () { btn.textContent = 'Copiar conteúdo'; }, 1600);
+    });
+
+    document.getElementById('ed-baixar').addEventListener('click', function () {
+      const blob = new Blob([texto], { type: 'text/csv;charset=utf-8' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'vinculos.csv';
+      a.click();
+      URL.revokeObjectURL(a.href);
+    });
+  }
+
+  function iniciarEditor() {
+    const buscar = function (nome) {
+      return fetch(nome + '?v=' + Date.now())
+        .then(function (r) {
+          if (!r.ok) throw new Error(nome);
+          return r.text();
+        })
+        .then(csvLer);
+    };
+
+    Promise.all([
+      buscar('pessoas.csv'),
+      buscar('designacoes.csv'),
+      buscar('vinculos.csv')
+    ]).then(function (res) {
+      PESSOAS = res[0];
+      DESIGNACOES = res[1];
+      VINCULOS = res[2].filter(function (v) { return v.designacao && v.chamado; });
+      desenhar();
+    }).catch(function () {
+      document.getElementById('editor-conteudo').innerHTML =
+        '<div class="cal-erro">' +
+          '<strong>Não foi possível carregar os dados.</strong>' +
+          '<p>Abra esta página pelo endereço do site, não por dois cliques no arquivo. ' +
+          'O navegador bloqueia a leitura de CSV em arquivos locais.</p>' +
+        '</div>';
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', iniciarEditor);
+  } else {
+    iniciarEditor();
+  }
+  </script>
+
+</body>
+</html>

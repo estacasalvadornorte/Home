@@ -1,0 +1,76 @@
+PASTA LIDERANÇA
+Estaca Salvador Brasil Norte
+
+═══════════════════════════════════════════════════════════════════
+
+ENDEREÇO DO EDITOR (não está no menu do site)
+
+  estacasalvadornorte.com.br/lideranca/editor-x7k2m9.html
+
+Guarde este endereço. Ele não aparece no cabeçalho nem no rodapé,
+e está marcado para o Google não indexar.
+
+Para trocar o endereço, basta renomear o arquivo
+editor-x7k2m9.html para outro nome e anotar aqui.
+
+═══════════════════════════════════════════════════════════════════
+
+OS TRÊS ARQUIVOS DE DADOS
+
+  pessoas.csv
+    Os 19 cargos, um por linha. A primeira coluna (chamado)
+    é a chave do sistema e NUNCA muda.
+    Para trocar uma pessoa: altere o nome e a data de designação.
+    Data no formato 15/03/2026.
+
+  designacoes.csv
+    Catálogo de todas as designações da estaca.
+    Acrescente ou remova linhas conforme a necessidade.
+    A coluna grupo serve só para organizar na tela.
+
+  vinculos.csv
+    Liga cada designação às pessoas responsáveis.
+    NÃO edite este arquivo na mão. Use o editor, que gera
+    o conteúdo pronto para colar aqui.
+
+═══════════════════════════════════════════════════════════════════
+
+FOTOS
+
+Ficam em:  imagens/chamados/
+
+Os nomes dos arquivos seguem o cargo, não a pessoa:
+
+  presidente.jpg
+  primeiro-conselheiro.jpg
+  segundo-conselheiro.jpg
+  secretario-estaca.jpg
+  secretario-adjunto.jpg
+  secretario-executivo.jpg
+  secretario-executivo-adjunto.jpg
+  sumo-01.jpg  até  sumo-12.jpg
+
+Quando a pessoa muda, suba a foto nova por cima com o mesmo
+nome de arquivo. Não precisa mexer em código nenhum.
+
+Se a foto não existir, o cartão mostra um ícone neutro e o
+layout continua igual. Nada quebra.
+
+Se preferir usar .png, mude a extensão na coluna "foto"
+do pessoas.csv.
+
+═══════════════════════════════════════════════════════════════════
+
+COMO A REGRA DE EXCEÇÃO FUNCIONA
+
+O padrão de cada designação são duas vagas:
+uma da presidência e uma do sumo conselho.
+
+Quando as duas estão preenchidas, a designação conta como
+completa. A terceira vaga não fica desenhada na tela e nunca
+é cobrada pelo semáforo.
+
+Se precisar de um segundo sumo conselheiro numa designação,
+clique em "+ abrir exceção" naquele item. A vaga extra aparece
+marcada como exceção. Na página pública ela sai igual às
+demais, sem destaque.
