@@ -1,0 +1,34 @@
+FOTOS DOS CHAMADOS
+
+Suba aqui as fotos, usando exatamente estes nomes de arquivo:
+
+  presidente.jpg
+  primeiro-conselheiro.jpg
+  segundo-conselheiro.jpg
+  secretario-estaca.jpg
+  secretario-adjunto.jpg
+  secretario-executivo.jpg
+  secretario-executivo-adjunto.jpg
+  sumo-01.jpg
+  sumo-02.jpg
+  sumo-03.jpg
+  sumo-04.jpg
+  sumo-05.jpg
+  sumo-06.jpg
+  sumo-07.jpg
+  sumo-08.jpg
+  sumo-09.jpg
+  sumo-10.jpg
+  sumo-11.jpg
+  sumo-12.jpg
+
+O nome segue o CARGO, não a pessoa. Quando alguém for
+substituído, suba a foto nova por cima com o mesmo nome.
+Não precisa mexer em código.
+
+Formato sugerido: quadrada, a partir de 400x400 pixels.
+A foto é recortada em círculo e alinhada pelo topo, então
+enquadre deixando o rosto na parte de cima.
+
+Se a foto não existir, o cartão mostra um ícone neutro
+e o layout continua igual.
