@@ -38,6 +38,20 @@ const NOME_DA_ESTACA = 'Estaca Salvador Brasil Norte';
 const TEXTO_DO_RODAPE = 'Estaca Salvador Brasil Norte &middot; 2026';
 
 
+/* ╔═════════════════════════════════════════════════════════════════════╗
+   ║  ÍCONE DO SITE (favicon)                                            ║
+   ║                                                                     ║
+   ║  É a imagenzinha que aparece na aba do navegador e quando           ║
+   ║  alguém salva o site na tela inicial do celular.                    ║
+   ║                                                                     ║
+   ║  PARA TROCAR: suba o arquivo novo no repositório com o mesmo        ║
+   ║  nome, ou mude o nome entre as aspas abaixo.                        ║
+   ╚═════════════════════════════════════════════════════════════════════╝ */
+
+const ICONE_ABA = 'favicon.ico';              // aba do navegador
+const ICONE_CELULAR = 'apple-touch-icon.png'; // tela inicial do celular
+
+
 /* ═══════════════════════════════════════════════════════════════════════
    DAQUI PARA BAIXO NÃO PRECISA MEXER
    ═══════════════════════════════════════════════════════════════════════ */
@@ -77,8 +91,28 @@ function montarRodape() {
   return '<footer class="site-footer">' + TEXTO_DO_RODAPE + '</footer>';
 }
 
+// Coloca o ícone do site na aba do navegador, em todas as páginas
+function montarIcones() {
+  const icones = [
+    { rel: 'icon', href: ICONE_ABA },
+    { rel: 'apple-touch-icon', href: ICONE_CELULAR }
+  ];
+
+  icones.forEach(function (item) {
+    // Se a página já tiver o ícone declarado no HTML, não duplica
+    if (document.querySelector('link[rel="' + item.rel + '"]')) return;
+
+    const link = document.createElement('link');
+    link.rel = item.rel;
+    link.href = item.href;
+    document.head.appendChild(link);
+  });
+}
+
 // Insere cabeçalho e rodapé nas áreas reservadas da página
 function iniciarComponentes() {
+  montarIcones();
+
   const areaCabecalho = document.getElementById('cabecalho');
   const areaRodape = document.getElementById('rodape');
 
