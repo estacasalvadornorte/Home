@@ -770,7 +770,7 @@ main {
 
 .prox-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 18px;
   width: 100%;
   text-align: left;
@@ -790,7 +790,9 @@ main {
 
 .prox-data {
   flex-shrink: 0;
+  align-self: stretch;
   width: 54px;
+  padding-top: 2px;
   text-align: center;
   border-right: 2px solid var(--cor-tipo);
   padding-right: 14px;
@@ -826,6 +828,26 @@ main {
 .prox-texto p {
   font-size: 13px;
   color: var(--gray-600);
+}
+
+.prox-publico {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: var(--gray-600);
+  background: var(--gray-50);
+  border: 1px solid var(--gray-100);
+  border-radius: 100px;
+  padding: 3px 11px 3px 9px;
+}
+
+.prox-publico svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  color: var(--navy);
 }
 
 .prox-tag,
@@ -1222,6 +1244,7 @@ main {
   .prox-data { width: 44px; padding-right: 11px; }
   .prox-dia { font-size: 21px; }
   .prox-tag { display: none; }
+  .prox-publico { font-size: 12px; padding: 3px 9px 3px 8px; }
 
   .ano-item-tag { display: none; }
 
