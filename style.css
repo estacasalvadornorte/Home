@@ -128,7 +128,6 @@ main {
   position: relative;
   height: 100vh;
   min-height: 560px;
-  margin-top: calc(-1 * var(--header-height));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -244,8 +243,8 @@ main {
 
 .section-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(212px, 1fr));
+  gap: 20px;
 }
 
 .section-box {
@@ -581,5 +580,92 @@ main {
 @media (max-width: 768px) {
   .home-page .nav-links.open {
     background: var(--navy-dark);
+  }
+}
+
+/* ===== TABELA DE DISCURSOS ===== */
+.tabela-wrapper {
+  border: 1px solid var(--gray-200);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.tabela-discursos {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14.5px;
+}
+
+.tabela-discursos thead th {
+  background: var(--navy);
+  color: var(--white);
+  text-align: left;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 14px 18px;
+}
+
+.tabela-discursos td {
+  padding: 15px 18px;
+  border-top: 1px solid var(--gray-100);
+  color: var(--gray-800);
+  vertical-align: top;
+}
+
+.tabela-discursos tbody tr:nth-child(even) {
+  background: var(--gray-50);
+}
+
+.tabela-discursos tbody tr:hover {
+  background: var(--gray-100);
+}
+
+.td-data {
+  white-space: nowrap;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.td-data span {
+  display: block;
+  font-weight: 400;
+  font-size: 12.5px;
+  color: var(--gray-600);
+  margin-top: 2px;
+}
+
+.td-vago {
+  color: var(--gray-600);
+  font-style: italic;
+}
+
+.nota-pagina {
+  margin-top: 20px;
+  font-size: 13.5px;
+  color: var(--gray-600);
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.nota-pagina svg {
+  width: 16px;
+  height: 16px;
+  stroke-width: 1.5;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--navy);
+}
+
+@media (max-width: 768px) {
+  .tabela-discursos {
+    font-size: 13.5px;
+  }
+
+  .tabela-discursos thead th,
+  .tabela-discursos td {
+    padding: 12px 12px;
   }
 }

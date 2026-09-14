@@ -11,23 +11,23 @@
 </head>
 <body class="home-page">
 
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="site-logo">Estaca Salvador Brasil Norte</a>
-      <button class="menu-toggle" aria-label="Abrir menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="nav-links">
-        <li><a href="index.html" class="active">Início</a></li>
-        <li><a href="calendario.html">Calendário</a></li>
-        <li><a href="lideranca.html">Liderança</a></li>
-        <li><a href="treinamentos.html">Treinamentos</a></li>
-      </ul>
-    </div>
-  </header>
+  <!-- O cabeçalho é montado automaticamente pelo arquivo componentes.js.
+       Não edite aqui. Para mudar o menu, abra componentes.js -->
+  <div id="cabecalho"></div>
 
   <main>
 
+    <!--
+      ╔══════════════════════════════════════════════════════════════════╗
+      ║  BLOCO 2 - IMAGEM E TITULO DO TOPO                               ║
+      ║                                                                  ║
+      ║  Para trocar a FOTO: suba a nova imagem na pasta "imagens" do    ║
+      ║  repositório e altere o caminho em src="imagens/ARQUIVO.jpeg"    ║
+      ║                                                                  ║
+      ║  Para trocar o TEXTO: edite o que está entre <h1> e </h1>        ║
+      ║  e entre <p class="home-hero-sub"> e </p>                        ║
+      ╚══════════════════════════════════════════════════════════════════╝
+    -->
     <section class="home-hero">
       <img src="imagens/templo.jpeg" alt="Templo da Igreja de Jesus Cristo dos Santos dos Últimos Dias">
       <div class="home-hero-content">
@@ -50,6 +50,27 @@
         <p>Calendário, chamados e materiais de treinamento reunidos em um só lugar.</p>
       </div>
 
+      <!--
+        ╔════════════════════════════════════════════════════════════════╗
+        ║  BLOCO 3 - CAIXAS DAS SECOES                                   ║
+        ║                                                                ║
+        ║  Cada <a class="section-box"> ... </a> é UMA CAIXA.            ║
+        ║                                                                ║
+        ║  Para ADICIONAR uma caixa:                                     ║
+        ║    1. Copie um bloco <a class="section-box"> inteiro,          ║
+        ║       do <a até o </a>                                          ║
+        ║    2. Cole logo abaixo do último                               ║
+        ║    3. Troque o href="ARQUIVO.html"                             ║
+        ║    4. Troque o texto do <h3> e do <p>                          ║
+        ║    5. Troque o texto dentro de <span>Ver ...</span>            ║
+        ║                                                                ║
+        ║  O ícone fica dentro de <div class="section-box-icon">.        ║
+        ║  Ícones de linha fina gratuitos: https://lucide.dev            ║
+        ║  Copie o código SVG de lá e cole no lugar do SVG atual.        ║
+        ║                                                                ║
+        ║  As caixas se reorganizam sozinhas: 3, 4 ou mais cabem bem.    ║
+        ╚════════════════════════════════════════════════════════════════╝
+      -->
       <div class="section-grid">
 
         <a href="calendario.html" class="section-box">
@@ -65,6 +86,26 @@
           <p>Conferências, reuniões de liderança e atividades programadas para o ano.</p>
           <div class="section-box-action">
             <span>Ver calendário</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"/>
+              <polyline points="13 6 19 12 13 18"/>
+            </svg>
+          </div>
+        </a>
+
+        <a href="discursos.html" class="section-box">
+          <div class="section-box-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 3a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3z"/>
+              <path d="M6 11a6 6 0 0 0 12 0"/>
+              <line x1="12" y1="17" x2="12" y2="21"/>
+              <line x1="9" y1="21" x2="15" y2="21"/>
+            </svg>
+          </div>
+          <h3>Discursos</h3>
+          <p>Designações de oradores para o terceiro domingo de cada mês.</p>
+          <div class="section-box-action">
+            <span>Ver designações</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="13 6 19 12 13 18"/>
@@ -116,16 +157,9 @@
 
   </main>
 
-  <footer class="site-footer">
-    Estaca Salvador Brasil Norte &middot; 2026
-  </footer>
+  <!-- O rodapé é montado automaticamente pelo arquivo componentes.js -->
+  <div id="rodape"></div>
 
-  <script>
-    const header = document.querySelector('.site-header');
-    const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 40);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-  </script>
-
+  <script src="componentes.js"></script>
 </body>
 </html>

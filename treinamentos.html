@@ -5,25 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Treinamentos – Estaca Salvador Brasil Norte</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <header class="site-header">
-    <div class="header-inner">
-      <a href="index.html" class="site-logo">Estaca Salvador Brasil Norte</a>
-      <button class="menu-toggle" aria-label="Menu" onclick="document.querySelector('.nav-links').classList.toggle('open')">
-        <span></span><span></span><span></span>
-      </button>
-      <ul class="nav-links">
-        <li><a href="index.html">Início</a></li>
-        <li><a href="calendario.html">Calendário</a></li>
-        <li><a href="lideranca.html">Liderança</a></li>
-        <li><a href="treinamentos.html" class="active">Treinamentos</a></li>
-      </ul>
-    </div>
-  </header>
+  <!-- O cabeçalho é montado automaticamente pelo arquivo componentes.js.
+       Não edite aqui. Para mudar o menu, abra componentes.js -->
+  <div id="cabecalho"></div>
 
   <main>
     <section class="page-hero">
@@ -123,9 +113,10 @@
     </div>
   </main>
 
-  <footer class="site-footer">
-    Estaca Salvador Brasil Norte &middot; 2026
-  </footer>
+  <!-- O rodapé é montado automaticamente pelo arquivo componentes.js -->
+  <div id="rodape"></div>
+
+  <script src="componentes.js"></script>
 
   <script>
     function toggleAccordion(header) {
@@ -151,6 +142,5 @@
       }
     }
   </script>
-
 </body>
 </html>
