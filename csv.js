@@ -4,8 +4,34 @@
    VOCÊ NÃO PRECISA MEXER NESTE ARQUIVO.
    ═══════════════════════════════════════════════════════════════════════ */
 
+// Descobre o separador do arquivo: vírgula, ponto e vírgula ou tabulação.
+// Isso evita quebrar quando o arquivo vem colado de uma planilha (tabulação)
+// ou exportado pelo Excel em português (ponto e vírgula).
+function csvSeparador(linhaCabecalho) {
+  const candidatos = [',', ';', '\t'];
+  let melhor = ',';
+  let maior = 0;
+
+  candidatos.forEach(function (sep) {
+    let contagem = 0;
+    let dentroDeAspas = false;
+    for (let i = 0; i < linhaCabecalho.length; i++) {
+      const c = linhaCabecalho[i];
+      if (c === '"') dentroDeAspas = !dentroDeAspas;
+      else if (c === sep && !dentroDeAspas) contagem++;
+    }
+    if (contagem > maior) {
+      maior = contagem;
+      melhor = sep;
+    }
+  });
+
+  return melhor;
+}
+
 // Divide uma linha de CSV respeitando textos entre aspas
-function csvDividirLinha(linha) {
+function csvDividirLinha(linha, sep) {
+  sep = sep || ',';
   const campos = [];
   let atual = '';
   let dentroDeAspas = false;
@@ -19,7 +45,7 @@ function csvDividirLinha(linha) {
       } else {
         dentroDeAspas = !dentroDeAspas;
       }
-    } else if (c === ',' && !dentroDeAspas) {
+    } else if (c === sep && !dentroDeAspas) {
       campos.push(atual);
       atual = '';
     } else {
@@ -32,18 +58,24 @@ function csvDividirLinha(linha) {
 
 // Transforma o texto do CSV em uma lista de objetos
 function csvLer(texto) {
+  // Remove a marca invisível que o Excel coloca no início do arquivo (BOM).
+  // Sem isto, o nome da primeira coluna viria sujo e não seria reconhecido.
+  texto = texto.replace(/^\uFEFF/, '');
+
   const linhas = texto.replace(/\r/g, '').split('\n').filter(function (l) {
     return l.trim() !== '';
   });
   if (linhas.length < 2) return [];
 
-  const cabecalho = csvDividirLinha(linhas[0]).map(function (h) {
+  const sep = csvSeparador(linhas[0]);
+
+  const cabecalho = csvDividirLinha(linhas[0], sep).map(function (h) {
     return h.toLowerCase();
   });
 
   const registros = [];
   for (let i = 1; i < linhas.length; i++) {
-    const campos = csvDividirLinha(linhas[i]);
+    const campos = csvDividirLinha(linhas[i], sep);
     const obj = {};
     cabecalho.forEach(function (coluna, idx) {
       obj[coluna] = campos[idx] || '';
