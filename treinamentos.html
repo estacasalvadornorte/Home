@@ -18,56 +18,149 @@
   <main>
     <section class="page-hero">
       <h1>Treinamentos</h1>
-      <p>Materiais de capacitação da estaca</p>
+      <p>Materiais de capacitação para líderes e secretários</p>
     </section>
 
     <div class="container">
+      <div class="accordion">
 
-      <!--
-        ╔══════════════════════════════════════════════════════════════════╗
-        ║  COMO ADICIONAR OU ALTERAR TREINAMENTOS                          ║
-        ║                                                                  ║
-        ║  Você NÃO edita nada nesta página.                               ║
-        ║  Todos os treinamentos ficam no arquivo:  treinamentos.csv       ║
-        ║  Cada linha do arquivo é um treinamento.                         ║
-        ║                                                                  ║
-        ║  COLUNAS                                                         ║
-        ║    aba        nome da aba onde ele aparece                       ║
-        ║               (Por chamado, Treinamentos gerais...)              ║
-        ║               Um nome novo cria uma aba nova sozinho.            ║
-        ║    titulo     nome do treinamento                                ║
-        ║    descricao  uma frase curta sobre o conteúdo                   ║
-        ║               Se tiver vírgula, coloque o texto entre aspas.     ║
-        ║    tipo       Vídeo, Apresentação ou Canva                       ║
-        ║    link       endereço do material (veja abaixo)                 ║
-        ║                                                                  ║
-        ║  VÍDEO OU POWERPOINT NO GOOGLE DRIVE                             ║
-        ║    1. Suba o arquivo no Google Drive                             ║
-        ║    2. Clique com o botão direito no arquivo > Compartilhar       ║
-        ║    3. Em "Acesso geral", troque "Restrito" por                   ║
-        ║       "Qualquer pessoa com o link", como Leitor                  ║
-        ║    4. Clique em "Copiar link" e cole na coluna link              ║
-        ║                                                                  ║
-        ║  CANVA                                                           ║
-        ║    1. No design, clique em Compartilhar > Mais > Incorporar      ║
-        ║    2. Copie o link que termina em view?embed                     ║
-        ║       Se aparecer só o código, copie o endereço entre            ║
-        ║       src="  e  "                                                ║
-        ║    Nunca use o link de edição do Canva.                          ║
-        ║                                                                  ║
-        ║  YOUTUBE                                                         ║
-        ║    Cole o link do vídeo como está.                               ║
-        ║                                                                  ║
-        ║  A página atualiza sozinha em 1 a 2 minutos após salvar.         ║
-        ╚══════════════════════════════════════════════════════════════════╝
-      -->
+<!--
+  ╔════════════════════════════════════════════════════════════════════╗
+  ║  COMO CRIAR UM TREINAMENTO NOVO                                    ║
+  ║                                                                    ║
+  ║  1. Copie um treinamento inteiro: tudo desde a linha               ║
+  ║     "INÍCIO DO TREINAMENTO" até a linha "FIM DO TREINAMENTO"       ║
+  ║  2. Cole logo abaixo do último "FIM DO TREINAMENTO"                ║
+  ║  3. Troque o título e a descrição (linhas marcadas com ✎)          ║
+  ║  4. Troque o conteúdo, entre as setas ▼ e ▲                        ║
+  ║                                                                    ║
+  ║  O CONTEÚDO ACEITA SÓ 2 OPÇÕES (use uma por treinamento)           ║
+  ║                                                                    ║
+  ║  OPÇÃO 1  CÓDIGO DO CANVA                                          ║
+  ║    No Canva: Compartilhar > Mais > Incorporar                      ║
+  ║    Copie o código de incorporação e cole ele inteiro               ║
+  ║    entre as setas ▼ e ▲                                            ║
+  ║                                                                    ║
+  ║  OPÇÃO 2  LINK DO GOOGLE DRIVE (vídeo ou PowerPoint)               ║
+  ║    No Drive: botão direito no arquivo > Compartilhar               ║
+  ║    Em "Acesso geral", escolha "Qualquer pessoa com o link"         ║
+  ║    como Leitor, e clique em "Copiar link"                          ║
+  ║    Cole só o link entre as setas ▼ e ▲. Exemplo:                   ║
+  ║    https://drive.google.com/file/d/1AbCdEf/view?usp=sharing        ║
+  ║                                                                    ║
+  ║  Ao colar, apague o bloco "Treinamento em preparação".             ║
+  ╚════════════════════════════════════════════════════════════════════╝
+-->
 
-      <div class="abas" id="trein-abas" role="tablist"></div>
+        <!-- ═════════════════════ INÍCIO DO TREINAMENTO ═════════════════════ -->
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <div>
+              <!-- ✎ TÍTULO E DESCRIÇÃO: troque só o texto -->
+              <div class="accordion-title">Treinamento de Novos Bispos</div>
+              <div class="accordion-subtitle">Orientações para bispos recém-chamados</div>
+            </div>
+            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <div class="embed-wrapper">
 
-      <div class="accordion" id="trein-lista">
-        <p class="cal-vazio">Carregando treinamentos...</p>
+                <!-- ▼▼▼ CONTEÚDO: apague daqui... e cole o código do Canva OU o link do Drive ▼▼▼ -->
+                <div class="embed-placeholder">
+                  <div class="placeholder-icon">📋</div>
+                  <p>Treinamento em preparação.</p>
+                </div>
+                <!-- ▲▲▲ ...até aqui ▲▲▲ -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ═════════════════════ FIM DO TREINAMENTO ═════════════════════ -->
+
+        <!-- ═════════════════════ INÍCIO DO TREINAMENTO ═════════════════════ -->
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <div>
+              <!-- ✎ TÍTULO E DESCRIÇÃO: troque só o texto -->
+              <div class="accordion-title">Treinamento de Secretários de Ala</div>
+              <div class="accordion-subtitle">Procedimentos e boas práticas para secretários de ala</div>
+            </div>
+            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <div class="embed-wrapper">
+
+                <!-- ▼▼▼ CONTEÚDO: apague daqui... e cole o código do Canva OU o link do Drive ▼▼▼ -->
+                <div class="embed-placeholder">
+                  <div class="placeholder-icon">📋</div>
+                  <p>Treinamento em preparação.</p>
+                </div>
+                <!-- ▲▲▲ ...até aqui ▲▲▲ -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ═════════════════════ FIM DO TREINAMENTO ═════════════════════ -->
+
+        <!-- ═════════════════════ INÍCIO DO TREINAMENTO ═════════════════════ -->
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <div>
+              <!-- ✎ TÍTULO E DESCRIÇÃO: troque só o texto -->
+              <div class="accordion-title">Treinamento de Secretários de Estaca</div>
+              <div class="accordion-subtitle">Atribuições e fluxo de trabalho do secretariado da estaca</div>
+            </div>
+            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <div class="embed-wrapper">
+
+                <!-- ▼▼▼ CONTEÚDO: apague daqui... e cole o código do Canva OU o link do Drive ▼▼▼ -->
+                <div class="embed-placeholder">
+                  <div class="placeholder-icon">📋</div>
+                  <p>Treinamento em preparação.</p>
+                </div>
+                <!-- ▲▲▲ ...até aqui ▲▲▲ -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ═════════════════════ FIM DO TREINAMENTO ═════════════════════ -->
+
+        <!-- ═════════════════════ INÍCIO DO TREINAMENTO ═════════════════════ -->
+        <div class="accordion-item">
+          <button class="accordion-header" onclick="toggleAccordion(this)">
+            <div>
+              <!-- ✎ TÍTULO E DESCRIÇÃO: troque só o texto -->
+              <div class="accordion-title">Treinamento de Secretários Financeiros</div>
+              <div class="accordion-subtitle">Procedimentos financeiros e prestação de contas</div>
+            </div>
+            <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="accordion-body">
+            <div class="accordion-body-inner">
+              <div class="embed-wrapper">
+
+                <!-- ▼▼▼ CONTEÚDO: apague daqui... e cole o código do Canva OU o link do Drive ▼▼▼ -->
+                <div class="embed-placeholder">
+                  <div class="placeholder-icon">📋</div>
+                  <p>Treinamento em preparação.</p>
+                </div>
+                <!-- ▲▲▲ ...até aqui ▲▲▲ -->
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- ═════════════════════ FIM DO TREINAMENTO ═════════════════════ -->
+
       </div>
-
     </div>
   </main>
 
@@ -75,7 +168,106 @@
   <div id="rodape"></div>
 
   <script src="componentes.js"></script>
-  <script src="csv.js"></script>
-  <script src="treinamentos.js"></script>
+
+  <!-- Daqui para baixo não precisa mexer -->
+  <script>
+    function toggleAccordion(header) {
+      const item = header.parentElement;
+      const isOpen = item.classList.contains('open');
+
+      // Fecha todos os outros
+      document.querySelectorAll('.accordion-item.open').forEach(function (openItem) {
+        if (openItem !== item) fecharTreinamento(openItem);
+      });
+
+      // Abre ou fecha o clicado
+      if (isOpen) {
+        fecharTreinamento(item);
+      } else {
+        abrirTreinamento(item);
+      }
+    }
+
+    function abrirTreinamento(item) {
+      const body = item.querySelector('.accordion-body');
+      item.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 'px';
+
+      // Depois de abrir, libera a altura para acompanhar a tela (ex.: girar o celular)
+      setTimeout(function () {
+        if (item.classList.contains('open')) body.style.maxHeight = 'none';
+      }, 400);
+    }
+
+    function fecharTreinamento(item) {
+      const body = item.querySelector('.accordion-body');
+      body.style.maxHeight = body.scrollHeight + 'px';
+      void body.offsetHeight;
+      body.style.maxHeight = null;
+      item.classList.remove('open');
+
+      // Recarrega o vídeo ou a apresentação para parar o som ao fechar
+      item.querySelectorAll('iframe').forEach(function (quadro) {
+        quadro.src = quadro.src;
+      });
+    }
+
+    // Transforma o link de compartilhamento do Drive no endereço do player
+    function linkDoDrive(link) {
+      let m = link.match(/drive\.google\.com\/file\/d\/([\w-]+)/i) ||
+              link.match(/drive\.google\.com\/(?:open|uc)\?(?:[^#\s]*&)?id=([\w-]+)/i);
+      if (m) {
+        const chave = link.match(/[?&]resourcekey=([\w-]+)/i);
+        return 'https://drive.google.com/file/d/' + m[1] + '/preview' +
+               (chave ? '?resourcekey=' + chave[1] : '');
+      }
+
+      // PowerPoint que o Drive converteu para Apresentações Google
+      m = link.match(/docs\.google\.com\/(presentation|document)\/d\/([\w-]+)/i);
+      if (m && m[2] !== 'e') {
+        return 'https://docs.google.com/' + m[1] + '/d/' + m[2] + '/preview';
+      }
+      return null;
+    }
+
+    // Olha o conteúdo de cada treinamento:
+    // código do Canva fica como está; link do Drive vira o player
+    function prepararTreinamentos() {
+      document.querySelectorAll('.accordion .embed-wrapper').forEach(function (caixa) {
+        if (!caixa.querySelector('iframe')) {
+          const texto = caixa.textContent;
+          const achado = texto.match(/https?:\/\/(?:drive|docs)\.google\.com\/\S+/i);
+
+          if (achado && linkDoDrive(achado[0])) {
+            const quadro = document.createElement('iframe');
+            quadro.src = linkDoDrive(achado[0]);
+            quadro.setAttribute('allow', 'autoplay; fullscreen');
+            quadro.setAttribute('allowfullscreen', '');
+            quadro.setAttribute('loading', 'lazy');
+
+            const player = document.createElement('div');
+            player.className = 'drive-player';
+            player.appendChild(quadro);
+
+            caixa.innerHTML = '';
+            caixa.appendChild(player);
+          } else if (/https?:\/\//i.test(texto)) {
+            caixa.innerHTML =
+              '<div class="embed-placeholder"><p>Link não reconhecido. ' +
+              'Use o código de incorporação do Canva ou o link de ' +
+              'compartilhamento do Google Drive.</p></div>';
+          }
+        }
+
+        if (caixa.querySelector('iframe')) {
+          caixa.classList.add('tem-conteudo');
+          const aviso = caixa.querySelector('.embed-placeholder');
+          if (aviso) aviso.remove();
+        }
+      });
+    }
+
+    prepararTreinamentos();
+  </script>
 </body>
 </html>

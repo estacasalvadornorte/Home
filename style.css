@@ -1792,198 +1792,39 @@ main {
 }
 
 /* ═══════════════════════════════════════════════════════════════════
-   TREINAMENTOS (lê o arquivo treinamentos.csv)
+   TREINAMENTOS: conteúdo do Canva ou do Google Drive
    ═══════════════════════════════════════════════════════════════════ */
 
-/* ---------- Abas ---------- */
-.abas {
-  display: flex;
-  gap: 4px;
-  border-bottom: 1px solid var(--gray-200);
-  margin-bottom: 28px;
-}
-
-.abas[hidden] { display: none; }
-
-.aba {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+/* Quando o treinamento já tem conteúdo, a caixa cinza de espera some */
+.embed-wrapper.tem-conteudo {
+  min-height: 0;
+  display: block;
   background: none;
   border: none;
-  border-bottom: 2px solid transparent;
-  font-family: inherit;
-  font-size: 14.5px;
-  font-weight: 600;
-  color: var(--gray-600);
-  padding: 12px 18px;
-  cursor: pointer;
-  margin-bottom: -1px;
-  transition: color 0.2s, border-color 0.2s;
+  border-radius: 0;
+  overflow: visible;
 }
 
-.aba:hover { color: var(--navy); }
-.aba.ativo { color: var(--navy); border-bottom-color: var(--navy); }
-
-.aba-contagem {
-  font-size: 11.5px;
-  font-weight: 600;
-  color: var(--gray-600);
-  background: var(--gray-100);
-  border-radius: 100px;
-  min-width: 20px;
-  padding: 1px 7px;
-  text-align: center;
-}
-
-.aba.ativo .aba-contagem {
-  color: var(--white);
-  background: var(--navy);
-}
-
-/* ---------- Linha de cada treinamento ---------- */
-.trein-item { scroll-margin-top: calc(var(--header-height) + 20px); }
-
-.trein-item .accordion-header {
-  justify-content: flex-start;
-  gap: 16px;
-  padding: 18px 22px;
-}
-
-.trein-item .accordion-chevron { margin-left: 0; }
-
-.trein-icone {
-  flex-shrink: 0;
-  width: 42px;
-  height: 42px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--gray-200);
-  border-radius: 8px;
-  color: var(--navy);
-  background: var(--white);
-  transition: border-color 0.2s, background 0.2s;
-}
-
-.trein-icone svg {
-  width: 21px;
-  height: 21px;
-  stroke-width: 1.3;
-}
-
-.trein-item.open .trein-icone {
-  border-color: var(--navy);
-  background: var(--navy);
-  color: var(--white);
-}
-
-.trein-cabecalho-texto {
-  flex-grow: 1;
-  min-width: 0;
-}
-
-.trein-cabecalho-texto .accordion-title,
-.trein-cabecalho-texto .accordion-subtitle {
-  display: block;
-}
-
-.trein-tipo {
-  flex-shrink: 0;
+/* Crédito que o Canva coloca abaixo do design */
+.embed-wrapper.tem-conteudo > a {
   font-size: 12px;
-  font-weight: 500;
   color: var(--gray-600);
-  white-space: nowrap;
 }
 
-/* ---------- Player ---------- */
-.trein-player {
+/* Player do Google Drive, sempre no formato 16:9 */
+.embed-wrapper .drive-player {
   position: relative;
   width: 100%;
   aspect-ratio: 16 / 9;
   background: var(--navy-dark);
-  border-radius: 6px;
+  border-radius: 8px;
   overflow: hidden;
 }
 
-.trein-player::before {
-  content: "Carregando...";
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.55);
-}
-
-.trein-player iframe {
+.embed-wrapper .drive-player iframe {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   border: 0;
-}
-
-.trein-acoes {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 22px;
-  margin-top: 14px;
-}
-
-.trein-acao {
-  background: none;
-  border: none;
-  padding: 0 0 2px;
-  font-family: inherit;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--navy);
-  cursor: pointer;
-  border-bottom: 1.5px solid transparent;
-  transition: border-color 0.2s;
-}
-
-.trein-acao:hover { border-bottom-color: var(--gold); }
-
-.trein-aviso {
-  font-size: 14px;
-  color: var(--gray-600);
-  background: var(--gray-50);
-  border: 1px solid var(--gray-100);
-  border-radius: 6px;
-  padding: 18px 20px;
-}
-
-.trein-aviso + .trein-acoes { margin-top: 16px; }
-
-@media (prefers-reduced-motion: reduce) {
-  .accordion-body { transition: none; }
-}
-
-@media (max-width: 768px) {
-  /* Abas no tamanho do texto; se houver muitas, rolam para o lado */
-  .abas {
-    gap: 0;
-    overflow-x: auto;
-    scrollbar-width: none;
-    border-bottom: none;
-    box-shadow: inset 0 -1px 0 var(--gray-200);
-  }
-  .abas::-webkit-scrollbar { display: none; }
-  .aba {
-    flex: 0 0 auto;
-    white-space: nowrap;
-    padding: 12px 12px;
-    margin-bottom: 0;
-    font-size: 13.5px;
-  }
-
-  .trein-item .accordion-header { gap: 12px; padding: 15px 14px; }
-  .trein-icone { width: 36px; height: 36px; }
-  .trein-icone svg { width: 18px; height: 18px; }
-  .trein-tipo { display: none; }
-  .trein-item .accordion-body-inner { padding: 0 14px 16px; }
 }
