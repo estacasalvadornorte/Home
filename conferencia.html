@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Pede ao Google para não mostrar esta página nas buscas -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>Conferência da Estaca | Estaca Salvador Brasil Norte</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+
+  <!-- Estilos de reserva: só valem se o style.css do site não carregar -->
+  <style>
+    body { margin: 0; font-family: "Inter", system-ui, sans-serif; color: #1F2937; background: #FFFFFF; }
+    .page-hero { background: #F7F8FA; border-bottom: 1px solid #EEF0F3; padding: 44px 20px; text-align: center; }
+    .page-hero h1 { font-family: "Source Serif 4", Georgia, serif; font-size: 28px; font-weight: 600; color: #1B3A5C; margin: 0 0 8px; }
+    .page-hero p { font-size: 15px; color: #5B6573; max-width: 540px; margin: 0 auto; }
+    .container { max-width: 960px; margin: 0 auto; padding: 40px 20px; }
+  </style>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Estilos próprios desta página (todos começam com cf-) -->
+  <style>
+    [hidden] { display: none !important; }
+
+    .cf {
+      --cf-navy: var(--navy, #1B3A5C);
+      --cf-navy-esc: var(--navy-dark, #12293F);
+      --cf-gold: var(--gold, #B8934A);
+      --cf-g50: var(--gray-50, #F7F8FA);
+      --cf-g100: var(--gray-100, #EEF0F3);
+      --cf-g200: var(--gray-200, #E2E5EA);
+      --cf-g600: var(--gray-600, #5B6573);
+      --cf-texto: #1F2937;
+      --cf-ok: #2F6B4F;
+      --cf-ok-bg: #E8F2EC;
+      --cf-atr: #A23B3B;
+      --cf-atr-bg: #FBECEC;
+      --cf-breve: #8A6A2F;
+      --cf-breve-bg: #F6EFE1;
+      --cf-serif: "Source Serif 4", Georgia, serif;
+      font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--cf-texto);
+    }
+    .cf *, .cf *::before, .cf *::after { box-sizing: border-box; }
+    .cf h2, .cf h3, .cf h4, .cf h5 { font-family: var(--cf-serif); color: var(--cf-navy); font-weight: 600; line-height: 1.25; margin: 0; }
+    .cf p { margin: 0; }
+    .cf button, .cf input, .cf select, .cf textarea { font-family: inherit; }
+    .cf svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+    /* ----- Abas ----- */
+    .cf-abas { display: flex; gap: 28px; border-bottom: 1px solid var(--cf-g200); margin-bottom: 28px; }
+    .cf-aba { appearance: none; background: none; border: 0; border-bottom: 2px solid transparent; margin: 0 0 -1px; padding: 12px 2px; font-size: 15px; font-weight: 500; color: var(--cf-g600); cursor: pointer; }
+    .cf-aba:hover { color: var(--cf-navy); }
+    .cf-aba.ativa { color: var(--cf-navy); font-weight: 600; border-bottom-color: var(--cf-gold); }
+
+    /* ----- Botões ----- */
+    .cf-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 18px; border: 1.5px solid var(--cf-navy); border-radius: 6px; background: #FFFFFF; color: var(--cf-navy); font-size: 14px; font-weight: 600; line-height: 1.2; cursor: pointer; text-decoration: none; transition: background .2s, color .2s, border-color .2s; }
+    .cf-btn:hover { background: var(--cf-navy); color: #FFFFFF; }
+    .cf-btn-sol { background: var(--cf-navy); color: #FFFFFF; }
+    .cf-btn-sol:hover { background: var(--cf-navy-esc); border-color: var(--cf-navy-esc); }
+    .cf-btn:disabled { opacity: .6; cursor: default; }
+    .cf-btn svg { width: 16px; height: 16px; }
+    .cf-btn-peq { padding: 7px 14px; font-size: 13px; }
+    .cf-link { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 0; color: var(--cf-navy); font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: underline; text-decoration-color: var(--cf-g200); text-underline-offset: 3px; }
+    .cf-link:hover { text-decoration-color: var(--cf-gold); }
+    .cf-icone-btn { display: inline-flex; background: none; border: 0; padding: 4px; margin: -4px -6px -4px 0; color: inherit; cursor: pointer; border-radius: 4px; }
+    .cf-icone-btn svg { width: 15px; height: 15px; }
+
+    /* ----- Cartões e campos ----- */
+    .cf-card { background: #FFFFFF; border: 1px solid var(--cf-g200); border-radius: 10px; padding: 22px; }
+    .cf-card h3 { font-size: 19px; margin-bottom: 6px; }
+    .cf-campos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+    .cf-campo label { display: block; font-size: 13px; font-weight: 600; color: var(--cf-g600); margin-bottom: 6px; }
+    .cf-campo input, .cf-campo select, .cf textarea {
+      width: 100%; font-size: 16px; color: var(--cf-texto); background: #FFFFFF;
+      border: 1px solid var(--cf-g200); border-radius: 6px; padding: 10px 12px; margin: 0;
+    }
+    .cf input:focus, .cf select:focus, .cf textarea:focus { outline: 2px solid rgba(184, 147, 74, .35); outline-offset: 1px; border-color: var(--cf-gold); }
+    .cf textarea { display: block; resize: vertical; min-height: 84px; line-height: 1.5; }
+    .cf-ajuda { font-size: 13px; color: var(--cf-g600); margin-top: 10px; }
+    .cf-erro { font-size: 13px; color: var(--cf-atr); margin-top: 12px; }
+    .cf-erro:empty { display: none; }
+    .cf-acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+
+    /* ----- Entrada ----- */
+    .cf-login { max-width: 420px; margin: 8px auto 0; }
+    .cf-login > p { font-size: 14px; color: var(--cf-g600); }
+    .cf-login .cf-campo { margin-top: 18px; }
+    .cf-login .cf-btn { width: 100%; margin-top: 20px; }
+    .cf-carregando { text-align: center; color: var(--cf-g600); font-size: 14px; padding: 48px 20px; }
+
+    /* ----- Situação da sincronização ----- */
+    .cf-status-linha { display: flex; justify-content: flex-end; margin-bottom: 14px; }
+    .cf-status { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 500; padding: 4px 10px; border-radius: 999px; background: var(--cf-g50); border: 1px solid var(--cf-g100); color: var(--cf-g600); }
+    .cf-ponto { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+    .cf-status-ok { color: var(--cf-ok); }
+    .cf-status-salvando { color: var(--cf-breve); }
+    .cf-status-erro { color: var(--cf-atr); background: var(--cf-atr-bg); border-color: transparent; }
+    .cf-alerta { background: var(--cf-atr-bg); color: var(--cf-atr); border-radius: 8px; padding: 14px 16px; font-size: 14px; margin-bottom: 20px; }
+    .cf-alerta ul { margin: 6px 0 0; padding-left: 18px; }
+
+    /* ----- Cabeçalho da conferência ----- */
+    .cf-cab { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+    .cf-cab h2 { font-size: 24px; margin-bottom: 2px; }
+    .cf-cab p { font-size: 14px; color: var(--cf-g600); }
+    .cf-trocar { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; appearance: none; background: #FFFFFF; border: 1px solid var(--cf-g200); border-radius: 6px; padding: 7px 10px 7px 12px; font-size: 13px; font-weight: 500; color: var(--cf-navy); cursor: pointer; }
+    .cf-trocar:hover { border-color: var(--cf-navy); }
+    .cf-trocar svg { width: 15px; height: 15px; transition: transform .2s; }
+    .cf-trocar.aberto svg { transform: rotate(180deg); }
+    .cf-trocar-painel { margin-top: 14px; padding: 6px 0 18px; }
+    .cf-confs { list-style: none; margin: 0; padding: 0; }
+    .cf-confs a { position: relative; display: flex; flex-direction: column; gap: 2px; padding: 12px 18px; color: var(--cf-texto); text-decoration: none; border-bottom: 1px solid var(--cf-g100); }
+    .cf-confs a:hover { background: var(--cf-g50); }
+    .cf-confs a.atual { color: var(--cf-navy); font-weight: 600; }
+    .cf-confs a.atual::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; background: var(--cf-gold); }
+    .cf-confs small { flex-shrink: 0; font-size: 13px; font-weight: 400; color: var(--cf-g600); }
+    .cf-trocar-painel .cf-acoes { padding: 0 18px; align-items: center; }
+    .cf-trocar-painel .cf-link { margin-left: auto; }
+    .cf-form { margin-top: 16px; }
+
+    /* ----- Progresso e filtro por chamado ----- */
+    .cf-prog { margin: 22px 0 16px; }
+    .cf-prog-nums { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; font-size: 13px; color: var(--cf-g600); }
+    .cf-prog-nums .atr { color: var(--cf-atr); font-weight: 600; }
+    .cf-barra { height: 5px; background: var(--cf-g100); border-radius: 999px; overflow: hidden; }
+    .cf-barra span { display: block; height: 100%; background: var(--cf-navy); border-radius: 999px; transition: width .3s; }
+    .cf-chips { display: flex; gap: 6px; overflow-x: auto; margin: 0 -20px; padding: 2px 20px 6px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+    .cf-chips::-webkit-scrollbar { display: none; }
+    .cf-chip { flex: 0 0 auto; appearance: none; background: #FFFFFF; border: 1px solid var(--cf-g200); color: var(--cf-g600); font-size: 13px; font-weight: 500; padding: 7px 13px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
+    .cf-chip:hover { border-color: var(--cf-navy); color: var(--cf-navy); }
+    .cf-chip.ativo { background: var(--cf-navy); border-color: var(--cf-navy); color: #FFFFFF; }
+
+    /* ----- Checklist ----- */
+    .cf-grupo { margin-top: 26px; }
+    .cf-grupo-cab { position: relative; display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid var(--cf-g200); }
+    .cf-grupo-cab::before { content: ""; position: absolute; left: 0; bottom: -1px; width: 36px; height: 2px; background: var(--cf-gold); }
+    .cf-grupo-cab h3 { font-size: 17px; }
+    .cf-grupo-cab span { font-size: 13px; color: var(--cf-g600); white-space: nowrap; }
+    .cf-grupo-cab span.atr { color: var(--cf-atr); font-weight: 600; }
+    .cf-grupo-cab span.ok { color: var(--cf-ok); font-weight: 600; }
+    .cf-item { position: relative; display: flex; align-items: flex-start; gap: 14px; padding: 13px 0; border-bottom: 1px solid var(--cf-g100); cursor: pointer; }
+    .cf-item input { position: absolute; width: 1px; height: 1px; opacity: 0; margin: 0; }
+    .cf-caixa { flex-shrink: 0; display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; margin-top: 1px; border: 1.5px solid var(--cf-navy); border-radius: 5px; background: #FFFFFF; color: transparent; transition: background .15s; }
+    .cf-caixa svg { width: 14px; height: 14px; stroke-width: 2.6; }
+    .cf-item input:checked + .cf-caixa { background: var(--cf-navy); color: #FFFFFF; }
+    .cf-item input:focus-visible + .cf-caixa { outline: 2px solid var(--cf-gold); outline-offset: 2px; }
+    .cf-item-txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+    .cf-item-tarefa { font-size: 15px; line-height: 1.45; }
+    .cf-item-resp { font-size: 12.5px; color: var(--cf-g600); }
+    .cf-item.feita .cf-item-tarefa { color: var(--cf-g600); text-decoration: line-through; text-decoration-color: rgba(91, 101, 115, .5); }
+    .cf-vazio { text-align: center; color: var(--cf-g600); font-size: 14px; padding: 36px 20px; margin-top: 24px; border: 1px dashed var(--cf-g200); border-radius: 10px; }
+
+    @media (min-width: 700px) {
+      .cf-chips { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; }
+    }
+
+    /* ----- Aviso flutuante ----- */
+    .cf-aviso { position: fixed; left: 50%; bottom: 24px; z-index: 1000; max-width: calc(100% - 32px); transform: translate(-50%, 16px); opacity: 0; pointer-events: none; background: var(--cf-navy); color: #FFFFFF; font-size: 14px; text-align: center; padding: 12px 18px; border-radius: 8px; box-shadow: 0 6px 24px rgba(0, 0, 0, .18); transition: opacity .25s, transform .25s; }
+    .cf-aviso.visivel { opacity: 1; transform: translate(-50%, 0); }
+
+    /* ----- Manual ----- */
+    .cf-manual-topo { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-start; gap: 16px 24px; margin-bottom: 24px; }
+    .cf-manual-topo p { max-width: 640px; color: var(--cf-g600); }
+    .cf-manual-topo p + p { margin-top: 10px; }
+    .cf-sec { background: #FFFFFF; border: 1px solid var(--cf-g200); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+    .cf-sec > summary { display: flex; align-items: center; gap: 14px; padding: 18px 20px; cursor: pointer; list-style: none; }
+    .cf-sec > summary::-webkit-details-marker { display: none; }
+    .cf-sec > summary:hover .cf-sec-tit { color: var(--cf-navy-esc); }
+    .cf-sec-num { flex-shrink: 0; width: 22px; font-family: var(--cf-serif); font-size: 15px; font-weight: 600; color: var(--cf-gold); }
+    .cf-sec-tit { flex: 1; font-family: var(--cf-serif); font-size: 18px; font-weight: 600; color: var(--cf-navy); line-height: 1.3; }
+    .cf-sec-tit small { display: block; margin-top: 2px; font-family: "Inter", system-ui, sans-serif; font-size: 13px; font-weight: 400; color: var(--cf-g600); }
+    .cf-sec > summary svg { color: var(--cf-g600); transition: transform .25s; }
+    .cf-sec[open] > summary svg { transform: rotate(180deg); }
+    .cf-sec-corpo { padding: 6px 20px 24px 56px; border-top: 1px solid var(--cf-g100); }
+    .cf-sec-corpo h4 { font-size: 16px; margin: 24px 0 6px; }
+    .cf-sec-corpo > p, .cf-sec-corpo > div > p { margin-top: 10px; }
+    .cf-sec-corpo ul { margin: 8px 0 0; padding-left: 18px; }
+    .cf-sec-corpo li { margin: 4px 0; }
+    .cf-sec-corpo li::marker { color: var(--cf-gold); }
+    .cf-tab { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+    .cf-tab th { text-align: left; font-size: 11.5px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--cf-g600); padding: 8px 12px 8px 0; border-bottom: 1px solid var(--cf-g200); }
+    .cf-tab td { padding: 10px 12px 10px 0; border-bottom: 1px solid var(--cf-g100); vertical-align: top; }
+    .cf-tab .cf-tab-grupo td { padding-top: 18px; font-family: var(--cf-serif); font-weight: 600; color: var(--cf-navy); border-bottom: 1px solid var(--cf-g200); }
+    .cf-nw { white-space: nowrap; }
+    .cf-nota { margin-top: 18px; background: var(--cf-g50); border-left: 3px solid var(--cf-gold); border-radius: 0 6px 6px 0; padding: 12px 14px; font-size: 14px; }
+    .cf-frentes { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 12px; margin-top: 14px; }
+    .cf-frente { background: var(--cf-g50); border: 1px solid var(--cf-g100); border-radius: 8px; padding: 14px 16px; }
+    .cf-frente h5 { font-size: 15px; margin-bottom: 4px; }
+    .cf-frente p { font-size: 14px; color: var(--cf-g600); }
+    .cf-checklist { list-style: none; padding: 0 !important; columns: 2; column-gap: 28px; }
+    .cf-checklist li { display: flex; gap: 10px; align-items: flex-start; break-inside: avoid; }
+    .cf-checklist li::before { content: ""; flex-shrink: 0; width: 13px; height: 13px; margin-top: 5px; border: 1.5px solid var(--cf-navy); border-radius: 3px; }
+    .cf-fluxo { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
+    .cf-fluxo span { padding: 8px 12px; border: 1px solid var(--cf-g200); border-radius: 6px; background: #FFFFFF; font-size: 13px; font-weight: 600; color: var(--cf-navy); text-align: center; }
+    .cf-fluxo span.destino { background: var(--cf-navy); border-color: var(--cf-navy); color: #FFFFFF; }
+    .cf-fluxo i { display: flex; justify-content: center; color: var(--cf-gold); }
+    .cf-fluxo i svg { width: 16px; height: 16px; }
+    .cf-crono-fase h4 { margin-top: 22px; }
+    .cf-crono-lista { list-style: none; padding: 0 !important; }
+    .cf-crono-lista li { display: flex; justify-content: space-between; gap: 16px; margin: 0 !important; padding: 8px 0; border-bottom: 1px solid var(--cf-g100); }
+    .cf-crono-lista em { flex-shrink: 0; max-width: 45%; font-style: normal; font-size: 13px; color: var(--cf-g600); text-align: right; }
+
+    @media (max-width: 640px) {
+      .cf-abas { gap: 22px; }
+      .cf-card { padding: 18px; }
+      .cf-campos { grid-template-columns: 1fr; }
+      .cf-cab h2 { font-size: 22px; }
+      .cf-sec > summary { padding: 16px 18px; }
+      .cf-sec-corpo { padding: 4px 18px 22px; }
+      .cf-checklist { columns: 1; }
+      .cf-fluxo { flex-direction: column; align-items: stretch; }
+      .cf-fluxo i svg { transform: rotate(90deg); }
+      .cf-crono-lista li { flex-direction: column; gap: 2px; }
+      .cf-crono-lista em { max-width: none; text-align: left; }
+    }
+
+    @media print {
+      .site-header, .site-footer, .cf-abas, .cf-imprimir, .cf-aviso { display: none !important; }
+      main { margin-top: 0 !important; }
+      .page-hero { background: none !important; border: 0 !important; padding: 0 0 12px !important; }
+      .container { max-width: none !important; padding: 0 !important; }
+      .cf-sec { border: 0; border-radius: 0; margin: 0 0 20px; overflow: visible; }
+      .cf-sec > summary { padding: 0 0 6px; border-bottom: 1px solid #999999; }
+      .cf-sec > summary svg { display: none; }
+      .cf-sec-corpo { padding: 0; border: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- O cabeçalho é montado automaticamente pelo arquivo componentes.js.
+       Esta página fica FORA do menu: não acrescente ela na lista PAGINAS. -->
+  <div id="cabecalho"></div>
+
+  <main>
+    <section class="page-hero">
+      <h1>Conferência da Estaca</h1>
+      <p>Manual de organização e acompanhamento da preparação</p>
+    </section>
+
+    <div class="container cf">
+
+      <nav class="cf-abas" aria-label="Seções da página">
+        <button type="button" class="cf-aba ativa" data-aba="painel">Checklist</button>
+        <button type="button" class="cf-aba" data-aba="manual">Manual</button>
+      </nav>
+
+      <!-- O checklist é montado pelo script no fim da página -->
+      <section id="cf-painel" aria-live="polite"></section>
+
+      <section id="cf-manual" hidden>
+
+        <!--
+        ╔══════════════════════════════════════════════════════════════╗
+        ║  ONDE MEXER 4: TEXTO DO MANUAL                               ║
+        ║                                                              ║
+        ║  O manual é o texto abaixo, dividido em blocos <details>.    ║
+        ║  Para mudar uma frase, procure por ela e troque o texto      ║
+        ║  entre as marcações, sem apagar os sinais < e >.             ║
+        ║                                                              ║
+        ║  O CRONOGRAMA no fim do manual NÃO se edita aqui.            ║
+        ║  Ele é montado sozinho a partir da lista de tarefas          ║
+        ║  (ONDE MEXER 2, no fim do arquivo).                          ║
+        ╚══════════════════════════════════════════════════════════════╝
+        -->
+
+        <div class="cf-manual-topo">
+          <div>
+            <p>Este manual reúne a organização padrão das conferências da Estaca Salvador Brasil Norte: o que acontece em cada momento, quem responde por cada item e quais prazos seguir. As agendas, a lista de chamados e as designações continuam sendo feitas nos modelos próprios de cada documento.</p>
+            <p>Os responsáveis aparecem pelo chamado, e não pelo nome, para que o manual continue valendo quando houver mudanças. Na aba Checklist, cada conferência cadastrada gera estas tarefas com os prazos já calculados.</p>
+          </div>
+          <button type="button" class="cf-btn cf-imprimir" id="cf-imprimir">
+            <svg viewBox="0 0 24 24"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/></svg>
+            Imprimir manual
+          </button>
+        </div>
+
+        <!-- ===== PARTE 1: PROGRAMAÇÃO ===== -->
+        <details class="cf-sec">
+          <summary>
+            <span class="cf-sec-num">1</span>
+            <span class="cf-sec-tit">Programação<small>Horários padrão de sábado e domingo</small></span>
+            <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="cf-sec-corpo">
+            <table class="cf-tab">
+              <thead><tr><th>Horário</th><th>Momento</th><th>Observação</th></tr></thead>
+              <tbody>
+                <tr class="cf-tab-grupo"><td colspan="3">Sábado</td></tr>
+                <tr><td class="cf-nw">14h</td><td>Reunião de Presidência</td><td>Presidência da Estaca</td></tr>
+                <tr><td class="cf-nw">15h às 17h</td><td>Sessão de Liderança</td><td>Projetor e microfones</td></tr>
+                <tr><td class="cf-nw">18h às 20h</td><td>Sessão para Membros Adultos</td><td>Projetor, microfones e transmissão para Cajazeiras</td></tr>
+                <tr class="cf-tab-grupo"><td colspan="3">Domingo</td></tr>
+                <tr><td class="cf-nw">8h30 às 9h30</td><td>Desjejum com Recém-Conversos</td><td>Presidência da Sociedade de Socorro</td></tr>
+                <tr><td class="cf-nw">10h às 12h</td><td>Sessão Geral</td><td>Transmissão para Cajazeiras</td></tr>
+                <tr><td class="cf-nw">12h</td><td>Designações e ordenações</td><td>Presidência da Estaca</td></tr>
+                <tr><td class="cf-nw">Em seguida</td><td>Reunião de Alinhamento</td><td>Presidência da Estaca e secretários</td></tr>
+              </tbody>
+            </table>
+            <ul>
+              <li>O prelúdio começa 15 minutos antes de cada sessão.</li>
+              <li>O Presidente da Estaca coordena toda a conferência. Horários e formatos podem ser ajustados pela presidência a cada edição.</li>
+            </ul>
+            <h4>Reunião de Alinhamento</h4>
+            <p>Acontece no próprio domingo, logo após as designações e ordenações, com a presidência da estaca e os secretários. Quando uma autoridade geral preside a conferência, a reunião é feita com ela.</p>
+            <p>Pauta fixa: o que funcionou, o que precisa melhorar e o que ajustar neste manual.</p>
+          </div>
+        </details>
+
+        <!-- ===== PARTE 2: AGENDAS ===== -->
+        <details class="cf-sec">
+          <summary>
+            <span class="cf-sec-num">2</span>
+            <span class="cf-sec-tit">Agendas<small>Quem define cada item das três sessões</small></span>
+            <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="cf-sec-corpo">
+            <p>Cada sessão tem a sua agenda, montada pelo Secretário da Estaca nos modelos próprios. O rascunho segue para revisão da presidência uma semana antes, e a impressão é feita na véspera.</p>
+            <h4>Quem define cada item</h4>
+            <table class="cf-tab">
+              <thead><tr><th>Item</th><th>Responsável</th></tr></thead>
+              <tbody>
+                <tr><td>Quem preside e quem dirige</td><td>Presidente da Estaca</td></tr>
+                <tr><td>Discursantes, temas e tempo</td><td>1º Conselheiro</td></tr>
+                <tr><td>Testemunhos</td><td>1º Conselheiro</td></tr>
+                <tr><td>Orações inicial e final</td><td>2º Conselheiro</td></tr>
+                <tr><td>Hinos, regente, pianista e coro</td><td>Líder de Música da Estaca, que repassa ao conselheiro responsável pela música</td></tr>
+                <tr><td>Apoios e desobrigações</td><td>Conselheiro designado em cada conferência</td></tr>
+                <tr><td>Convites</td><td>Secretário da Estaca prepara e Secretário Executivo envia</td></tr>
+                <tr><td>Montagem e impressão</td><td>Secretário da Estaca</td></tr>
+                <tr><td>Frequência</td><td>Sumo Conselho, na frente de frequência</td></tr>
+              </tbody>
+            </table>
+            <h4>O que cada agenda contém</h4>
+            <ul>
+              <li>Data, horário do prelúdio e do início</li>
+              <li>Quem preside, quem dirige e reconhecimentos</li>
+              <li>Anúncios das próximas sessões</li>
+              <li>Regente, pianista e, quando houver coro, regente do coro</li>
+              <li>Hino inicial, hino intermediário ou especial e hino final</li>
+              <li>Oração inicial e oração final</li>
+              <li>Discursantes, testemunhos ou apresentações, com tema e tempo</li>
+              <li>Na Sessão Geral, apoios, desobrigações e ordenações em anexo</li>
+              <li>Frequência ao final</li>
+            </ul>
+            <h4>Formato das sessões</h4>
+            <p>A Sessão de Liderança pode seguir formatos diferentes, como discursos, apresentações ou debates. A ordem dos itens também pode mudar de uma sessão para outra. O essencial é definir quem vai falar e quanto tempo cada um terá.</p>
+            <div class="cf-nota">Discursantes e testemunhos recebem o convite com pelo menos 1 mês de antecedência, para terem tempo de se preparar.</div>
+          </div>
+        </details>
+
+        <!-- ===== PARTE 3: CHAMADOS, DESOBRIGAÇÕES E ORDENAÇÕES ===== -->
+        <details class="cf-sec">
+          <summary>
+            <span class="cf-sec-num">3</span>
+            <span class="cf-sec-tit">Chamados, Desobrigações e Ordenações<small>Anexo da Sessão Geral</small></span>
+            <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="cf-sec-corpo">
+            <p>O Secretário da Estaca prepara a lista, fecha duas semanas antes da conferência e registra tudo no sistema na semana seguinte.</p>
+            <h4>Conteúdo do anexo</h4>
+            <ul>
+              <li>Desobrigações: nome, ala e chamado</li>
+              <li>Chamados: nome, ala e chamado</li>
+              <li>Ordenações ao Sacerdócio de Melquisedeque, separadas por ofício (élder e sumo sacerdote) e por ala</li>
+            </ul>
+            <h4>Na Sessão Geral</h4>
+            <p>Os apoios e desobrigações são conduzidos por um conselheiro da presidência, designado pelo Presidente da Estaca em cada conferência.</p>
+            <h4>Conferência cruzada</h4>
+            <p>Todo irmão chamado ao sumo conselho que ainda não é sumo sacerdote precisa constar também na lista de ordenações a esse ofício.</p>
+            <h4>Logo após a Sessão Geral</h4>
+            <p>A presidência da estaca designa os novos chamados e os irmãos escolhidos realizam as ordenações. A equipe de arrumação deixa uma sala reservada para isso. Em seguida acontece a Reunião de Alinhamento.</p>
+          </div>
+        </details>
+
+        <!-- ===== PARTE 4: LOGÍSTICA ===== -->
+        <details class="cf-sec">
+          <summary>
+            <span class="cf-sec-num">4</span>
+            <span class="cf-sec-tit">Logística<small>Designações do Sumo Conselho</small></span>
+            <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="cf-sec-corpo">
+            <p>As frentes de logística são designações do Sumo Conselho, definidas pelo Presidente da Estaca oito semanas antes. Os sumo conselheiros de cada frente podem convidar outros irmãos e irmãs para ajudar.</p>
+            <div class="cf-frentes">
+              <div class="cf-frente"><h5>Recepção</h5><p>Organizar com os rapazes e as moças uma equipe para receber as pessoas, indicar lugares vagos e mostrar onde ficam banheiros e bebedouros.</p></div>
+              <div class="cf-frente"><h5>Limpeza</h5><p>Cuidar do material de limpeza e da reposição durante a conferência, como copos, papel higiênico e papel toalha.</p></div>
+              <div class="cf-frente"><h5>Frequência</h5><p>Contar os presentes em cada sessão e repassar os números ao Secretário da Estaca.</p></div>
+              <div class="cf-frente"><h5>Segurança e Estacionamento</h5><p>Organizar o estacionamento, indicar as vagas e zelar pela segurança, evitando pessoas, principalmente crianças, em locais inadequados.</p></div>
+              <div class="cf-frente"><h5>Auxílio à Tecnologia</h5><p>Apoiar o Especialista de Tecnologia durante as sessões, por exemplo com o microfone sem fio.</p></div>
+              <div class="cf-frente"><h5>Arrumação</h5><p>Arrumar as salas e a capela, principalmente nos intervalos, reservar lugares para líderes e idosos e reservar a sala das designações e ordenações.</p></div>
+              <div class="cf-frente"><h5>Primeiros Socorros</h5><p>Identificar irmãos da área de saúde e irmãos com carro disponíveis para ajudar em caso de emergência.</p></div>
+            </div>
+          </div>
+        </details>
+
+        <!-- ===== PARTE 5: ORGANIZAÇÃO ===== -->
+        <details class="cf-sec">
+          <summary>
+            <span class="cf-sec-num">5</span>
+            <span class="cf-sec-tit">Organização<small>Tecnologia, transmissão e materiais complementares</small></span>
+            <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="cf-sec-corpo">
+            <h4>Tecnologia por sessão</h4>
+            <table class="cf-tab">
+              <thead><tr><th>Sessão</th><th>Projetor e microfones</th><th>Transmissão</th></tr></thead>
+              <tbody>
+                <tr><td>Sábado 15h, Liderança</td><td>Sim</td><td>Não</td></tr>
+                <tr><td>Sábado 18h, Adultos</td><td>Sim</td><td>Sim, para Cajazeiras</td></tr>
+                <tr><td>Domingo 10h, Sessão Geral</td><td>Não</td><td>Sim, para Cajazeiras</td></tr>
+              </tbody>
+            </table>
+
+            <h4>Responsáveis</h4>
+            <ul>
+              <li><strong>Especialista de Tecnologia:</strong> organiza a transmissão, gera o link Zoom e compra os materiais de tecnologia</li>
+              <li><strong>Secretário Adjunto:</strong> auxilia o Especialista de Tecnologia</li>
+              <li><strong>Sumo Conselho:</strong> frente de Auxílio à Tecnologia durante as sessões</li>
+              <li><strong>Bispado e secretário da Ala Cajazeiras:</strong> recebem o link Zoom e garantem que tudo funcione na capela de Cajazeiras</li>
+            </ul>
+
+            <h4>Equipamentos</h4>
+            <ul class="cf-checklist">
+              <li>Projetor e tela</li>
+              <li>Notebook com carregador</li>
+              <li>Cabo HDMI e adaptadores</li>
+              <li>Cabos P2 x P10 e P10 x P10</li>
+              <li>Mesa de som</li>
+              <li>Interface de áudio e cabo de linha</li>
+              <li>Microfones e pedestais</li>
+              <li>Pilhas reserva</li>
+              <li>Extensões e filtro de linha</li>
+              <li>Internet da capela e celular reserva para roteamento</li>
+            </ul>
+
+            <h4>Caminho do som na transmissão</h4>
+            <div class="cf-fluxo" aria-label="Microfones, mesa de som, interface de áudio, notebook, Zoom, capela de Cajazeiras">
+              <span>Microfones</span>
+              <i><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i>
+              <span>Mesa de som</span>
+              <i><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i>
+              <span>Interface de áudio</span>
+              <i><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i>
+              <span>Notebook</span>
+              <i><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i>
+              <span>Zoom</span>
+              <i><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i>
+              <span class="destino">Capela de Cajazeiras</span>
+            </div>
+
+            <h4>Testes</h4>
+            <ul>
+              <li>Teste completo com Cajazeiras uma semana antes</li>
+              <li>No dia, teste de som e imagem uma hora antes de cada sessão: 14h e 17h no sábado, 9h no domingo</li>
+            </ul>
+
+            <h4>Plano B</h4>
+            <ul>
+              <li>Se a internet cair, usar o celular reserva como roteador</li>
+              <li>Microfone reserva com pilhas novas</li>
+              <li>Contato direto pelo WhatsApp entre a capela sede e Cajazeiras durante as sessões</li>
+            </ul>
+
+            <h4>Materiais complementares</h4>
+            <p>O Secretário Adjunto compra todos os materiais de uma vez, uma semana antes. O gelo é comprado no próprio dia. Copos e papéis ficam com a frente de Limpeza do Sumo Conselho.</p>
+            <ul class="cf-checklist">
+              <li>Água para quem estiver no púlpito</li>
+              <li>Gelo para o cooler</li>
+              <li>Lenços</li>
+              <li>Pilhas</li>
+              <li>Pilotos</li>
+              <li>Quadro branco</li>
+            </ul>
+            <div class="cf-nota">O Secretário da Estaca reembolsa as compras mediante comprovante.</div>
+          </div>
+        </details>
+
+        <!-- ===== PARTE 6: DESJEJUM ===== -->
+        <details class="cf-sec">
+          <summary>
+            <span class="cf-sec-num">6</span>
+            <span class="cf-sec-tit">Desjejum com Recém-Conversos<small>Domingo, das 8h30 às 9h30</small></span>
+            <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="cf-sec-corpo">
+            <p>Organizado pela Presidência da Sociedade de Socorro, antes da Sessão Geral.</p>
+            <h4>Convidados</h4>
+            <ul>
+              <li>Recém-conversos dos últimos 12 meses</li>
+              <li>Presidente de missão</li>
+              <li>Representante da presidência do templo</li>
+              <li>Presidência da estaca</li>
+            </ul>
+            <h4>Quem faz o quê</h4>
+            <table class="cf-tab">
+              <thead><tr><th>Item</th><th>Responsável</th></tr></thead>
+              <tbody>
+                <tr><td>Lista de recém-conversos, convite e transporte</td><td>Bispados de cada ala</td></tr>
+                <tr><td>Convite ao presidente de missão e à presidência do templo</td><td>Secretário da Estaca prepara e Secretário Executivo envia</td></tr>
+                <tr><td>Cardápio, utensílios, equipe e local</td><td>Presidência da Sociedade de Socorro</td></tr>
+                <tr><td>Reembolso das compras</td><td>Secretário da Estaca, mediante comprovante</td></tr>
+              </tbody>
+            </table>
+            <h4>Pontos de atenção</h4>
+            <ul>
+              <li>Contagem de convidados confirmada com os bispados duas semanas antes</li>
+              <li>Mesas e utensílios prontos antes das 8h30: toalhas, pratos, copos, talheres, guardanapos, garrafas térmicas e travessas</li>
+              <li>Sala liberada e limpa até 9h30, antes do prelúdio da Sessão Geral</li>
+            </ul>
+          </div>
+        </details>
+
+        <!-- ===== APÊNDICE A: CRONOGRAMA (montado pelo script) ===== -->
+        <details class="cf-sec">
+          <summary>
+            <span class="cf-sec-num">A</span>
+            <span class="cf-sec-tit">Cronograma de preparação<small>Todas as tarefas, das 8 semanas antes até o fechamento</small></span>
+            <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="cf-sec-corpo" id="cf-cronograma"></div>
+        </details>
+
+        <!-- ===== APÊNDICE B: QUADRO DE RESPONSÁVEIS ===== -->
+        <details class="cf-sec">
+          <summary>
+            <span class="cf-sec-num">B</span>
+            <span class="cf-sec-tit">Quadro de responsáveis<small>Atribuições de cada chamado</small></span>
+            <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+          </summary>
+          <div class="cf-sec-corpo">
+            <table class="cf-tab">
+              <thead><tr><th>Chamado</th><th>Atribuições</th></tr></thead>
+              <tbody>
+                <tr><td>Presidente da Estaca</td><td>Coordena a conferência, define quem preside, dirige e conduz os apoios, designa as frentes do sumo conselho e conduz a reunião de alinhamento</td></tr>
+                <tr><td>Presidência da Estaca</td><td>Revisa as agendas e designa os novos chamados logo após a Sessão Geral</td></tr>
+                <tr><td>1º Conselheiro</td><td>Discursantes e testemunhos de todas as sessões</td></tr>
+                <tr><td>2º Conselheiro</td><td>Orações de todas as sessões</td></tr>
+                <tr><td>Conselheiro designado</td><td>Apoios, desobrigações e ordenações na Sessão Geral</td></tr>
+                <tr><td>Conselheiro responsável pela música</td><td>Recebe da líder de música e repassa ao Secretário da Estaca</td></tr>
+                <tr><td>Líder de Música da Estaca</td><td>Hinos, regente, pianista, coro e ensaios</td></tr>
+                <tr><td>Secretário da Estaca</td><td>Prepara os convites, monta e imprime as agendas, prepara a lista de chamados e ordenações, registra no sistema, consolida a frequência e faz os reembolsos</td></tr>
+                <tr><td>Secretário Executivo</td><td>Envia e confirma os convites</td></tr>
+                <tr><td>Secretário Adjunto</td><td>Compra todos os materiais complementares e auxilia a tecnologia</td></tr>
+                <tr><td>Especialista de Tecnologia</td><td>Transmissão, link Zoom, equipamentos e testes</td></tr>
+                <tr><td>Sumo Conselho</td><td>As sete frentes de logística</td></tr>
+                <tr><td>Presidência da Sociedade de Socorro</td><td>Desjejum com recém-conversos</td></tr>
+                <tr><td>Bispados</td><td>Lista, convite e transporte dos recém-conversos</td></tr>
+                <tr><td>Bispado e secretário da Ala Cajazeiras</td><td>Recepção da transmissão na capela de Cajazeiras</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+
+      </section>
+
+      <div class="cf-aviso" id="cf-aviso" role="status"></div>
+    </div>
+  </main>
+
+  <!-- O rodapé é montado automaticamente pelo arquivo componentes.js -->
+  <div id="rodape"></div>
+
+  <script src="componentes.js"></script>
+
+  <script>
+    /*
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  ONDE MEXER 1: ENDEREÇO DA PLANILHA                          ║
+    ║                                                              ║
+    ║  Cole entre as aspas o endereço do app da Web que o Google   ║
+    ║  mostra quando você implanta o script da planilha.           ║
+    ║  Ele começa com https://script.google.com/macros/s/          ║
+    ║  e termina com /exec                                         ║
+    ║                                                              ║
+    ║  Enquanto ficar vazio, a página funciona em MODO LOCAL:      ║
+    ║  tudo fica salvo só no aparelho em que foi marcado.          ║
+    ║  Serve para testar antes de configurar a planilha.           ║
+    ╚══════════════════════════════════════════════════════════════╝
+    */
+    const URL_DO_SCRIPT = '';
+
+
+    /*
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  ONDE MEXER 2: LISTA DE TAREFAS                              ║
+    ║                                                              ║
+    ║  Cada linha é uma tarefa do cronograma. Ela aparece no       ║
+    ║  Checklist e no Apêndice A do manual ao mesmo tempo.         ║
+    ║                                                              ║
+    ║  id     código curto e único da tarefa. Nunca repita e       ║
+    ║         nunca reaproveite o código de uma tarefa apagada,    ║
+    ║         porque é ele que liga a tarefa ao que foi marcado.   ║
+    ║  fase   quando a tarefa vence. Use um destes códigos:        ║
+    ║         f8  f6  f5  f4  f2  f1  vesp  sab  dom  dep          ║
+    ║  resp   responsável, escrito exatamente igual à lista        ║
+    ║         de responsáveis logo abaixo (ONDE MEXER 3).          ║
+    ║  texto  o que precisa ser feito.                             ║
+    ║                                                              ║
+    ║  Para criar uma tarefa: copie uma linha inteira, cole        ║
+    ║  logo abaixo e troque id, fase, resp e texto.                ║
+    ║  Se algo estiver errado, a página mostra um aviso vermelho.  ║
+    ╚══════════════════════════════════════════════════════════════╝
+    */
+    const TAREFAS = [
+      // 8 semanas antes
+      { id: 'p-data',            fase: 'f8',   resp: 'Presidente da Estaca',                 texto: 'Confirmar a data e a programação da conferência' },
+      { id: 'p-presidir',        fase: 'f8',   resp: 'Presidente da Estaca',                 texto: 'Definir quem preside e quem dirige cada sessão' },
+      { id: 'p-apoios',          fase: 'f8',   resp: 'Presidente da Estaca',                 texto: 'Designar o conselheiro que conduzirá os apoios e desobrigações' },
+      { id: 'p-logistica',       fase: 'f8',   resp: 'Presidente da Estaca',                 texto: 'Designar os sumo conselheiros de cada frente de logística' },
+      { id: 'p-desjejum',        fase: 'f8',   resp: 'Presidente da Estaca',                 texto: 'Alinhar o desjejum com a Presidência da Sociedade de Socorro' },
+      { id: 'c-autoridades-prep', fase: 'f8',  resp: 'Secretário da Estaca',                 texto: 'Preparar os convites do desjejum ao presidente de missão e à presidência do templo' },
+      { id: 'c-autoridades-env', fase: 'f8',   resp: 'Secretário Executivo',                 texto: 'Enviar os convites do desjejum ao presidente de missão e à presidência do templo' },
+
+      // 6 semanas antes
+      { id: 'a-discursantes',    fase: 'f6',   resp: '1º Conselheiro',                       texto: 'Definir os discursantes de todas as sessões, com tema e tempo' },
+      { id: 'a-testemunhos',     fase: 'f6',   resp: '1º Conselheiro',                       texto: 'Definir os testemunhos' },
+      { id: 'a-oracoes',         fase: 'f6',   resp: '2º Conselheiro',                       texto: 'Definir as orações inicial e final de todas as sessões' },
+      { id: 'm-escolha',         fase: 'f6',   resp: 'Líder de Música da Estaca',            texto: 'Escolher hinos, regente, pianista e coro e passar ao conselheiro responsável pela música' },
+      { id: 'm-verificar',       fase: 'f6',   resp: 'Conselheiro responsável pela música',  texto: 'Verificar a música com a líder e repassar ao Secretário da Estaca' },
+
+      // 5 semanas antes
+      { id: 'c-convites-prep',   fase: 'f5',   resp: 'Secretário da Estaca',                 texto: 'Preparar os convites de discursantes, testemunhos e orações' },
+      { id: 'c-convites-env',    fase: 'f5',   resp: 'Secretário Executivo',                 texto: 'Enviar os convites, garantindo pelo menos 1 mês de preparo' },
+      { id: 'm-ensaios',         fase: 'f5',   resp: 'Líder de Música da Estaca',            texto: 'Iniciar os ensaios do coro' },
+
+      // 4 semanas antes
+      { id: 'c-confirmar',       fase: 'f4',   resp: 'Secretário Executivo',                 texto: 'Confirmar o aceite de todos os convidados e avisar a presidência sobre substituições' },
+      { id: 't-equipamentos',    fase: 'f4',   resp: 'Especialista de Tecnologia',           texto: 'Levantar os equipamentos e comprar os materiais de tecnologia' },
+      { id: 'd-recem',           fase: 'f4',   resp: 'Bispados',                             texto: 'Levantar e convidar os recém-conversos dos últimos 12 meses' },
+      { id: 'd-planejar',        fase: 'f4',   resp: 'Presidência da Sociedade de Socorro',  texto: 'Planejar o desjejum, os utensílios e a equipe' },
+
+      // 2 semanas antes
+      { id: 'r-lista',           fase: 'f2',   resp: 'Secretário da Estaca',                 texto: 'Fechar a lista de chamados, desobrigações e ordenações' },
+      { id: 'r-cruzada',         fase: 'f2',   resp: 'Secretário da Estaca',                 texto: 'Conferir se todo chamado ao sumo conselho consta nas ordenações a sumo sacerdote' },
+      { id: 't-zoom',            fase: 'f2',   resp: 'Especialista de Tecnologia',           texto: 'Gerar o link Zoom e enviar ao bispado e ao secretário da Ala Cajazeiras' },
+      { id: 'd-contagem',        fase: 'f2',   resp: 'Presidência da Sociedade de Socorro',  texto: 'Confirmar com os bispados a contagem de convidados do desjejum' },
+      { id: 'd-transporte',      fase: 'f2',   resp: 'Bispados',                             texto: 'Organizar o transporte dos recém-conversos' },
+      { id: 'l-equipes',         fase: 'f2',   resp: 'Sumo Conselho',                        texto: 'Montar as equipes de cada frente de logística' },
+
+      // 1 semana antes
+      { id: 't-teste',           fase: 'f1',   resp: 'Especialista de Tecnologia',           texto: 'Fazer o teste completo de transmissão com a capela de Cajazeiras' },
+      { id: 't-cajazeiras',      fase: 'f1',   resp: 'Bispado da Ala Cajazeiras',            texto: 'Participar do teste e garantir prédio aberto e recepção da transmissão em Cajazeiras' },
+      { id: 'o-compras',         fase: 'f1',   resp: 'Secretário Adjunto',                   texto: 'Comprar água, lenços, pilhas, pilotos e quadro branco' },
+      { id: 'a-rascunho',        fase: 'f1',   resp: 'Secretário da Estaca',                 texto: 'Montar as agendas em rascunho e enviar à presidência' },
+      { id: 'a-revisao',         fase: 'f1',   resp: 'Presidência da Estaca',                texto: 'Revisar e aprovar as agendas' },
+
+      // Véspera
+      { id: 'a-imprimir',        fase: 'vesp', resp: 'Secretário da Estaca',                 texto: 'Imprimir as agendas e o anexo de chamados e ordenações' },
+      { id: 't-separar',         fase: 'vesp', resp: 'Especialista de Tecnologia',           texto: 'Separar e conferir equipamentos, cabos e pilhas' },
+      { id: 'l-sala',            fase: 'vesp', resp: 'Sumo Conselho',                        texto: 'Reservar a sala para as designações e ordenações' },
+
+      // Sábado
+      { id: 'o-gelo-sab',        fase: 'sab',  resp: 'Secretário Adjunto',                   texto: 'Comprar o gelo do dia' },
+      { id: 'o-pulpito-sab',     fase: 'sab',  resp: 'Secretário Adjunto',                   texto: 'Deixar água e lenços no púlpito' },
+      { id: 't-teste-sab15',     fase: 'sab',  resp: 'Especialista de Tecnologia',           texto: 'Testar som e projetor às 14h, antes da Sessão de Liderança' },
+      { id: 't-teste-sab18',     fase: 'sab',  resp: 'Especialista de Tecnologia',           texto: 'Testar som, projetor e transmissão às 17h, antes da Sessão de Adultos' },
+      { id: 'l-freq-sab',        fase: 'sab',  resp: 'Sumo Conselho',                        texto: 'Registrar a frequência das duas sessões de sábado' },
+
+      // Domingo
+      { id: 'd-desjejum',        fase: 'dom',  resp: 'Presidência da Sociedade de Socorro',  texto: 'Realizar o desjejum às 8h30 e liberar a sala até 9h30' },
+      { id: 'o-gelo-dom',        fase: 'dom',  resp: 'Secretário Adjunto',                   texto: 'Comprar o gelo do dia' },
+      { id: 'o-pulpito-dom',     fase: 'dom',  resp: 'Secretário Adjunto',                   texto: 'Deixar água e lenços no púlpito' },
+      { id: 't-teste-dom',       fase: 'dom',  resp: 'Especialista de Tecnologia',           texto: 'Testar som e transmissão com Cajazeiras às 9h' },
+      { id: 'r-apoios',          fase: 'dom',  resp: 'Conselheiro designado para os apoios', texto: 'Conduzir os apoios, desobrigações e ordenações na Sessão Geral' },
+      { id: 'l-freq-dom',        fase: 'dom',  resp: 'Sumo Conselho',                        texto: 'Registrar a frequência da Sessão Geral' },
+      { id: 'r-designar',        fase: 'dom',  resp: 'Presidência da Estaca',                texto: 'Designar os novos chamados logo após a Sessão Geral e acompanhar as ordenações' },
+      { id: 'p-alinhamento',     fase: 'dom',  resp: 'Presidente da Estaca',                 texto: 'Conduzir a reunião de alinhamento com a presidência e os secretários' },
+
+      // Depois da conferência
+      { id: 'r-registro',        fase: 'dep',  resp: 'Secretário da Estaca',                 texto: 'Registrar chamados, desobrigações e ordenações no sistema' },
+      { id: 'r-frequencia',      fase: 'dep',  resp: 'Secretário da Estaca',                 texto: 'Consolidar a frequência de todas as sessões' },
+      { id: 'o-reembolso',       fase: 'dep',  resp: 'Secretário da Estaca',                 texto: 'Reembolsar as compras mediante comprovante' },
+      { id: 't-guardar',         fase: 'dep',  resp: 'Especialista de Tecnologia',           texto: 'Recolher e guardar os equipamentos' }
+    ];
+
+
+    /*
+    ╔══════════════════════════════════════════════════════════════╗
+    ║  ONDE MEXER 3: LISTA DE RESPONSÁVEIS                         ║
+    ║                                                              ║
+    ║  São os chamados que podem aparecer como responsáveis.       ║
+    ║  Se mudar um nome aqui, mude igual nas tarefas acima.        ║
+    ╚══════════════════════════════════════════════════════════════╝
+    */
+    const RESPONSAVEIS = [
+      'Presidente da Estaca',
+      'Presidência da Estaca',
+      '1º Conselheiro',
+      '2º Conselheiro',
+      'Conselheiro designado para os apoios',
+      'Conselheiro responsável pela música',
+      'Líder de Música da Estaca',
+      'Secretário da Estaca',
+      'Secretário Executivo',
+      'Secretário Adjunto',
+      'Especialista de Tecnologia',
+      'Sumo Conselho',
+      'Presidência da Sociedade de Socorro',
+      'Bispados',
+      'Bispado da Ala Cajazeiras'
+    ];
+
+
+    /* ================================================================
+       DAQUI PARA BAIXO É O FUNCIONAMENTO DA PÁGINA.
+       Não é preciso mexer em nada abaixo desta linha.
+       ================================================================ */
+
+    // Prazo de cada fase, em dias contados a partir do sábado da conferência
+    const FASES = [
+      { id: 'f8',   nome: '8 semanas antes',        dias: -56 },
+      { id: 'f6',   nome: '6 semanas antes',        dias: -42 },
+      { id: 'f5',   nome: '5 semanas antes',        dias: -35 },
+      { id: 'f4',   nome: '4 semanas antes',        dias: -28 },
+      { id: 'f2',   nome: '2 semanas antes',        dias: -14 },
+      { id: 'f1',   nome: '1 semana antes',         dias: -7 },
+      { id: 'vesp', nome: 'Véspera',                dias: -1 },
+      { id: 'sab',  nome: 'Sábado da conferência',  dias: 0 },
+      { id: 'dom',  nome: 'Domingo da conferência', dias: 1 },
+      { id: 'dep',  nome: 'Depois da conferência',  dias: 8 }
+    ];
+
+    (function () {
+      'use strict';
+
+      const MODO_LOCAL = !String(URL_DO_SCRIPT || '').trim();
+
+      // Chamados que aparecem no filtro (os grupos entram junto com os chamados)
+      const CHAMADOS_FILTRO = RESPONSAVEIS.filter(function (r) {
+        return r !== 'Presidência da Estaca' && r !== 'Conselheiro designado para os apoios';
+      });
+      const PRESIDENCIA = ['Presidente da Estaca', '1º Conselheiro', '2º Conselheiro'];
+      const CONSELHEIROS = ['1º Conselheiro', '2º Conselheiro'];
+
+      const SEMANA = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+      const MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+
+      const ICON = {
+        check: '<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>',
+        baixo: '<svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>',
+        mais: '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+        atualizar: '<svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>'
+      };
+
+      /* ---------- Armazenamento no aparelho ---------- */
+      function ler(chave, padrao) {
+        try { const v = localStorage.getItem(chave); return v ? JSON.parse(v) : padrao; } catch (e) { return padrao; }
+      }
+      function gravar(chave, valor) {
+        try { localStorage.setItem(chave, JSON.stringify(valor)); } catch (e) { /* sem armazenamento */ }
+      }
+      function apagar(chave) {
+        try { localStorage.removeItem(chave); } catch (e) { /* sem armazenamento */ }
+      }
+
+      function vazio() { return { conferencias: [], tarefas: [] }; }
+      function txt(v) { return v == null ? '' : String(v); }
+      function normalizar(d) {
+        const r = vazio();
+        if (d && Array.isArray(d.conferencias)) {
+          d.conferencias.forEach(function (c) {
+            if (c && c.id) r.conferencias.push({ id: txt(c.id), nome: txt(c.nome), sabado: txt(c.sabado) });
+          });
+        }
+        if (d && Array.isArray(d.tarefas)) {
+          d.tarefas.forEach(function (t) {
+            if (t && t.conferencia && t.tarefa) r.tarefas.push({ conferencia: txt(t.conferencia), tarefa: txt(t.tarefa), feito: txt(t.feito) });
+          });
+        }
+        return r;
+      }
+
+      /* ---------- Estado ---------- */
+      let sessao = ler('cf_sessao', null);
+      if (sessao && !sessao.codigo && !MODO_LOCAL) sessao = null;
+      let dados = normalizar(MODO_LOCAL ? ler('cf_local', null) : ler('cf_cache', null));
+      let fila = MODO_LOCAL ? [] : (ler('cf_fila', []) || []);
+      let carregado = MODO_LOCAL || dados.conferencias.length > 0;
+      let rede = 'ok';
+      let enviando = false;
+      let atualizando = false;
+      let ultimaSinc = null;
+      let timerReenvio = null;
+      let renderAdiado = false;
+      let filtroResp = '';
+      let trocarAberto = false;
+      let formAberto = null;
+      let rascunhoForm = {};
+      let confNaTela = null;
+      let feitas = new Set();
+
+      const elPainel = document.getElementById('cf-painel');
+      const elManual = document.getElementById('cf-manual');
+
+      /* ---------- Conferência dos dados de configuração ---------- */
+      const problemas = [];
+      (function verificar() {
+        const vistos = {};
+        TAREFAS.forEach(function (t) {
+          if (vistos[t.id]) problemas.push('O código "' + t.id + '" aparece em mais de uma tarefa.');
+          vistos[t.id] = true;
+          if (!FASES.some(function (f) { return f.id === t.fase; })) problemas.push('A tarefa "' + t.texto + '" usa uma fase que não existe: ' + t.fase + '.');
+          if (RESPONSAVEIS.indexOf(t.resp) < 0) problemas.push('A tarefa "' + t.texto + '" tem um responsável fora da lista: ' + t.resp + '.');
+        });
+      })();
+
+      /* ---------- Utilidades ---------- */
+      function esc(s) {
+        return txt(s).replace(/[&<>"']/g, function (ch) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+        });
+      }
+      function dois(n) { return (n < 10 ? '0' : '') + n; }
+      function paraData(iso) {
+        const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(txt(iso));
+        return m ? new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3])) : null;
+      }
+      function somarDias(d, n) { const x = new Date(d.getTime()); x.setDate(x.getDate() + n); return x; }
+      function hoje() { const h = new Date(); return new Date(h.getFullYear(), h.getMonth(), h.getDate()); }
+      function diasEntre(a, b) { return Math.round((b.getTime() - a.getTime()) / 86400000); }
+      function ddmm(d) { return dois(d.getDate()) + '/' + dois(d.getMonth() + 1); }
+      function hhmm(d) { return dois(d.getHours()) + ':' + dois(d.getMinutes()); }
+      function dia(n) { return n === 1 ? '1º' : String(n); }
+      function novoId() { return 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+
+      function datasConf(c) {
+        const s = paraData(c.sabado);
+        if (!s) return 'Data não informada';
+        const d = somarDias(s, 1);
+        if (s.getMonth() === d.getMonth()) return dia(s.getDate()) + ' e ' + dia(d.getDate()) + ' de ' + MESES[s.getMonth()] + ' de ' + s.getFullYear();
+        return dia(s.getDate()) + ' de ' + MESES[s.getMonth()] + ' e ' + dia(d.getDate()) + ' de ' + MESES[d.getMonth()] + ' de ' + d.getFullYear();
+      }
+      function prazoFase(c, fase) {
+        const s = paraData(c.sabado);
+        return s ? somarDias(s, fase.dias) : hoje();
+      }
+
+      function acharConf(d, id) {
+        for (let i = 0; i < d.conferencias.length; i++) if (d.conferencias[i].id === id) return d.conferencias[i];
+        return null;
+      }
+      function acharTarefa(d, conf, tarefa) {
+        for (let i = 0; i < d.tarefas.length; i++) {
+          const t = d.tarefas[i];
+          if (t.conferencia === conf && t.tarefa === tarefa) return t;
+        }
+        const n = { conferencia: conf, tarefa: tarefa, feito: '' };
+        d.tarefas.push(n);
+        return n;
+      }
+      function indexar() {
+        feitas = new Set();
+        dados.tarefas.forEach(function (t) { if (t.feito === 'sim') feitas.add(t.conferencia + '|' + t.tarefa); });
+      }
+      function feita(conf, tarefa) { return feitas.has(conf + '|' + tarefa); }
+
+      // Ao filtrar por um chamado, entram também as tarefas do grupo a que ele pertence
+      function doChamado(t, chamado) {
+        if (!chamado || t.resp === chamado) return true;
+        if (t.resp === 'Presidência da Estaca' && PRESIDENCIA.indexOf(chamado) >= 0) return true;
+        if (t.resp === 'Conselheiro designado para os apoios' && CONSELHEIROS.indexOf(chamado) >= 0) return true;
+        if (t.resp === 'Bispados' && chamado === 'Bispado da Ala Cajazeiras') return true;
+        return false;
+      }
+
+      // Conferência que abre primeiro: a próxima ainda em preparação ou, se não houver, a mais recente
+      function conferenciaAtual() {
+        const h = hoje();
+        const comData = dados.conferencias.filter(function (c) { return paraData(c.sabado); });
+        if (!comData.length) return dados.conferencias[0] || null;
+        const emAndamento = comData
+          .filter(function (c) { return diasEntre(h, somarDias(paraData(c.sabado), 8)) >= 0; })
+          .sort(function (a, b) { return a.sabado.localeCompare(b.sabado); });
+        if (emAndamento.length) return emAndamento[0];
+        return comData.slice().sort(function (a, b) { return b.sabado.localeCompare(a.sabado); })[0];
+      }
+
+      /* ---------- Alterações (mesma regra usada pela planilha) ---------- */
+      function aplicarOp(d, op) {
+        let c;
+        switch (op.acao) {
+          case 'criarConferencia':
+            if (!acharConf(d, op.id)) d.conferencias.push({ id: op.id, nome: op.nome, sabado: op.sabado });
+            break;
+          case 'editarConferencia':
+            c = acharConf(d, op.id);
+            if (c) { c.nome = op.nome; c.sabado = op.sabado; }
+            break;
+          case 'marcar':
+            acharTarefa(d, op.conferencia, op.tarefa).feito = op.feito ? 'sim' : 'nao';
+            break;
+        }
+      }
+
+      function executar(op) {
+        aplicarOp(dados, op);
+        if (MODO_LOCAL) {
+          gravar('cf_local', dados);
+        } else {
+          fila.push(op);
+          gravar('cf_fila', fila);
+          gravar('cf_cache', dados);
+          processarFila();
+        }
+      }
+
+      /* ---------- Comunicação com a planilha ---------- */
+      async function chamar(corpo, codigo) {
+        const controle = new AbortController();
+        const espera = setTimeout(function () { controle.abort(); }, 25000);
+        try {
+          const pedido = Object.assign({}, corpo, { codigo: codigo != null ? codigo : (sessao ? sessao.codigo : '') });
+          const resp = await fetch(URL_DO_SCRIPT.trim(), { method: 'POST', body: JSON.stringify(pedido), signal: controle.signal });
+          if (!resp.ok) throw new Error('HTTP ' + resp.status);
+          return await resp.json();
+        } finally {
+          clearTimeout(espera);
+        }
+      }
+
+      function receber(r) {
+        const base = normalizar(r);
+        fila.forEach(function (op) { aplicarOp(base, op); });
+        dados = base;
+        gravar('cf_cache', dados);
+        carregado = true;
+        rede = 'ok';
+        ultimaSinc = new Date();
+      }
+
+      async function processarFila() {
+        if (MODO_LOCAL || !sessao) return;
+        if (enviando || !fila.length) { atualizarStatus(); return; }
+        enviando = true;
+        atualizarStatus();
+        let falhou = false;
+        while (fila.length) {
+          let r;
+          try { r = await chamar(fila[0]); } catch (e) { falhou = true; break; }
+          if (!r.ok && r.codigo === 'ocupada') { falhou = true; break; }
+          if (!r.ok && r.codigo === 'acesso') { enviando = false; sair('O código de acesso foi alterado. Entre novamente.'); return; }
+          if (!r.ok) avisar('Uma alteração não foi salva: ' + (r.erro || 'erro desconhecido'));
+          fila.shift();
+          gravar('cf_fila', fila);
+        }
+        enviando = false;
+        rede = falhou ? 'offline' : 'ok';
+        if (!falhou) ultimaSinc = new Date();
+        atualizarStatus();
+        if (falhou) {
+          clearTimeout(timerReenvio);
+          timerReenvio = setTimeout(processarFila, 15000);
+        }
+      }
+
+      async function atualizar() {
+        if (MODO_LOCAL || !sessao || atualizando) return;
+        atualizando = true;
+        try {
+          const r = await chamar({ acao: 'listar' });
+          if (!r.ok) {
+            if (r.codigo === 'acesso') sair('O código de acesso foi alterado. Entre novamente.');
+            else if (r.codigo !== 'ocupada') avisar(r.erro || 'Não foi possível atualizar.');
+            return;
+          }
+          receber(r);
+          renderSeguro();
+        } catch (e) {
+          rede = 'offline';
+          atualizarStatus();
+        } finally {
+          atualizando = false;
+        }
+      }
+
+      /* ---------- Entrada e saída ---------- */
+      async function entrar() {
+        const elCodigo = document.getElementById('cf-login-codigo');
+        const elErro = document.getElementById('cf-login-erro');
+        const botao = document.getElementById('cf-login-btn');
+        const codigo = elCodigo.value.trim();
+        elErro.textContent = '';
+        if (!codigo) { elErro.textContent = 'Digite o código de acesso.'; return; }
+        botao.disabled = true;
+        botao.textContent = 'Entrando...';
+        try {
+          const r = await chamar({ acao: 'listar' }, codigo);
+          if (!r.ok) { elErro.textContent = r.erro || 'Não foi possível entrar.'; return; }
+          sessao = { codigo: codigo };
+          gravar('cf_sessao', sessao);
+          receber(r);
+          render();
+        } catch (e) {
+          elErro.textContent = 'Não foi possível falar com a planilha. Confira a internet e, se persistir, o endereço do script e a implantação para "Qualquer pessoa".';
+        } finally {
+          if (botao.isConnected) { botao.disabled = false; botao.textContent = 'Entrar'; }
+        }
+      }
+
+      function sair(mensagem) {
+        if (fila.length && !mensagem) {
+          if (!confirm('Há marcações que ainda não chegaram à planilha. Se sair agora, elas serão perdidas. Sair mesmo assim?')) return;
+        }
+        sessao = null;
+        dados = vazio(); fila = []; carregado = false;
+        apagar('cf_sessao'); apagar('cf_cache'); apagar('cf_fila');
+        trocarAberto = false; formAberto = null;
+        if (location.hash && location.hash !== '#manual') location.hash = '';
+        render();
+        if (mensagem) avisar(mensagem);
+      }
+
+      /* ---------- Montagem da tela ---------- */
+      function htmlStatus() {
+        let cls, texto;
+        if (MODO_LOCAL) { cls = 'local'; texto = 'Modo local, salvo só neste aparelho'; }
+        else if (rede === 'offline') { cls = 'erro'; texto = 'Sem conexão' + (fila.length ? ', ' + fila.length + (fila.length > 1 ? ' marcações pendentes' : ' marcação pendente') : ''); }
+        else if (enviando || fila.length) { cls = 'salvando'; texto = 'Salvando...'; }
+        else { cls = 'ok'; texto = ultimaSinc ? 'Sincronizado às ' + hhmm(ultimaSinc) : 'Sincronizado'; }
+        return '<div class="cf-status cf-status-' + cls + '" id="cf-status"><span class="cf-ponto"></span><span>' + texto + '</span>' +
+          (MODO_LOCAL ? '' : '<button type="button" class="cf-icone-btn" data-acao="atualizar" aria-label="Atualizar agora" title="Atualizar agora">' + ICON.atualizar + '</button>') +
+          '</div>';
+      }
+      function atualizarStatus() {
+        const el = document.getElementById('cf-status');
+        if (el) el.outerHTML = htmlStatus();
+      }
+
+      function htmlProblemas() {
+        if (!problemas.length) return '';
+        return '<div class="cf-alerta"><strong>Atenção: há um erro na lista de tarefas desta página.</strong><ul>' +
+          problemas.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></div>';
+      }
+
+      function htmlLogin() {
+        return htmlProblemas() + '<div class="cf-card cf-login">' +
+          '<h3>Checklist da conferência</h3>' +
+          '<p>Digite o código de acesso da estaca. O manual pode ser consultado na aba Manual sem código.</p>' +
+          '<div class="cf-campo"><label for="cf-login-codigo">Código de acesso</label><input id="cf-login-codigo" type="password" autocomplete="current-password" data-enter="entrar"></div>' +
+          '<p class="cf-erro" id="cf-login-erro"></p>' +
+          '<button type="button" class="cf-btn cf-btn-sol" id="cf-login-btn" data-acao="entrar">Entrar</button>' +
+          '</div>';
+      }
+
+      function htmlForm(c, primeira) {
+        const editar = !!c;
+        const nome = rascunhoForm.nome != null ? rascunhoForm.nome : (editar ? c.nome : '');
+        const data = rascunhoForm.data != null ? rascunhoForm.data : (editar ? c.sabado : '');
+        return '<div class="cf-card cf-form">' +
+          '<h3>' + (primeira ? 'Cadastre a próxima conferência' : (editar ? 'Editar conferência' : 'Nova conferência')) + '</h3>' +
+          '<div class="cf-campos">' +
+          '<div class="cf-campo"><label for="cf-f-nome">Nome</label><input id="cf-f-nome" type="text" maxlength="80" placeholder="Conferência 2026.2" value="' + esc(nome) + '"></div>' +
+          '<div class="cf-campo"><label for="cf-f-data">Data do sábado</label><input id="cf-f-data" type="date" value="' + esc(data) + '"></div>' +
+          '</div>' +
+          '<p class="cf-ajuda">O domingo e todos os prazos do checklist são calculados a partir dessa data.</p>' +
+          '<p class="cf-erro" id="cf-f-erro"></p>' +
+          '<div class="cf-acoes"><button type="button" class="cf-btn cf-btn-sol" data-acao="' + (editar ? 'salvar-edicao' : 'criar') + '">' + (editar ? 'Salvar' : 'Criar checklist') + '</button>' +
+          (primeira ? '' : '<button type="button" class="cf-btn" data-acao="fechar-form">Cancelar</button>') + '</div>' +
+          '</div>';
+      }
+
+      function htmlTrocar(atual) {
+        const confs = dados.conferencias.slice().sort(function (a, b) { return b.sabado.localeCompare(a.sabado); });
+        return '<div class="cf-card cf-trocar-painel"><ul class="cf-confs">' +
+          confs.map(function (c) {
+            return '<li><a href="#c/' + encodeURIComponent(c.id) + '"' + (c.id === atual.id ? ' class="atual"' : '') + '><span>' + esc(c.nome) + '</span><small>' + esc(datasConf(c)) + '</small></a></li>';
+          }).join('') + '</ul>' +
+          '<div class="cf-acoes">' +
+          '<button type="button" class="cf-btn cf-btn-peq" data-acao="abrir-nova">' + ICON.mais + 'Nova conferência</button>' +
+          '<button type="button" class="cf-btn cf-btn-peq" data-acao="abrir-editar">Editar esta</button>' +
+          (MODO_LOCAL ? '' : '<button type="button" class="cf-link" data-acao="sair">Sair</button>') +
+          '</div></div>';
+      }
+
+      function htmlChecklist(c) {
+        const h = hoje();
+        const visiveis = TAREFAS.filter(function (t) { return doChamado(t, filtroResp); });
+        let nFeitas = 0, nAtrasadas = 0;
+        visiveis.forEach(function (t) {
+          if (feita(c.id, t.id)) nFeitas++;
+          else if (diasEntre(h, prazoFase(c, faseDe(t.fase))) < 0) nAtrasadas++;
+        });
+        const pct = visiveis.length ? Math.round(nFeitas * 100 / visiveis.length) : 0;
+
+        let s = '<div class="cf-prog"><div class="cf-prog-nums"><span>' + nFeitas + ' de ' + visiveis.length + ' feitas</span>' +
+          (nAtrasadas ? '<span class="atr">' + nAtrasadas + (nAtrasadas > 1 ? ' atrasadas' : ' atrasada') + '</span>' : '') + '</div>' +
+          '<div class="cf-barra" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"><span style="width:' + pct + '%"></span></div></div>';
+
+        s += '<div class="cf-chips" role="group" aria-label="Filtrar por chamado">' +
+          '<button type="button" class="cf-chip' + (!filtroResp ? ' ativo' : '') + '" data-acao="filtro" data-resp="">Todos</button>' +
+          CHAMADOS_FILTRO.map(function (r) {
+            return '<button type="button" class="cf-chip' + (filtroResp === r ? ' ativo' : '') + '" data-acao="filtro" data-resp="' + esc(r) + '">' + esc(r) + '</button>';
+          }).join('') + '</div>';
+
+        FASES.forEach(function (f) {
+          const lista = visiveis.filter(function (t) { return t.fase === f.id; });
+          if (!lista.length) return;
+          const prazo = prazoFase(c, f);
+          const pendentes = lista.filter(function (t) { return !feita(c.id, t.id); }).length;
+          const dataTxt = SEMANA[prazo.getDay()] + ', ' + ddmm(prazo);
+          let cls = '', rotulo = (f.dias === 0 || f.dias === 1 || f.dias === -1) ? dataTxt : 'até ' + dataTxt;
+          if (!pendentes) { cls = 'ok'; rotulo = 'Concluído'; }
+          else if (diasEntre(h, prazo) < 0) cls = 'atr';
+          s += '<section class="cf-grupo"><header class="cf-grupo-cab"><h3>' + esc(f.nome) + '</h3><span class="' + cls + '">' + rotulo + '</span></header>';
+          s += lista.map(function (t) {
+            const ok = feita(c.id, t.id);
+            return '<label class="cf-item' + (ok ? ' feita' : '') + '"><input type="checkbox" data-t="' + esc(t.id) + '"' + (ok ? ' checked' : '') + '>' +
+              '<span class="cf-caixa">' + ICON.check + '</span>' +
+              '<span class="cf-item-txt"><span class="cf-item-tarefa">' + esc(t.texto) + '</span><span class="cf-item-resp">' + esc(t.resp) + '</span></span></label>';
+          }).join('');
+          s += '</section>';
+        });
+        if (!visiveis.length) s += '<div class="cf-vazio">Nenhuma tarefa para este chamado.</div>';
+        return s;
+      }
+
+      function faseDe(id) { for (let i = 0; i < FASES.length; i++) if (FASES[i].id === id) return FASES[i]; return FASES[0]; }
+
+      function rota() {
+        const h = decodeURIComponent(location.hash.replace(/^#/, ''));
+        if (h === 'manual') return { aba: 'manual' };
+        if (h.indexOf('c/') === 0) return { aba: 'painel', conf: h.slice(2) };
+        return { aba: 'painel' };
+      }
+
+      function render() {
+        renderAdiado = false;
+        indexar();
+        const r = rota();
+        document.querySelectorAll('.cf-aba').forEach(function (b) { b.classList.toggle('ativa', b.dataset.aba === r.aba); });
+        elManual.hidden = r.aba !== 'manual';
+        elPainel.hidden = r.aba !== 'painel';
+        if (r.aba !== 'painel') return;
+
+        if (!MODO_LOCAL && !sessao) { confNaTela = null; elPainel.innerHTML = htmlLogin(); return; }
+
+        const faixaChips = elPainel.querySelector('.cf-chips');
+        const rolagemChips = faixaChips ? faixaChips.scrollLeft : 0;
+
+        let h = htmlProblemas() + '<div class="cf-status-linha">' + htmlStatus() + '</div>';
+        if (!carregado) {
+          h += '<div class="cf-carregando">Carregando o checklist...</div>';
+          confNaTela = null;
+        } else if (!dados.conferencias.length) {
+          confNaTela = null;
+          h += htmlForm(null, true);
+        } else {
+          const c = (r.conf && acharConf(dados, r.conf)) || conferenciaAtual();
+          confNaTela = c;
+          h += '<div class="cf-cab"><div><h2>' + esc(c.nome) + '</h2><p>' + esc(datasConf(c)) + '</p></div>' +
+            '<button type="button" class="cf-trocar' + (trocarAberto ? ' aberto' : '') + '" data-acao="trocar" aria-expanded="' + trocarAberto + '">Trocar' + ICON.baixo + '</button></div>';
+          if (trocarAberto && !formAberto) h += htmlTrocar(c);
+          if (formAberto === 'nova') h += htmlForm(null, false);
+          if (formAberto === 'editar') h += htmlForm(c, false);
+          h += htmlChecklist(c);
+        }
+        elPainel.innerHTML = h;
+
+        const novaFaixa = elPainel.querySelector('.cf-chips');
+        if (novaFaixa) novaFaixa.scrollLeft = rolagemChips;
+      }
+
+      // Não redesenha a tela enquanto alguém está digitando
+      function digitando() {
+        const a = document.activeElement;
+        return a && elPainel.contains(a) && (a.tagName === 'TEXTAREA' || a.tagName === 'SELECT' || (a.tagName === 'INPUT' && a.type !== 'checkbox'));
+      }
+      function renderSeguro() {
+        if (digitando()) { renderAdiado = true; atualizarStatus(); return; }
+        render();
+      }
+
+      let timerAviso = null;
+      function avisar(msg) {
+        const el = document.getElementById('cf-aviso');
+        el.textContent = msg;
+        el.classList.add('visivel');
+        clearTimeout(timerAviso);
+        timerAviso = setTimeout(function () { el.classList.remove('visivel'); }, 3500);
+      }
+
+      function rolarParaTopo() {
+        const alvo = document.querySelector('.cf-abas');
+        if (!alvo) return;
+        const y = alvo.getBoundingClientRect().top + window.scrollY - 90;
+        if (window.scrollY > y) window.scrollTo(0, Math.max(0, y));
+      }
+
+      /* ---------- Formulário de conferência ---------- */
+      function lerForm() {
+        const nome = document.getElementById('cf-f-nome').value.trim();
+        const data = document.getElementById('cf-f-data').value;
+        const elErro = document.getElementById('cf-f-erro');
+        elErro.textContent = '';
+        if (!nome) { elErro.textContent = 'Digite o nome da conferência.'; return null; }
+        const d = paraData(data);
+        if (!d) { elErro.textContent = 'Escolha a data do sábado.'; return null; }
+        if (d.getDay() !== 6 && !confirm('A data escolhida cai numa ' + SEMANA[d.getDay()] + ', não num sábado. Os prazos serão contados a partir dela. Continuar assim mesmo?')) return null;
+        return { nome: nome, sabado: data };
+      }
+
+      /* ---------- Cliques e marcações ---------- */
+      elPainel.addEventListener('click', function (ev) {
+        const alvo = ev.target.closest('[data-acao]');
+        if (!alvo) return;
+        switch (alvo.dataset.acao) {
+          case 'entrar': entrar(); break;
+          case 'sair': sair(); break;
+          case 'atualizar': processarFila(); atualizar(); break;
+          case 'trocar':
+            trocarAberto = !trocarAberto; formAberto = null; render();
+            break;
+          case 'abrir-nova':
+            formAberto = 'nova'; rascunhoForm = {}; render();
+            document.getElementById('cf-f-nome').focus();
+            break;
+          case 'abrir-editar':
+            formAberto = 'editar'; rascunhoForm = {}; render();
+            document.getElementById('cf-f-nome').focus();
+            break;
+          case 'fechar-form':
+            formAberto = null; rascunhoForm = {}; render();
+            break;
+          case 'criar': {
+            const f = lerForm();
+            if (!f) return;
+            const id = novoId();
+            executar({ acao: 'criarConferencia', id: id, nome: f.nome, sabado: f.sabado });
+            formAberto = null; trocarAberto = false; rascunhoForm = {};
+            if (location.hash === '#c/' + id) render(); else location.hash = 'c/' + id;
+            avisar('Checklist criado.');
+            break;
+          }
+          case 'salvar-edicao': {
+            const f = lerForm();
+            if (!f || !confNaTela) return;
+            executar({ acao: 'editarConferencia', id: confNaTela.id, nome: f.nome, sabado: f.sabado });
+            formAberto = null; trocarAberto = false; rascunhoForm = {};
+            render();
+            avisar('Conferência atualizada.');
+            break;
+          }
+          case 'filtro':
+            filtroResp = alvo.dataset.resp || '';
+            render();
+            break;
+        }
+      });
+
+      elPainel.addEventListener('change', function (ev) {
+        const el = ev.target;
+        if (el.type === 'checkbox' && el.dataset.t && confNaTela) {
+          executar({ acao: 'marcar', conferencia: confNaTela.id, tarefa: el.dataset.t, feito: el.checked });
+          render();
+        }
+      });
+
+      // Guarda o que está sendo digitado, para não perder numa atualização
+      elPainel.addEventListener('input', function (ev) {
+        if (ev.target.id === 'cf-f-nome') rascunhoForm.nome = ev.target.value;
+        else if (ev.target.id === 'cf-f-data') rascunhoForm.data = ev.target.value;
+      });
+
+      elPainel.addEventListener('keydown', function (ev) {
+        if (ev.key === 'Enter' && ev.target.dataset.enter === 'entrar') { ev.preventDefault(); entrar(); }
+      });
+
+      // Ao sair de um campo, aplica a atualização que ficou esperando
+      elPainel.addEventListener('focusout', function () {
+        if (!renderAdiado) return;
+        setTimeout(function () {
+          const a = document.activeElement;
+          if (renderAdiado && !digitando() && !(a && a.tagName === 'BUTTON' && elPainel.contains(a))) render();
+        }, 400);
+      });
+
+      let ultimaRotaPainel = '';
+      document.querySelectorAll('.cf-aba').forEach(function (b) {
+        b.addEventListener('click', function () {
+          if (b.dataset.aba === 'manual') location.hash = 'manual';
+          else location.hash = ultimaRotaPainel;
+        });
+      });
+
+      window.addEventListener('hashchange', function () {
+        const r = rota();
+        if (r.aba === 'painel') {
+          if (r.conf) filtroResp = '';
+          ultimaRotaPainel = location.hash.replace(/^#/, '');
+        }
+        trocarAberto = false;
+        formAberto = null;
+        rascunhoForm = {};
+        render();
+        rolarParaTopo();
+      });
+
+      /* ---------- Manual: cronograma e impressão ---------- */
+      (function montarCronograma() {
+        const el = document.getElementById('cf-cronograma');
+        el.innerHTML = '<p>Os prazos contam a partir do sábado da conferência. Na aba Checklist, cada conferência mostra as datas exatas.</p>' +
+          FASES.map(function (f) {
+            const lista = TAREFAS.filter(function (t) { return t.fase === f.id; });
+            if (!lista.length) return '';
+            return '<div class="cf-crono-fase"><h4>' + esc(f.nome) + '</h4><ul class="cf-crono-lista">' +
+              lista.map(function (t) { return '<li><span>' + esc(t.texto) + '</span><em>' + esc(t.resp) + '</em></li>'; }).join('') +
+              '</ul></div>';
+          }).join('');
+      })();
+
+      let abertosAntes = [];
+      window.addEventListener('beforeprint', function () {
+        abertosAntes = [];
+        elManual.querySelectorAll('details').forEach(function (d) { abertosAntes.push(d.open); d.open = true; });
+      });
+      window.addEventListener('afterprint', function () {
+        elManual.querySelectorAll('details').forEach(function (d, i) { d.open = !!abertosAntes[i]; });
+      });
+      document.getElementById('cf-imprimir').addEventListener('click', function () { window.print(); });
+
+      /* ---------- Sincronização periódica ---------- */
+      setInterval(function () {
+        if (sessao && !MODO_LOCAL && document.visibilityState === 'visible' && !enviando && !fila.length) atualizar();
+      }, 60000);
+      document.addEventListener('visibilitychange', function () {
+        if (document.visibilityState === 'visible' && sessao && !MODO_LOCAL) { processarFila(); atualizar(); }
+      });
+      window.addEventListener('online', function () { processarFila(); });
+
+      /* ---------- Início ---------- */
+      if (rota().aba === 'painel') ultimaRotaPainel = location.hash.replace(/^#/, '');
+      render();
+      if (sessao && !MODO_LOCAL) { processarFila(); atualizar(); }
+    })();
+  </script>
+</body>
+</html>
