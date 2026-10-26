@@ -228,7 +228,15 @@
     .qd-nomes li { font-size: 15px; font-weight: 600; line-height: 1.45; color: #1F2937; }
     .qd-nomes li.qd-falta { font-weight: 500; font-style: italic; color: #8A93A0; }
     .qd-card p { font-size: 12.5px; line-height: 1.5; color: #5B6573; margin: 0; }
-    .qd-rodape { margin: 14px 0 0; font-size: 12px; color: #5B6573; text-align: center; }
+    .qd-rodape { margin: 14px 0 0; font-size: 12px; line-height: 1.5; color: #5B6573; text-align: center; }
+    .qd-kit { margin-top: 28px; padding-top: 24px; border-top: 1px dashed #D9DEE5; }
+    .qd-kit-intro { font-size: 13.5px; color: #5B6573; margin: 0 0 12px; }
+    .qd-kit-grade { columns: 2 220px; column-gap: 28px; }
+    .qd-kit-grupo { break-inside: avoid; margin-bottom: 14px; }
+    .qd-kit-grupo h3 { font-family: "Source Serif 4", Georgia, serif; font-size: 16px; font-weight: 600; color: #1B3A5C; margin: 0 0 4px; }
+    .qd-kit-grupo ul { list-style: none; margin: 0; padding: 0; }
+    .qd-kit-grupo li { display: flex; gap: 8px; font-size: 13px; line-height: 1.4; padding: 4px 0; border-bottom: 1px solid #EEF0F3; }
+    .qd-kit-grupo li::before { content: ""; flex-shrink: 0; width: 11px; height: 11px; margin-top: 3px; border: 1.3px solid #1B3A5C; border-radius: 2px; }
     #cf-quadro-print { display: none; }
 
     /* ----- Aviso flutuante ----- */
@@ -274,6 +282,19 @@
     .cf-fluxo i { display: flex; justify-content: center; color: var(--cf-gold); }
     .cf-fluxo i svg { width: 16px; height: 16px; }
     .cf-crono-fase h4 { margin-top: 22px; }
+    .cf-modelos { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; margin-top: 12px; }
+    .cf-modelo { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border: 1px solid var(--cf-g200); border-radius: 8px; background: #FFFFFF; color: var(--cf-navy); text-decoration: none; font-size: 14px; font-weight: 600; line-height: 1.3; transition: border-color .2s, background .2s; }
+    .cf-modelo:hover { border-color: var(--cf-navy); background: var(--cf-g50); }
+    .cf-modelo svg { width: 22px; height: 22px; color: var(--cf-gold); }
+    .cf-modelo small { display: block; margin-top: 2px; font-size: 12.5px; font-weight: 400; color: var(--cf-g600); }
+    .cf-passos { margin: 8px 0 14px; padding-left: 22px; }
+    .cf-passos li { margin: 6px 0; padding-left: 4px; }
+    .cf-passos li::marker { color: var(--cf-gold); font-weight: 600; }
+    .cf-msg { margin: 10px 0 0; padding: 12px 14px; max-width: 360px; background: var(--cf-g50); border: 1px solid var(--cf-g100); border-radius: 8px; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 13px; line-height: 1.6; white-space: pre-wrap; color: var(--cf-texto); }
+    .cf-kit { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 4px 28px; margin-top: 6px; }
+    .cf-kit-grupo h5 { font-size: 14.5px; margin: 12px 0 2px; }
+    .cf-kit .cf-checklist { columns: 1; margin-top: 4px; }
+    .cf-kit-opcao { margin-top: 14px; }
     .cf-crono-lista { list-style: none; padding: 0 !important; }
     .cf-crono-lista li { display: flex; justify-content: space-between; gap: 16px; margin: 0 !important; padding: 8px 0; border-bottom: 1px solid var(--cf-g100); }
     .cf-crono-lista em { flex-shrink: 0; max-width: 45%; font-style: normal; font-size: 13px; color: var(--cf-g600); text-align: right; }
@@ -317,9 +338,20 @@
       body[data-cf-aba="sumo"] > * { display: none !important; }
       body[data-cf-aba="sumo"] > #cf-quadro-print { display: block !important; }
       .qd, .qd * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-      .qd-grade { grid-template-columns: 1fr 1fr !important; gap: 10px; }
-      .qd-titulo { font-size: 25px !important; }
-      .qd-card { padding: 13px 14px 11px; }
+      .qd-grade { grid-template-columns: 1fr 1fr !important; gap: 8px; }
+      .qd-cab { padding-bottom: 9px; margin-bottom: 10px; }
+      .qd-titulo { font-size: 22px !important; margin: 2px 0 1px; }
+      .qd-sub { font-size: 12.5px; }
+      .qd-indice { padding: 8px 12px 6px; margin-bottom: 10px; }
+      .qd-indice h3 { margin-bottom: 3px; }
+      .qd-indice li { font-size: 11.5px; padding: 1.5px 0; }
+      .qd-card { padding: 10px 12px 9px; }
+      .qd-card h3 { font-size: 15.5px; margin-bottom: 4px; }
+      .qd-nomes { margin-bottom: 5px; }
+      .qd-nomes li { font-size: 13.5px; line-height: 1.35; }
+      .qd-card p { font-size: 10.8px; line-height: 1.42; }
+      .qd-rodape { font-size: 10.5px; margin-top: 9px; }
+      .qd-kit { margin-top: 0; padding-top: 0; border-top: 0; break-before: page; page-break-before: always; }
     }
   </style>
 </head>
@@ -361,12 +393,16 @@
         ║  conferência aberta e são alteradas na aba Edição:           ║
         ║    as frentes do sumo conselho (Parte 4)                     ║
         ║    o cronograma de tarefas (Apêndice A)                      ║
+        ║                                                              ║
+        ║  Os modelos em Word ficam na pasta modelos/ do site.         ║
+        ║  Para trocar um modelo, suba um arquivo com o mesmo          ║
+        ║  nome nessa pasta.                                           ║
         ╚══════════════════════════════════════════════════════════════╝
         -->
 
         <div class="cf-manual-topo">
           <div>
-            <p>Este manual reúne a organização padrão das conferências da Estaca Salvador Brasil Norte: o que acontece em cada momento, quem responde por cada item e quais prazos seguir. As agendas, a lista de chamados e as designações continuam sendo feitas nos modelos próprios de cada documento.</p>
+            <p>Este manual reúne a organização padrão das conferências da Estaca Salvador Brasil Norte: o que acontece em cada momento, quem responde por cada item e quais prazos seguir. As agendas e os anexos são feitos nos modelos em Word, que podem ser baixados nas Partes 2 e 3.</p>
             <p>Os responsáveis aparecem pelo chamado, e não pelo nome, para que o manual continue valendo quando houver mudanças. Os nomes de cada conferência, as tarefas, os prazos e as frentes do sumo conselho são preenchidos na aba Edição.</p>
           </div>
           <button type="button" class="cf-btn cf-imprimir" id="cf-imprimir">
@@ -391,10 +427,10 @@
                 <tr><td class="cf-nw">15h às 17h</td><td>Sessão de Liderança</td><td>Projetor e microfones</td></tr>
                 <tr><td class="cf-nw">18h às 20h</td><td>Sessão para Membros Adultos</td><td>Projetor, microfones e transmissão para Cajazeiras</td></tr>
                 <tr class="cf-tab-grupo"><td colspan="3">Domingo</td></tr>
-                <tr><td class="cf-nw">8h30 às 9h30</td><td>Desjejum com Recém-Conversos</td><td>Presidência da Sociedade de Socorro</td></tr>
-                <tr><td class="cf-nw">10h às 12h</td><td>Sessão Geral</td><td>Transmissão para Cajazeiras</td></tr>
-                <tr><td class="cf-nw">12h</td><td>Designações e ordenações</td><td>Presidência da Estaca</td></tr>
-                <tr><td class="cf-nw">Em seguida</td><td>Reunião de Alinhamento</td><td>Presidência da Estaca e secretários</td></tr>
+                <tr><td class="cf-nw">8h30 às 9h30</td><td>Desjejum com Recém-Conversos</td><td>Sala do Instituto</td></tr>
+                <tr><td class="cf-nw">10h às 12h</td><td>Sessão Geral</td><td>Transmissão para Cajazeiras e para o Instituto</td></tr>
+                <tr><td class="cf-nw">12h</td><td>Designações e ordenações</td><td>Sala do sumo conselho</td></tr>
+                <tr><td class="cf-nw">Em seguida</td><td>Reunião de Alinhamento</td><td>Sala da presidência da estaca</td></tr>
               </tbody>
             </table>
             <ul>
@@ -402,7 +438,7 @@
               <li>O Presidente da Estaca coordena toda a conferência. Horários e formatos podem ser ajustados pela presidência a cada edição.</li>
             </ul>
             <h4>Reunião de Alinhamento</h4>
-            <p>Acontece no próprio domingo, logo após as designações e ordenações, com a presidência da estaca e os secretários. Quando uma autoridade geral preside a conferência, a reunião é feita com ela.</p>
+            <p>Acontece no próprio domingo, na sala da presidência da estaca, logo após as designações e ordenações, com a presidência da estaca e os secretários. Quando uma autoridade geral preside a conferência, a reunião é feita com ela.</p>
             <p>Pauta fixa: o que funcionou, o que precisa melhorar e o que ajustar neste manual.</p>
           </div>
         </details>
@@ -411,21 +447,30 @@
         <details class="cf-sec">
           <summary>
             <span class="cf-sec-num">2</span>
-            <span class="cf-sec-tit">Agendas<small>Quem define cada item das três sessões</small></span>
+            <span class="cf-sec-tit">Agendas<small>Quem preside, quem dirige e quem define cada item</small></span>
             <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
           <div class="cf-sec-corpo">
-            <p>Cada sessão tem a sua agenda, montada pelo Secretário da Estaca nos modelos próprios. O rascunho segue para revisão da presidência uma semana antes, e a impressão é feita na véspera.</p>
+            <p>Cada sessão tem a sua agenda, montada pelo Secretário da Estaca a partir dos modelos abaixo. O rascunho segue para revisão da presidência uma semana antes, e a impressão é feita na véspera.</p>
+            <h4>Quem preside e quem dirige</h4>
+            <table class="cf-tab">
+              <thead><tr><th>Sessão</th><th>Preside</th><th>Dirige</th></tr></thead>
+              <tbody>
+                <tr><td>Sábado 15h, Liderança</td><td>Presidente da Estaca ou autoridade geral</td><td>Um conselheiro da estaca</td></tr>
+                <tr><td>Sábado 18h, Adultos</td><td>Presidente da Estaca ou autoridade geral</td><td>Um conselheiro da estaca</td></tr>
+                <tr><td>Domingo 10h, Sessão Geral</td><td>Presidente da Estaca ou autoridade geral</td><td>Presidente da Estaca</td></tr>
+              </tbody>
+            </table>
             <h4>Quem define cada item</h4>
             <table class="cf-tab">
               <thead><tr><th>Item</th><th>Responsável</th></tr></thead>
               <tbody>
-                <tr><td>Quem preside e quem dirige</td><td>Presidente da Estaca</td></tr>
+                <tr><td>Qual conselheiro dirige cada sessão de sábado</td><td>Presidente da Estaca</td></tr>
                 <tr><td>Discursantes, temas e tempo</td><td>1º Conselheiro</td></tr>
                 <tr><td>Testemunhos</td><td>1º Conselheiro</td></tr>
                 <tr><td>Orações inicial e final</td><td>2º Conselheiro</td></tr>
                 <tr><td>Hinos, regente, pianista e coro</td><td>Líder de Música da Estaca, que repassa ao conselheiro responsável pela música</td></tr>
-                <tr><td>Apoios e desobrigações</td><td>Conselheiro designado em cada conferência</td></tr>
+                <tr><td>Apoios e desobrigações</td><td>Montados pela estaca no anexo do Secretário da Estaca e lidos na Sessão Geral por um conselheiro designado</td></tr>
                 <tr><td>Convites</td><td>Secretário da Estaca prepara e Secretário Executivo envia</td></tr>
                 <tr><td>Montagem e impressão</td><td>Secretário da Estaca</td></tr>
                 <tr><td>Frequência</td><td>Sumo Conselho, na frente de frequência</td></tr>
@@ -441,11 +486,26 @@
               <li>Oração inicial e oração final</li>
               <li>Discursantes, testemunhos ou apresentações, com tema e tempo</li>
               <li>Na Sessão Geral, apoios, desobrigações e ordenações em anexo</li>
-              <li>Frequência ao final</li>
+              <li>Frequência ao final, separada por local: capela, Cajazeiras, Instituto e Zoom</li>
             </ul>
             <h4>Formato das sessões</h4>
             <p>A Sessão de Liderança pode seguir formatos diferentes, como discursos, apresentações ou debates. A ordem dos itens também pode mudar de uma sessão para outra. O essencial é definir quem vai falar e quanto tempo cada um terá.</p>
             <div class="cf-nota">Discursantes e testemunhos recebem o convite com pelo menos 1 mês de antecedência, para terem tempo de se preparar.</div>
+            <h4>Modelos para baixar</h4>
+            <div class="cf-modelos">
+              <a class="cf-modelo" href="modelos/agenda-sessao-lideranca.docx" download>
+                <svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 18v-6M9 15l3 3 3-3"/></svg>
+                <span>Agenda da Sessão de Liderança<small>Sábado, 15h · Word</small></span>
+              </a>
+              <a class="cf-modelo" href="modelos/agenda-sessao-adultos.docx" download>
+                <svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 18v-6M9 15l3 3 3-3"/></svg>
+                <span>Agenda da Sessão para Membros Adultos<small>Sábado, 18h · Word</small></span>
+              </a>
+              <a class="cf-modelo" href="modelos/agenda-sessao-geral.docx" download>
+                <svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 18v-6M9 15l3 3 3-3"/></svg>
+                <span>Agenda da Sessão Geral<small>Domingo, 10h · Word</small></span>
+              </a>
+            </div>
           </div>
         </details>
 
@@ -457,7 +517,17 @@
             <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
           <div class="cf-sec-corpo">
-            <p>O Secretário da Estaca prepara a lista, fecha duas semanas antes da conferência e registra tudo no sistema na semana seguinte.</p>
+            <h4>Chamados e desobrigações</h4>
+            <p>São definidos pela presidência da estaca e precisam estar prontos duas semanas antes da conferência. O Secretário da Estaca monta o anexo com os nomes.</p>
+            <h4>Ordenações</h4>
+            <table class="cf-tab">
+              <thead><tr><th>Quando</th><th>O que acontece</th><th>Responsável</th></tr></thead>
+              <tbody>
+                <tr><td class="cf-nw">2 meses antes</td><td>Levantar com os bispados e os presidentes de quórum os irmãos que podem ser ordenados. Esse tempo serve para prepará-los.</td><td>Secretário Executivo</td></tr>
+                <tr><td class="cf-nw">2 semanas antes</td><td>Todos entrevistados, com a situação de cada um: preparado ou não.</td><td>Secretário Executivo</td></tr>
+                <tr><td class="cf-nw">2 semanas antes</td><td>Montar o anexo com os nomes de cada irmão.</td><td>Secretário da Estaca</td></tr>
+              </tbody>
+            </table>
             <h4>Conteúdo do anexo</h4>
             <ul>
               <li>Desobrigações: nome, ala e chamado</li>
@@ -465,11 +535,22 @@
               <li>Ordenações ao Sacerdócio de Melquisedeque, separadas por ofício (élder e sumo sacerdote) e por ala</li>
             </ul>
             <h4>Na Sessão Geral</h4>
-            <p>Os apoios e desobrigações são conduzidos por um conselheiro da presidência, designado pelo Presidente da Estaca em cada conferência.</p>
+            <p>Um dos conselheiros, designado pelo Presidente da Estaca, lê os apoios, as desobrigações e as ordenações.</p>
             <h4>Conferência cruzada</h4>
             <p>Todo irmão chamado ao sumo conselho que ainda não é sumo sacerdote precisa constar também na lista de ordenações a esse ofício.</p>
             <h4>Logo após a Sessão Geral</h4>
-            <p>A presidência da estaca designa os novos chamados e os irmãos escolhidos realizam as ordenações. A equipe de arrumação deixa uma sala reservada para isso. Em seguida acontece a Reunião de Alinhamento.</p>
+            <p>A presidência da estaca designa os novos chamados e os irmãos escolhidos realizam as ordenações, normalmente na sala do sumo conselho. Em seguida, a Reunião de Alinhamento acontece na sala da presidência da estaca.</p>
+            <h4>Modelos para baixar</h4>
+            <div class="cf-modelos">
+              <a class="cf-modelo" href="modelos/anexo-chamados-desobrigacoes.docx" download>
+                <svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 18v-6M9 15l3 3 3-3"/></svg>
+                <span>Anexo de Chamados e Desobrigações<small>Sessão Geral · Word</small></span>
+              </a>
+              <a class="cf-modelo" href="modelos/anexo-ordenacoes.docx" download>
+                <svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 18v-6M9 15l3 3 3-3"/></svg>
+                <span>Anexo de Ordenações ao Sacerdócio<small>Sessão Geral · Word</small></span>
+              </a>
+            </div>
           </div>
         </details>
 
@@ -482,8 +563,83 @@
           </summary>
           <div class="cf-sec-corpo">
             <p>As frentes de logística são designações do Sumo Conselho, definidas pelo Presidente da Estaca oito semanas antes. Os sumo conselheiros de cada frente podem convidar outros irmãos e irmãs para ajudar.</p>
+            <div class="cf-nota"><strong>Regra de todas as frentes:</strong> o sumo conselheiro responsável garante que a frente funcione mesmo sem a presença dele. Se não puder estar presente, designa outra pessoa para fazer e avisa a presidência da estaca.</div>
             <p>Os nomes de cada conferência ficam na aba Sumo Conselho, de onde sai o quadro em PDF para enviar no grupo.</p>
             <div id="cf-manual-frentes"></div>
+
+            <h4>Mensagem da frequência</h4>
+            <p>A frente de frequência envia no grupo de WhatsApp da organização, ao fim de cada sessão, uma mensagem neste formato:</p>
+            <pre class="cf-msg">Frequência · Sessão Geral
+Capela:
+Cajazeiras:
+Instituto:
+Zoom:
+Total: </pre>
+            <p>Cajazeiras recebe a transmissão no sábado às 18h e no domingo, e o Instituto no domingo. Em cada local, alguém designado passa a contagem. O número do Zoom é informado pelo Especialista de Tecnologia.</p>
+
+            <h4>Kit de primeiros socorros</h4>
+            <p>A frente de primeiros socorros confere antes da conferência se o kit tem todos os itens, dentro da validade.</p>
+            <div class="cf-kit" id="cf-kit-lista">
+              <div class="cf-kit-grupo">
+                <h5>Curativos e limpeza</h5>
+                <ul class="cf-checklist">
+                  <li>Curativos adesivos variados</li>
+                  <li>Gaze estéril</li>
+                  <li>Ataduras de crepom</li>
+                  <li>Fita microporosa ou esparadrapo</li>
+                  <li>Soro fisiológico 0,9%</li>
+                  <li>Tesoura sem ponta</li>
+                  <li>Pinça</li>
+                </ul>
+              </div>
+              <div class="cf-kit-grupo">
+                <h5>Proteção e higiene</h5>
+                <ul class="cf-checklist">
+                  <li>Luvas descartáveis</li>
+                  <li>Máscaras descartáveis</li>
+                  <li>Álcool em gel</li>
+                  <li>Papel-toalha</li>
+                  <li>Sacos para descarte de materiais usados</li>
+                  <li>Absorventes menstruais externos</li>
+                  <li>Protetores diários</li>
+                  <li>Lenços de papel</li>
+                  <li>Lenços umedecidos sem perfume</li>
+                </ul>
+              </div>
+              <div class="cf-kit-grupo">
+                <h5>Equipamentos de atendimento</h5>
+                <ul class="cf-checklist">
+                  <li>Aparelho digital de pressão arterial de braço</li>
+                  <li>Termômetro digital</li>
+                  <li>Oxímetro</li>
+                  <li>Aparelho de glicemia e insumos (opcional)</li>
+                  <li>Lanternas</li>
+                </ul>
+              </div>
+              <div class="cf-kit-grupo">
+                <h5>Mal-estar e pequenos acidentes</h5>
+                <ul class="cf-checklist">
+                  <li>Bolsas de gelo instantâneo</li>
+                  <li>Sais de reidratação oral</li>
+                </ul>
+              </div>
+              <div class="cf-kit-grupo">
+                <h5>Medicamentos</h5>
+                <ul class="cf-checklist">
+                  <li>Dipirona</li>
+                  <li>Antialérgico</li>
+                  <li>Antiácido</li>
+                </ul>
+              </div>
+              <div class="cf-kit-grupo">
+                <h5>Materiais complementares</h5>
+                <ul class="cf-checklist">
+                  <li>Estojo ou maleta organizadora de primeiros socorros</li>
+                  <li>Identificação do local de atendimento</li>
+                  <li>Lista de telefones de emergência, incluindo o SAMU (192)</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </details>
 
@@ -497,75 +653,95 @@
           <div class="cf-sec-corpo">
             <h4>Tecnologia por sessão</h4>
             <table class="cf-tab">
-              <thead><tr><th>Sessão</th><th>Projetor e microfones</th><th>Transmissão</th></tr></thead>
+              <thead><tr><th>Sessão</th><th>Projetor e microfones</th><th>Transmissão pelo Zoom</th></tr></thead>
               <tbody>
                 <tr><td>Sábado 15h, Liderança</td><td>Sim</td><td>Não</td></tr>
-                <tr><td>Sábado 18h, Adultos</td><td>Sim</td><td>Sim, para Cajazeiras</td></tr>
-                <tr><td>Domingo 10h, Sessão Geral</td><td>Não</td><td>Sim, para Cajazeiras</td></tr>
+                <tr><td>Sábado 18h, Adultos</td><td>Sim</td><td>Cajazeiras</td></tr>
+                <tr><td>Domingo 10h, Sessão Geral</td><td>Não</td><td>Cajazeiras e Instituto</td></tr>
               </tbody>
             </table>
+            <p>Além das capelas, pessoas podem assistir de casa pelo Zoom. O Especialista de Tecnologia informa quantas assistiram à frente de frequência.</p>
 
             <h4>Responsáveis</h4>
             <ul>
-              <li><strong>Especialista de Tecnologia:</strong> organiza a transmissão, gera o link Zoom e compra os materiais de tecnologia</li>
+              <li><strong>Especialista de Tecnologia:</strong> organiza a transmissão, gera o link Zoom, combina o teste com Cajazeiras, compra os materiais de tecnologia e informa a contagem do Zoom</li>
               <li><strong>Secretário Adjunto:</strong> auxilia o Especialista de Tecnologia</li>
-              <li><strong>Sumo Conselho:</strong> frente de Auxílio à Tecnologia durante as sessões</li>
+              <li><strong>Sumo Conselho:</strong> 2 pessoas com os microfones sem fio nas sessões de sábado, para quando o discursante pedir a participação da congregação</li>
               <li><strong>Bispado e secretário da Ala Cajazeiras:</strong> recebem o link Zoom e garantem que tudo funcione na capela de Cajazeiras</li>
+              <li><strong>Sala do Instituto:</strong> fica pronta às 9h30 de domingo, depois do desjejum, para a equipe de tecnologia testar a transmissão</li>
             </ul>
 
             <h4>Equipamentos</h4>
             <ul class="cf-checklist">
-              <li>Projetor e tela</li>
               <li>Notebook com carregador</li>
-              <li>Cabo HDMI e adaptadores</li>
-              <li>Cabos P2 x P10 e P10 x P10</li>
+              <li>Interface de áudio M-Track</li>
+              <li>Cabo USB tipo impressora, para ligar a M-Track</li>
+              <li>Cabos P10 x P10</li>
+              <li>Cabo P2 x P10, para o áudio do notebook</li>
               <li>Mesa de som</li>
-              <li>Interface de áudio e cabo de linha</li>
-              <li>Microfones e pedestais</li>
-              <li>Pilhas reserva</li>
+              <li>Celular com Iriun Webcam, ou celular para entrar no Zoom</li>
+              <li>Projetor, tela e cabo HDMI</li>
+              <li>Microfones sem fio e pilhas reserva</li>
               <li>Extensões e filtro de linha</li>
-              <li>Internet da capela e celular reserva para roteamento</li>
             </ul>
 
-            <h4>Caminho do som na transmissão</h4>
-            <div class="cf-fluxo" aria-label="Microfones, mesa de som, interface de áudio, notebook, Zoom, capela de Cajazeiras">
-              <span>Microfones</span>
+            <h4>Como montar a transmissão</h4>
+            <ol class="cf-passos">
+              <li>Na edícula, procure um ponto de saída: o "Saída transmissão" ou qualquer ponto sem cabo que tenha o nome "saída".</li>
+              <li>Ligue um cabo P10 x P10 nesse ponto e conecte numa entrada da mesa de som.</li>
+              <li>De uma saída da mesa de som, envie o sinal para a interface de áudio M-Track.</li>
+              <li>Ligue a M-Track ao notebook com o cabo USB tipo impressora.</li>
+              <li>No Zoom, em Áudio, escolha a M-Track como microfone e o alto-falante padrão do notebook como alto-falante. Não use Iriun Webcam nem M-Track como alto-falante.</li>
+              <li>Para o vídeo, use o Iriun Webcam ou outro aplicativo que transforma o celular em webcam.</li>
+            </ol>
+            <div class="cf-fluxo" aria-label="Saída da edícula, mesa de som, M-Track, notebook, Zoom, Cajazeiras e Instituto">
+              <span>Saída da edícula</span>
               <i><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i>
               <span>Mesa de som</span>
               <i><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i>
-              <span>Interface de áudio</span>
+              <span>M-Track</span>
               <i><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i>
               <span>Notebook</span>
               <i><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i>
               <span>Zoom</span>
               <i><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></i>
-              <span class="destino">Capela de Cajazeiras</span>
+              <span class="destino">Cajazeiras e Instituto</span>
             </div>
+
+            <h4>Jeito mais simples para o vídeo</h4>
+            <p>Entre na reunião do Zoom também pelo celular, com a câmera ligada e o áudio desligado. Assim o áudio vai pelo notebook e o vídeo pelo celular.</p>
+            <div class="cf-nota">O Zoom põe em destaque quem está com o áudio ligado. Use a opção "Destacar para todos" no vídeo do celular, para que ele apareça para todos.</div>
+
+            <h4>Vídeo ou áudio do notebook na capela</h4>
+            <p>Ligue o cabo P2 x P10 do notebook no púlpito. Como há apenas uma entrada, é preciso revezar entre o áudio do notebook e o microfone.</p>
+
+            <h4>Se algo der errado</h4>
+            <ul>
+              <li>Voz estranha ou falha no áudio: tire e coloque de novo o cabo USB, tanto no notebook quanto na M-Track</li>
+              <li>Internet caiu: use um celular reserva como roteador</li>
+              <li>Microfone sem som: troque as pilhas ou use o microfone reserva</li>
+              <li>Mantenha contato pelo WhatsApp entre a capela, Cajazeiras e o Instituto durante as sessões</li>
+            </ul>
 
             <h4>Testes</h4>
             <ul>
-              <li>Teste completo com Cajazeiras uma semana antes</li>
-              <li>No dia, teste de som e imagem uma hora antes de cada sessão: 14h e 17h no sábado, 9h no domingo</li>
-            </ul>
-
-            <h4>Plano B</h4>
-            <ul>
-              <li>Se a internet cair, usar o celular reserva como roteador</li>
-              <li>Microfone reserva com pilhas novas</li>
-              <li>Contato direto pelo WhatsApp entre a capela sede e Cajazeiras durante as sessões</li>
+              <li><strong>2 semanas antes:</strong> teste de todos os equipamentos, para dar tempo de comprar o que faltar</li>
+              <li><strong>Pelo menos 1 semana antes:</strong> teste com Cajazeiras, no dia e horário combinados com o secretário da ala</li>
+              <li><strong>No dia:</strong> 14h e 17h no sábado; no domingo, 9h com Cajazeiras e 9h30 na sala do Instituto</li>
             </ul>
 
             <h4>Materiais complementares</h4>
-            <p>O Secretário Adjunto compra todos os materiais de uma vez, uma semana antes. O gelo é comprado no próprio dia. Copos e papéis ficam com a frente de Limpeza do Sumo Conselho.</p>
+            <p>O Secretário Adjunto compra todos os materiais de uma vez, uma semana antes. O gelo é comprado no próprio dia.</p>
             <ul class="cf-checklist">
               <li>Água para quem estiver no púlpito</li>
+              <li>Copos descartáveis</li>
               <li>Gelo para o cooler</li>
               <li>Lenços</li>
               <li>Pilhas</li>
               <li>Pilotos</li>
               <li>Quadro branco</li>
             </ul>
-            <div class="cf-nota">O Secretário da Estaca reembolsa as compras mediante comprovante.</div>
+            <div class="cf-nota">Papel higiênico e papel toalha são fornecidos pela manutenção da capela. As equipes de limpeza e arrumação precisam saber onde ficam guardados. O Secretário da Estaca reembolsa as compras mediante comprovante.</div>
           </div>
         </details>
 
@@ -573,11 +749,11 @@
         <details class="cf-sec">
           <summary>
             <span class="cf-sec-num">6</span>
-            <span class="cf-sec-tit">Desjejum com Recém-Conversos<small>Domingo, das 8h30 às 9h30</small></span>
+            <span class="cf-sec-tit">Desjejum com Recém-Conversos<small>Domingo, das 8h30 às 9h30, na sala do Instituto</small></span>
             <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
           <div class="cf-sec-corpo">
-            <p>Organizado pela Presidência da Sociedade de Socorro, antes da Sessão Geral.</p>
+            <p>Organizado pela presidência da estaca com a Presidência da Sociedade de Socorro da estaca, na sala do Instituto, antes da Sessão Geral.</p>
             <h4>Convidados</h4>
             <ul>
               <li>Recém-conversos dos últimos 12 meses</li>
@@ -589,9 +765,11 @@
             <table class="cf-tab">
               <thead><tr><th>Item</th><th>Responsável</th></tr></thead>
               <tbody>
-                <tr><td>Lista de recém-conversos, convite e transporte</td><td>Bispados de cada ala</td></tr>
-                <tr><td>Convite ao presidente de missão e à presidência do templo</td><td>Secretário da Estaca prepara e Secretário Executivo envia</td></tr>
-                <tr><td>Cardápio, utensílios, equipe e local</td><td>Presidência da Sociedade de Socorro</td></tr>
+                <tr><td>Convite ao presidente de missão e à presidência do templo</td><td>Secretário da Estaca prepara e Presidente da Estaca envia</td></tr>
+                <tr><td>Convite aos recém-conversos</td><td>Secretário Executivo envia no grupo dos bispos, que divulgam nas alas</td></tr>
+                <tr><td>Lista de recém-conversos e transporte</td><td>Bispados de cada ala</td></tr>
+                <tr><td>Uso da sala do Instituto</td><td>Presidência da estaca, alinhado com o diretor do Instituto duas semanas antes</td></tr>
+                <tr><td>Cardápio, utensílios e equipe</td><td>Presidência da Sociedade de Socorro</td></tr>
                 <tr><td>Reembolso das compras</td><td>Secretário da Estaca, mediante comprovante</td></tr>
               </tbody>
             </table>
@@ -599,7 +777,7 @@
             <ul>
               <li>Contagem de convidados confirmada com os bispados duas semanas antes</li>
               <li>Mesas e utensílios prontos antes das 8h30: toalhas, pratos, copos, talheres, guardanapos, garrafas térmicas e travessas</li>
-              <li>Sala liberada e limpa até 9h30, antes do prelúdio da Sessão Geral</li>
+              <li>A sala também recebe a transmissão da Sessão Geral. Ela precisa estar organizada e limpa às 9h30, para as pessoas chegarem e a equipe de tecnologia fazer os testes</li>
             </ul>
           </div>
         </details>
@@ -625,21 +803,21 @@
             <table class="cf-tab">
               <thead><tr><th>Chamado</th><th>Atribuições</th></tr></thead>
               <tbody>
-                <tr><td>Presidente da Estaca</td><td>Coordena a conferência, define quem preside, dirige e conduz os apoios, designa as frentes do sumo conselho e conduz a reunião de alinhamento</td></tr>
-                <tr><td>Presidência da Estaca</td><td>Revisa as agendas e designa os novos chamados logo após a Sessão Geral</td></tr>
+                <tr><td>Presidente da Estaca</td><td>Coordena a conferência, preside quando não há autoridade geral, dirige a Sessão Geral, escolhe os conselheiros que dirigem as sessões de sábado e leem os apoios, designa as frentes do sumo conselho, envia os convites do desjejum às autoridades e conduz a reunião de alinhamento</td></tr>
+                <tr><td>Presidência da Estaca</td><td>Fecha os chamados e desobrigações, alinha a sala com o diretor do Instituto, revisa as agendas e designa os novos chamados logo após a Sessão Geral</td></tr>
                 <tr><td>1º Conselheiro</td><td>Discursantes e testemunhos de todas as sessões</td></tr>
                 <tr><td>2º Conselheiro</td><td>Orações de todas as sessões</td></tr>
-                <tr><td>Conselheiro designado</td><td>Apoios, desobrigações e ordenações na Sessão Geral</td></tr>
+                <tr><td>Conselheiro designado</td><td>Lê os apoios, desobrigações e ordenações na Sessão Geral</td></tr>
                 <tr><td>Conselheiro responsável pela música</td><td>Recebe da líder de música e repassa ao Secretário da Estaca</td></tr>
                 <tr><td>Líder de Música da Estaca</td><td>Hinos, regente, pianista, coro e ensaios</td></tr>
-                <tr><td>Secretário da Estaca</td><td>Prepara os convites, monta e imprime as agendas, prepara a lista de chamados e ordenações, registra no sistema, consolida a frequência e faz os reembolsos</td></tr>
-                <tr><td>Secretário Executivo</td><td>Envia e confirma os convites</td></tr>
-                <tr><td>Secretário Adjunto</td><td>Compra todos os materiais complementares e auxilia a tecnologia</td></tr>
-                <tr><td>Especialista de Tecnologia</td><td>Transmissão, link Zoom, equipamentos e testes</td></tr>
+                <tr><td>Secretário da Estaca</td><td>Prepara os convites, monta e imprime as agendas, monta o anexo de chamados, desobrigações e ordenações, registra no sistema, consolida a frequência e faz os reembolsos</td></tr>
+                <tr><td>Secretário Executivo</td><td>Envia e confirma os convites, envia o convite do desjejum no grupo dos bispos, levanta as ordenações com os bispados e presidentes de quórum e acompanha as entrevistas</td></tr>
+                <tr><td>Secretário Adjunto</td><td>Compra todos os materiais complementares, inclusive os copos descartáveis, e auxilia a tecnologia</td></tr>
+                <tr><td>Especialista de Tecnologia</td><td>Transmissão para Cajazeiras e Instituto, link Zoom, equipamentos, testes e contagem de quem assistiu pelo Zoom</td></tr>
                 <tr><td>Sumo Conselho</td><td>As sete frentes de logística</td></tr>
-                <tr><td>Presidência da Sociedade de Socorro</td><td>Desjejum com recém-conversos</td></tr>
-                <tr><td>Bispados</td><td>Lista, convite e transporte dos recém-conversos</td></tr>
-                <tr><td>Bispado e secretário da Ala Cajazeiras</td><td>Recepção da transmissão na capela de Cajazeiras</td></tr>
+                <tr><td>Presidência da Sociedade de Socorro</td><td>Desjejum com recém-conversos, com a presidência da estaca</td></tr>
+                <tr><td>Bispados</td><td>Divulgação do desjejum nas alas, lista e transporte dos recém-conversos e levantamento das ordenações com o Secretário Executivo</td></tr>
+                <tr><td>Bispado e secretário da Ala Cajazeiras</td><td>Teste e recepção da transmissão na capela de Cajazeiras</td></tr>
               </tbody>
             </table>
           </div>
@@ -766,6 +944,7 @@
       let editando = null;
       let trocarAberto = false;
       let novaAberta = false;
+      let incluirKit = ler('cf_kit', true) !== false;
       let ix = null;
 
       const elApp = document.getElementById('cf-app');
@@ -1206,9 +1385,28 @@
           return '<article class="qd-card"><h3>' + esc(f.titulo) + '</h3><ul class="qd-nomes">' + nomesFrente + '</ul>' +
             (f.descricao ? '<p>' + esc(f.descricao) + '</p>' : '') + '</article>';
         }).join('') + '</div>' +
-          '<p class="qd-rodape">Cada frente pode convidar outros irmãos e irmãs para ajudar.</p></div>';
+          '<p class="qd-rodape">O sumo conselheiro garante que a frente funcione mesmo se não puder estar presente: nesse caso, designa outra pessoa e avisa a presidência da estaca.<br>Cada frente pode convidar outros irmãos e irmãs para ajudar.</p></div>';
         return s;
       }
+
+      // Página 2 do quadro: lista do kit, lida do texto do manual (Parte 4)
+      function htmlKit(c) {
+        const fonte = document.getElementById('cf-kit-lista');
+        if (!fonte) return '';
+        const grupos = Array.from(fonte.querySelectorAll('.cf-kit-grupo')).map(function (g) {
+          return { titulo: g.querySelector('h5').textContent, itens: Array.from(g.querySelectorAll('li')).map(function (li) { return li.textContent; }) };
+        });
+        const frente = frentesDe(c.id).filter(function (f) { return f.frente === 'fr-socorros'; })[0];
+        const resp = frente ? frente.chamados.map(function (id) { return pessoa(c.id, id) || nomeChamado(id); }).join(', ') : '';
+        return '<section class="qd qd-kit"><header class="qd-cab"><span class="qd-estaca">Estaca Salvador Brasil Norte</span>' +
+          '<h2 class="qd-titulo">Kit de primeiros socorros</h2>' +
+          '<p class="qd-sub">' + esc(c.nome) + (resp ? ' · Responsáveis: ' + esc(resp) : '') + '</p></header>' +
+          '<p class="qd-kit-intro">Conferir antes da conferência se todos os itens estão no kit e dentro da validade.</p>' +
+          '<div class="qd-kit-grade">' + grupos.map(function (g) {
+            return '<div class="qd-kit-grupo"><h3>' + esc(g.titulo) + '</h3><ul>' + g.itens.map(function (i) { return '<li>' + esc(i) + '</li>'; }).join('') + '</ul></div>';
+          }).join('') + '</div></section>';
+      }
+      function htmlImpressao(c) { return htmlQuadro(c) + (incluirKit ? htmlKit(c) : ''); }
 
       function htmlSumo(c) {
         const frentes = frentesDe(c.id);
@@ -1219,9 +1417,10 @@
           '<button type="button" class="cf-link" data-acao="ir-edicao" data-secao="nomes">Preencher nomes</button>' +
           '<button type="button" class="cf-link" data-acao="ir-edicao" data-secao="frentes">Editar frentes</button>' +
           '</div>' +
-          '<p class="cf-ajuda">Na janela que abrir, escolha "Salvar como PDF" para enviar no grupo, ou a impressora para imprimir em A4.</p>';
+          '<p class="cf-ajuda">Na janela que abrir, escolha "Salvar como PDF" para enviar no grupo, ou a impressora para imprimir em A4.</p>' +
+          '<label class="cf-check-linha cf-kit-opcao"><input type="checkbox" id="cf-incluir-kit"' + (incluirKit ? ' checked' : '') + '><span>Incluir a lista do kit de primeiros socorros na página 2</span></label>';
         if (faltam) s += '<p class="cf-faltam">' + (faltam === 1 ? '1 responsável ainda está sem nome' : faltam + ' responsáveis ainda estão sem nome') + '. No quadro, aparecem em cinza com o nome do chamado.</p>';
-        s += frentes.length ? '<div class="cf-papel">' + htmlQuadro(c) + '</div>' : '<div class="cf-vazio">Nenhuma frente cadastrada nesta conferência. Crie na aba Edição, em Sumo Conselho.</div>';
+        s += frentes.length ? '<div class="cf-papel">' + htmlImpressao(c) + '</div>' : '<div class="cf-vazio">Nenhuma frente cadastrada nesta conferência. Crie na aba Edição, em Sumo Conselho.</div>';
         return s;
       }
 
@@ -1470,7 +1669,7 @@
         } else {
           const c = confAtual();
           h += htmlCab(c);
-          if (aba === 'sumo') { h += htmlSumo(c); elQuadro.innerHTML = htmlQuadro(c); }
+          if (aba === 'sumo') { h += htmlSumo(c); elQuadro.innerHTML = htmlImpressao(c); }
           else if (aba === 'edicao') h += htmlEdicao(c);
           else h += htmlChecklist(c);
         }
@@ -1652,7 +1851,7 @@
             filtroResp = alvo.dataset.resp || ''; render();
             break;
           case 'imprimir-quadro':
-            if (c) { elQuadro.innerHTML = htmlQuadro(c); window.print(); }
+            if (c) { elQuadro.innerHTML = htmlImpressao(c); window.print(); }
             break;
           case 'ir-edicao':
             secao = alvo.dataset.secao || 'nomes'; editando = null; sujo = false;
@@ -1724,6 +1923,10 @@
           }
         } else if (el.id === 'ed-pun') {
           atualizarPrevia();
+        } else if (el.id === 'cf-incluir-kit') {
+          incluirKit = el.checked;
+          gravar('cf_kit', incluirKit);
+          render();
         }
       });
 
