@@ -21,7 +21,7 @@
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- Estilos próprios desta página (todos começam com cf-) -->
+  <!-- Estilos próprios desta página (todos começam com cf- ou qd-) -->
   <style>
     [hidden] { display: none !important; }
 
@@ -53,8 +53,9 @@
     .cf svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
 
     /* ----- Abas ----- */
-    .cf-abas { display: flex; gap: 28px; border-bottom: 1px solid var(--cf-g200); margin-bottom: 28px; }
-    .cf-aba { appearance: none; background: none; border: 0; border-bottom: 2px solid transparent; margin: 0 0 -1px; padding: 12px 2px; font-size: 15px; font-weight: 500; color: var(--cf-g600); cursor: pointer; }
+    .cf-abas { display: flex; gap: 28px; border-bottom: 1px solid var(--cf-g200); margin-bottom: 24px; overflow-x: auto; scrollbar-width: none; }
+    .cf-abas::-webkit-scrollbar { display: none; }
+    .cf-aba { flex-shrink: 0; appearance: none; background: none; border: 0; border-bottom: 2px solid transparent; margin: 0 0 -1px; padding: 12px 2px; font-size: 15px; font-weight: 500; color: var(--cf-g600); cursor: pointer; white-space: nowrap; }
     .cf-aba:hover { color: var(--cf-navy); }
     .cf-aba.ativa { color: var(--cf-navy); font-weight: 600; border-bottom-color: var(--cf-gold); }
 
@@ -63,34 +64,41 @@
     .cf-btn:hover { background: var(--cf-navy); color: #FFFFFF; }
     .cf-btn-sol { background: var(--cf-navy); color: #FFFFFF; }
     .cf-btn-sol:hover { background: var(--cf-navy-esc); border-color: var(--cf-navy-esc); }
+    .cf-btn-perigo { border-color: var(--cf-atr); color: var(--cf-atr); }
+    .cf-btn-perigo:hover { background: var(--cf-atr); border-color: var(--cf-atr); color: #FFFFFF; }
     .cf-btn:disabled { opacity: .6; cursor: default; }
     .cf-btn svg { width: 16px; height: 16px; }
     .cf-btn-peq { padding: 7px 14px; font-size: 13px; }
-    .cf-link { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 0; color: var(--cf-navy); font-size: 13px; font-weight: 600; cursor: pointer; text-decoration: underline; text-decoration-color: var(--cf-g200); text-underline-offset: 3px; }
+    .cf-link { display: inline-flex; align-items: center; gap: 6px; background: none; border: 0; padding: 0; color: var(--cf-navy); font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: underline; text-decoration-color: var(--cf-g200); text-underline-offset: 3px; }
     .cf-link:hover { text-decoration-color: var(--cf-gold); }
+    .cf-link svg { width: 15px; height: 15px; }
     .cf-icone-btn { display: inline-flex; background: none; border: 0; padding: 4px; margin: -4px -6px -4px 0; color: inherit; cursor: pointer; border-radius: 4px; }
     .cf-icone-btn svg { width: 15px; height: 15px; }
 
     /* ----- Cartões e campos ----- */
     .cf-card { background: #FFFFFF; border: 1px solid var(--cf-g200); border-radius: 10px; padding: 22px; }
     .cf-card h3 { font-size: 19px; margin-bottom: 6px; }
+    .cf-card h4 { font-size: 17px; margin-bottom: 4px; }
     .cf-campos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+    .cf-campo { margin-top: 14px; }
+    .cf-campos .cf-campo { margin-top: 0; }
     .cf-campo label { display: block; font-size: 13px; font-weight: 600; color: var(--cf-g600); margin-bottom: 6px; }
-    .cf-campo input, .cf-campo select, .cf textarea {
+    .cf-campo input, .cf-campo select, .cf textarea, .cf-resp-linha select, .cf-nome-row input {
       width: 100%; font-size: 16px; color: var(--cf-texto); background: #FFFFFF;
       border: 1px solid var(--cf-g200); border-radius: 6px; padding: 10px 12px; margin: 0;
     }
     .cf input:focus, .cf select:focus, .cf textarea:focus { outline: 2px solid rgba(184, 147, 74, .35); outline-offset: 1px; border-color: var(--cf-gold); }
-    .cf textarea { display: block; resize: vertical; min-height: 84px; line-height: 1.5; }
-    .cf-ajuda { font-size: 13px; color: var(--cf-g600); margin-top: 10px; }
-    .cf-erro { font-size: 13px; color: var(--cf-atr); margin-top: 12px; }
+    .cf textarea { display: block; resize: vertical; min-height: 64px; line-height: 1.5; }
+    .cf-ajuda { font-size: 13px; color: var(--cf-g600); margin-top: 10px !important; }
+    .cf-erro { font-size: 13px; color: var(--cf-atr); margin-top: 12px !important; }
     .cf-erro:empty { display: none; }
-    .cf-acoes { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+    .cf-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 16px; }
+    .cf-vazio { text-align: center; color: var(--cf-g600); font-size: 14px; padding: 32px 20px; margin-top: 20px; border: 1px dashed var(--cf-g200); border-radius: 10px; }
+    .cf-alerta { background: var(--cf-atr-bg); color: var(--cf-atr); border-radius: 8px; padding: 14px 16px; font-size: 14px; }
 
     /* ----- Entrada ----- */
     .cf-login { max-width: 420px; margin: 8px auto 0; }
     .cf-login > p { font-size: 14px; color: var(--cf-g600); }
-    .cf-login .cf-campo { margin-top: 18px; }
     .cf-login .cf-btn { width: 100%; margin-top: 20px; }
     .cf-carregando { text-align: center; color: var(--cf-g600); font-size: 14px; padding: 48px 20px; }
 
@@ -101,8 +109,6 @@
     .cf-status-ok { color: var(--cf-ok); }
     .cf-status-salvando { color: var(--cf-breve); }
     .cf-status-erro { color: var(--cf-atr); background: var(--cf-atr-bg); border-color: transparent; }
-    .cf-alerta { background: var(--cf-atr-bg); color: var(--cf-atr); border-radius: 8px; padding: 14px 16px; font-size: 14px; margin-bottom: 20px; }
-    .cf-alerta ul { margin: 6px 0 0; padding-left: 18px; }
 
     /* ----- Cabeçalho da conferência ----- */
     .cf-cab { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
@@ -113,17 +119,18 @@
     .cf-trocar svg { width: 15px; height: 15px; transition: transform .2s; }
     .cf-trocar.aberto svg { transform: rotate(180deg); }
     .cf-trocar-painel { margin-top: 14px; padding: 6px 0 18px; }
+    .cf-trocar-painel .cf-form-nova { padding: 12px 18px 0; }
     .cf-confs { list-style: none; margin: 0; padding: 0; }
-    .cf-confs a { position: relative; display: flex; flex-direction: column; gap: 2px; padding: 12px 18px; color: var(--cf-texto); text-decoration: none; border-bottom: 1px solid var(--cf-g100); }
-    .cf-confs a:hover { background: var(--cf-g50); }
-    .cf-confs a.atual { color: var(--cf-navy); font-weight: 600; }
-    .cf-confs a.atual::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; background: var(--cf-gold); }
-    .cf-confs small { flex-shrink: 0; font-size: 13px; font-weight: 400; color: var(--cf-g600); }
-    .cf-trocar-painel .cf-acoes { padding: 0 18px; align-items: center; }
-    .cf-trocar-painel .cf-link { margin-left: auto; }
-    .cf-form { margin-top: 16px; }
+    .cf-confs button { position: relative; display: flex; flex-direction: column; gap: 2px; width: 100%; appearance: none; background: none; border: 0; border-bottom: 1px solid var(--cf-g100); padding: 12px 18px; text-align: left; font-size: 15px; color: var(--cf-texto); cursor: pointer; }
+    .cf-confs button:hover { background: var(--cf-g50); }
+    .cf-confs button.atual { color: var(--cf-navy); font-weight: 600; }
+    .cf-confs button.atual::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; background: var(--cf-gold); }
+    .cf-confs small { font-size: 13px; font-weight: 400; color: var(--cf-g600); }
+    .cf-trocar-painel > .cf-acoes { padding: 0 18px; }
+    .cf-trocar-painel > .cf-acoes .cf-link { margin-left: auto; }
+    .cf-form-nova h3 { font-size: 19px; }
 
-    /* ----- Progresso e filtro por chamado ----- */
+    /* ----- Progresso e faixas de botões ----- */
     .cf-prog { margin: 22px 0 16px; }
     .cf-prog-nums { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; font-size: 13px; color: var(--cf-g600); }
     .cf-prog-nums .atr { color: var(--cf-atr); font-weight: 600; }
@@ -134,6 +141,7 @@
     .cf-chip { flex: 0 0 auto; appearance: none; background: #FFFFFF; border: 1px solid var(--cf-g200); color: var(--cf-g600); font-size: 13px; font-weight: 500; padding: 7px 13px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
     .cf-chip:hover { border-color: var(--cf-navy); color: var(--cf-navy); }
     .cf-chip.ativo { background: var(--cf-navy); border-color: var(--cf-navy); color: #FFFFFF; }
+    .cf-secoes { margin-top: 20px; }
 
     /* ----- Checklist ----- */
     .cf-grupo { margin-top: 26px; }
@@ -152,12 +160,76 @@
     .cf-item-txt { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
     .cf-item-tarefa { font-size: 15px; line-height: 1.45; }
     .cf-item-resp { font-size: 12.5px; color: var(--cf-g600); }
+    .cf-item-resp b, .cf-ed-sub b { font-weight: 600; color: var(--cf-navy); }
     .cf-item.feita .cf-item-tarefa { color: var(--cf-g600); text-decoration: line-through; text-decoration-color: rgba(91, 101, 115, .5); }
-    .cf-vazio { text-align: center; color: var(--cf-g600); font-size: 14px; padding: 36px 20px; margin-top: 24px; border: 1px dashed var(--cf-g200); border-radius: 10px; }
 
-    @media (min-width: 700px) {
-      .cf-chips { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; }
-    }
+    /* ----- Edição ----- */
+    .cf-intro { font-size: 14px; color: var(--cf-g600); max-width: 680px; margin: 18px 0 16px !important; }
+    .cf-ed-novo { margin-bottom: 4px; }
+    .cf-ed-lista { margin-top: 14px; border-top: 1px solid var(--cf-g200); }
+    .cf-ed-row { display: flex; align-items: center; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--cf-g100); }
+    .cf-setas { display: flex; flex-direction: column; flex-shrink: 0; }
+    .cf-setas button { appearance: none; background: none; border: 0; padding: 2px 4px; color: var(--cf-g600); cursor: pointer; line-height: 0; border-radius: 4px; }
+    .cf-setas button:hover { color: var(--cf-navy); background: var(--cf-g50); }
+    .cf-setas button:disabled { visibility: hidden; }
+    .cf-setas svg { width: 17px; height: 17px; }
+    .cf-ed-txt { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+    .cf-ed-titulo { font-size: 15px; line-height: 1.4; }
+    .cf-ed-sub { font-size: 12.5px; color: var(--cf-g600); }
+    .cf-lapis { flex-shrink: 0; padding: 8px; margin: 0; color: var(--cf-g600); }
+    .cf-lapis:hover { color: var(--cf-navy); background: var(--cf-g50); }
+    .cf-lapis svg { width: 17px; height: 17px; }
+    .cf-ed-form { margin: 12px 0; border-color: var(--cf-navy); }
+    .cf-ed-form .cf-btn-perigo { margin-left: auto; }
+    .cf-resps { display: grid; gap: 8px; }
+    .cf-resp-linha { display: flex; gap: 6px; align-items: center; }
+    .cf-resp-linha .cf-icone-btn { margin: 0; padding: 8px; color: var(--cf-g600); }
+    .cf-resp-linha .cf-icone-btn svg { width: 17px; height: 17px; }
+    .cf-add { margin-top: 10px; }
+    .cf-quando { display: grid; grid-template-columns: 88px 1fr; gap: 10px; }
+    .cf-previa { font-size: 13px; color: var(--cf-g600); margin-top: 8px !important; }
+    .cf-check-linha { display: flex; gap: 10px; align-items: flex-start; font-size: 14px; cursor: pointer; }
+    .cf-check-linha input { flex-shrink: 0; width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--cf-navy); }
+    .cf-check-destaque { margin-top: 16px; }
+    .cf-ve { margin-top: 16px; border: 1px solid var(--cf-g200); border-radius: 8px; padding: 0 14px; }
+    .cf-ve summary { padding: 12px 0; font-size: 14px; font-weight: 600; color: var(--cf-navy); cursor: pointer; }
+    .cf-checks { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px 18px; padding: 2px 0 14px; }
+    .cf-nomes { border-top: 1px solid var(--cf-g200); }
+    .cf-nome-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 14px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--cf-g100); cursor: text; }
+    .cf-nome-row span { font-size: 14px; }
+    .cf-nome-row input { padding: 9px 11px; }
+    .cf-perigo { margin-top: 28px; padding-top: 22px; border-top: 1px solid var(--cf-g200); }
+    .cf-perigo h4 { font-size: 16px; color: var(--cf-atr); }
+    .cf-perigo p { font-size: 14px; color: var(--cf-g600); margin: 6px 0 14px !important; max-width: 560px; }
+
+    /* ----- Aba Sumo Conselho ----- */
+    .cf-sumo-acoes { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-top: 22px; }
+    .cf-faltam { margin-top: 14px !important; font-size: 13.5px; color: var(--cf-breve); background: var(--cf-breve-bg); border-radius: 6px; padding: 9px 12px; }
+    .cf-papel { margin-top: 18px; border: 1px solid var(--cf-g200); border-radius: 10px; padding: 28px; background: #FFFFFF; }
+
+    /* ----- Quadro do sumo conselho (tela e impressão) ----- */
+    .qd { font-family: "Inter", system-ui, sans-serif; color: #1F2937; }
+    .qd * { box-sizing: border-box; }
+    .qd-cab { padding-bottom: 14px; margin-bottom: 16px; border-bottom: 2px solid #B8934A; }
+    .qd-estaca { display: block; font-size: 11px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #B8934A; }
+    .qd-titulo { font-family: "Source Serif 4", Georgia, serif; font-size: 27px; font-weight: 600; line-height: 1.2; color: #1B3A5C; margin: 4px 0 3px; }
+    .qd-sub { font-size: 14px; color: #5B6573; margin: 0; }
+    .qd-indice { background: #F7F8FA; border: 1px solid #EEF0F3; border-radius: 8px; padding: 12px 16px 10px; margin-bottom: 16px; break-inside: avoid; }
+    .qd-indice h3 { font-family: "Inter", system-ui, sans-serif; font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: #5B6573; margin: 0 0 6px; }
+    .qd-indice ul { list-style: none; margin: 0; padding: 0; columns: 3 170px; column-gap: 24px; }
+    .qd-indice li { break-inside: avoid; padding: 3px 0; font-size: 13px; line-height: 1.35; }
+    .qd-indice b { font-weight: 600; color: #1B3A5C; }
+    .qd-indice span { color: #5B6573; }
+    .qd-grade { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .qd-card { position: relative; border: 1px solid #D9DEE5; border-radius: 8px; padding: 16px 16px 14px; break-inside: avoid; }
+    .qd-card::before { content: ""; position: absolute; left: 16px; top: -1px; width: 30px; height: 3px; background: #B8934A; }
+    .qd-card h3 { font-family: "Source Serif 4", Georgia, serif; font-size: 18px; font-weight: 600; color: #1B3A5C; margin: 0 0 8px; }
+    .qd-nomes { list-style: none; margin: 0 0 8px; padding: 0; }
+    .qd-nomes li { font-size: 15px; font-weight: 600; line-height: 1.45; color: #1F2937; }
+    .qd-nomes li.qd-falta { font-weight: 500; font-style: italic; color: #8A93A0; }
+    .qd-card p { font-size: 12.5px; line-height: 1.5; color: #5B6573; margin: 0; }
+    .qd-rodape { margin: 14px 0 0; font-size: 12px; color: #5B6573; text-align: center; }
+    #cf-quadro-print { display: none; }
 
     /* ----- Aviso flutuante ----- */
     .cf-aviso { position: fixed; left: 50%; bottom: 24px; z-index: 1000; max-width: calc(100% - 32px); transform: translate(-50%, 16px); opacity: 0; pointer-events: none; background: var(--cf-navy); color: #FFFFFF; font-size: 14px; text-align: center; padding: 12px 18px; border-radius: 8px; box-shadow: 0 6px 24px rgba(0, 0, 0, .18); transition: opacity .25s, transform .25s; }
@@ -178,6 +250,7 @@
     .cf-sec[open] > summary svg { transform: rotate(180deg); }
     .cf-sec-corpo { padding: 6px 20px 24px 56px; border-top: 1px solid var(--cf-g100); }
     .cf-sec-corpo h4 { font-size: 16px; margin: 24px 0 6px; }
+    .cf-sec-corpo h4 small { font-family: "Inter", system-ui, sans-serif; font-size: 13px; font-weight: 400; color: var(--cf-g600); margin-left: 6px; }
     .cf-sec-corpo > p, .cf-sec-corpo > div > p { margin-top: 10px; }
     .cf-sec-corpo ul { margin: 8px 0 0; padding-left: 18px; }
     .cf-sec-corpo li { margin: 4px 0; }
@@ -205,11 +278,20 @@
     .cf-crono-lista li { display: flex; justify-content: space-between; gap: 16px; margin: 0 !important; padding: 8px 0; border-bottom: 1px solid var(--cf-g100); }
     .cf-crono-lista em { flex-shrink: 0; max-width: 45%; font-style: normal; font-size: 13px; color: var(--cf-g600); text-align: right; }
 
+    @media (min-width: 700px) {
+      .cf-chips { flex-wrap: wrap; overflow: visible; margin: 0; padding: 0; }
+    }
+
     @media (max-width: 640px) {
-      .cf-abas { gap: 22px; }
+      .cf-abas { gap: 20px; }
+      .cf-aba { font-size: 14.5px; }
       .cf-card { padding: 18px; }
       .cf-campos { grid-template-columns: 1fr; }
       .cf-cab h2 { font-size: 22px; }
+      .cf-nome-row { grid-template-columns: 1fr; gap: 6px; padding: 10px 0; }
+      .cf-papel { padding: 18px 14px; }
+      .qd-titulo { font-size: 22px; }
+      .qd-grade { grid-template-columns: 1fr; }
       .cf-sec > summary { padding: 16px 18px; }
       .cf-sec-corpo { padding: 4px 18px 22px; }
       .cf-checklist { columns: 1; }
@@ -219,8 +301,10 @@
       .cf-crono-lista em { max-width: none; text-align: left; }
     }
 
+    @page { size: A4; margin: 12mm; }
+
     @media print {
-      .site-header, .site-footer, .cf-abas, .cf-imprimir, .cf-aviso { display: none !important; }
+      .site-header, .site-footer, .cf-abas, .cf-imprimir, .cf-aviso, .cf-status-linha, .cf-trocar, .cf-chips, .cf-sumo-acoes { display: none !important; }
       main { margin-top: 0 !important; }
       .page-hero { background: none !important; border: 0 !important; padding: 0 0 12px !important; }
       .container { max-width: none !important; padding: 0 !important; }
@@ -228,6 +312,14 @@
       .cf-sec > summary { padding: 0 0 6px; border-bottom: 1px solid #999999; }
       .cf-sec > summary svg { display: none; }
       .cf-sec-corpo { padding: 0; border: 0; }
+
+      /* Na aba Sumo Conselho, imprime só o quadro */
+      body[data-cf-aba="sumo"] > * { display: none !important; }
+      body[data-cf-aba="sumo"] > #cf-quadro-print { display: block !important; }
+      .qd, .qd * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .qd-grade { grid-template-columns: 1fr 1fr !important; gap: 10px; }
+      .qd-titulo { font-size: 25px !important; }
+      .qd-card { padding: 13px 14px 11px; }
     }
   </style>
 </head>
@@ -240,39 +332,42 @@
   <main>
     <section class="page-hero">
       <h1>Conferência da Estaca</h1>
-      <p>Manual de organização e acompanhamento da preparação</p>
+      <p>Checklist, designações do sumo conselho e manual de organização</p>
     </section>
 
     <div class="container cf">
 
       <nav class="cf-abas" aria-label="Seções da página">
-        <button type="button" class="cf-aba ativa" data-aba="painel">Checklist</button>
+        <button type="button" class="cf-aba ativa" data-aba="checklist">Checklist</button>
+        <button type="button" class="cf-aba" data-aba="sumo">Sumo Conselho</button>
         <button type="button" class="cf-aba" data-aba="manual">Manual</button>
+        <button type="button" class="cf-aba" data-aba="edicao">Edição</button>
       </nav>
 
-      <!-- O checklist é montado pelo script no fim da página -->
-      <section id="cf-painel" aria-live="polite"></section>
+      <!-- Checklist, Sumo Conselho e Edição são montados pelo script no fim da página -->
+      <section id="cf-app" aria-live="polite"></section>
 
       <section id="cf-manual" hidden>
 
         <!--
         ╔══════════════════════════════════════════════════════════════╗
-        ║  ONDE MEXER 4: TEXTO DO MANUAL                               ║
+        ║  ONDE MEXER 2: TEXTO DO MANUAL                               ║
         ║                                                              ║
         ║  O manual é o texto abaixo, dividido em blocos <details>.    ║
         ║  Para mudar uma frase, procure por ela e troque o texto      ║
         ║  entre as marcações, sem apagar os sinais < e >.             ║
         ║                                                              ║
-        ║  O CRONOGRAMA no fim do manual NÃO se edita aqui.            ║
-        ║  Ele é montado sozinho a partir da lista de tarefas          ║
-        ║  (ONDE MEXER 2, no fim do arquivo).                          ║
+        ║  Duas partes NÃO se editam aqui, porque vêm da               ║
+        ║  conferência aberta e são alteradas na aba Edição:           ║
+        ║    as frentes do sumo conselho (Parte 4)                     ║
+        ║    o cronograma de tarefas (Apêndice A)                      ║
         ╚══════════════════════════════════════════════════════════════╝
         -->
 
         <div class="cf-manual-topo">
           <div>
             <p>Este manual reúne a organização padrão das conferências da Estaca Salvador Brasil Norte: o que acontece em cada momento, quem responde por cada item e quais prazos seguir. As agendas, a lista de chamados e as designações continuam sendo feitas nos modelos próprios de cada documento.</p>
-            <p>Os responsáveis aparecem pelo chamado, e não pelo nome, para que o manual continue valendo quando houver mudanças. Na aba Checklist, cada conferência cadastrada gera estas tarefas com os prazos já calculados.</p>
+            <p>Os responsáveis aparecem pelo chamado, e não pelo nome, para que o manual continue valendo quando houver mudanças. Os nomes de cada conferência, as tarefas, os prazos e as frentes do sumo conselho são preenchidos na aba Edição.</p>
           </div>
           <button type="button" class="cf-btn cf-imprimir" id="cf-imprimir">
             <svg viewBox="0 0 24 24"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/></svg>
@@ -387,15 +482,8 @@
           </summary>
           <div class="cf-sec-corpo">
             <p>As frentes de logística são designações do Sumo Conselho, definidas pelo Presidente da Estaca oito semanas antes. Os sumo conselheiros de cada frente podem convidar outros irmãos e irmãs para ajudar.</p>
-            <div class="cf-frentes">
-              <div class="cf-frente"><h5>Recepção</h5><p>Organizar com os rapazes e as moças uma equipe para receber as pessoas, indicar lugares vagos e mostrar onde ficam banheiros e bebedouros.</p></div>
-              <div class="cf-frente"><h5>Limpeza</h5><p>Cuidar do material de limpeza e da reposição durante a conferência, como copos, papel higiênico e papel toalha.</p></div>
-              <div class="cf-frente"><h5>Frequência</h5><p>Contar os presentes em cada sessão e repassar os números ao Secretário da Estaca.</p></div>
-              <div class="cf-frente"><h5>Segurança e Estacionamento</h5><p>Organizar o estacionamento, indicar as vagas e zelar pela segurança, evitando pessoas, principalmente crianças, em locais inadequados.</p></div>
-              <div class="cf-frente"><h5>Auxílio à Tecnologia</h5><p>Apoiar o Especialista de Tecnologia durante as sessões, por exemplo com o microfone sem fio.</p></div>
-              <div class="cf-frente"><h5>Arrumação</h5><p>Arrumar as salas e a capela, principalmente nos intervalos, reservar lugares para líderes e idosos e reservar a sala das designações e ordenações.</p></div>
-              <div class="cf-frente"><h5>Primeiros Socorros</h5><p>Identificar irmãos da área de saúde e irmãos com carro disponíveis para ajudar em caso de emergência.</p></div>
-            </div>
+            <p>Os nomes de cada conferência ficam na aba Sumo Conselho, de onde sai o quadro em PDF para enviar no grupo.</p>
+            <div id="cf-manual-frentes"></div>
           </div>
         </details>
 
@@ -520,7 +608,7 @@
         <details class="cf-sec">
           <summary>
             <span class="cf-sec-num">A</span>
-            <span class="cf-sec-tit">Cronograma de preparação<small>Todas as tarefas, das 8 semanas antes até o fechamento</small></span>
+            <span class="cf-sec-tit">Cronograma de preparação<small>Tarefas da conferência aberta, por prazo</small></span>
             <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
           </summary>
           <div class="cf-sec-corpo" id="cf-cronograma"></div>
@@ -566,6 +654,9 @@
   <!-- O rodapé é montado automaticamente pelo arquivo componentes.js -->
   <div id="rodape"></div>
 
+  <!-- Quadro do sumo conselho usado só na impressão -->
+  <div id="cf-quadro-print"></div>
+
   <script src="componentes.js"></script>
 
   <script>
@@ -573,138 +664,18 @@
     ╔══════════════════════════════════════════════════════════════╗
     ║  ONDE MEXER 1: ENDEREÇO DA PLANILHA                          ║
     ║                                                              ║
-    ║  Cole entre as aspas o endereço do app da Web que o Google   ║
-    ║  mostra quando você implanta o script da planilha.           ║
-    ║  Ele começa com https://script.google.com/macros/s/          ║
-    ║  e termina com /exec                                         ║
+    ║  Endereço do app da Web do script da planilha.               ║
+    ║  Só troque se um dia fizer uma "Nova implantação"            ║
+    ║  no Apps Script, que gera um endereço diferente.             ║
     ║                                                              ║
-    ║  Enquanto ficar vazio, a página funciona em MODO LOCAL:      ║
-    ║  tudo fica salvo só no aparelho em que foi marcado.          ║
-    ║  Serve para testar antes de configurar a planilha.           ║
+    ║  Todo o resto (tarefas, prazos, chamados, nomes e            ║
+    ║  frentes do sumo conselho) é editado pela aba                ║
+    ║  Edição do próprio site e fica salvo na planilha.            ║
+    ║  Por isso, trocar este arquivo por uma versão nova           ║
+    ║  nunca apaga nenhum dado.                                    ║
     ╚══════════════════════════════════════════════════════════════╝
     */
     const URL_DO_SCRIPT = 'https://script.google.com/macros/s/AKfycby5RywKXXLdJATerXR_VhGxyXMwmrg912qNgHIvMLiSKDMHkHsEFJUYKRwU_3-AtDKtHg/exec';
-
-
-    /*
-    ╔══════════════════════════════════════════════════════════════╗
-    ║  ONDE MEXER 2: LISTA DE TAREFAS                              ║
-    ║                                                              ║
-    ║  Cada linha é uma tarefa do cronograma. Ela aparece no       ║
-    ║  Checklist e no Apêndice A do manual ao mesmo tempo.         ║
-    ║                                                              ║
-    ║  id     código curto e único da tarefa. Nunca repita e       ║
-    ║         nunca reaproveite o código de uma tarefa apagada,    ║
-    ║         porque é ele que liga a tarefa ao que foi marcado.   ║
-    ║  fase   quando a tarefa vence. Use um destes códigos:        ║
-    ║         f8  f6  f5  f4  f2  f1  vesp  sab  dom  dep          ║
-    ║  resp   responsável, escrito exatamente igual à lista        ║
-    ║         de responsáveis logo abaixo (ONDE MEXER 3).          ║
-    ║  texto  o que precisa ser feito.                             ║
-    ║                                                              ║
-    ║  Para criar uma tarefa: copie uma linha inteira, cole        ║
-    ║  logo abaixo e troque id, fase, resp e texto.                ║
-    ║  Se algo estiver errado, a página mostra um aviso vermelho.  ║
-    ╚══════════════════════════════════════════════════════════════╝
-    */
-    const TAREFAS = [
-      // 8 semanas antes
-      { id: 'p-data',            fase: 'f8',   resp: 'Presidente da Estaca',                 texto: 'Confirmar a data e a programação da conferência' },
-      { id: 'p-presidir',        fase: 'f8',   resp: 'Presidente da Estaca',                 texto: 'Definir quem preside e quem dirige cada sessão' },
-      { id: 'p-apoios',          fase: 'f8',   resp: 'Presidente da Estaca',                 texto: 'Designar o conselheiro que conduzirá os apoios e desobrigações' },
-      { id: 'p-logistica',       fase: 'f8',   resp: 'Presidente da Estaca',                 texto: 'Designar os sumo conselheiros de cada frente de logística' },
-      { id: 'p-desjejum',        fase: 'f8',   resp: 'Presidente da Estaca',                 texto: 'Alinhar o desjejum com a Presidência da Sociedade de Socorro' },
-      { id: 'c-autoridades-prep', fase: 'f8',  resp: 'Secretário da Estaca',                 texto: 'Preparar os convites do desjejum ao presidente de missão e à presidência do templo' },
-      { id: 'c-autoridades-env', fase: 'f8',   resp: 'Secretário Executivo',                 texto: 'Enviar os convites do desjejum ao presidente de missão e à presidência do templo' },
-
-      // 6 semanas antes
-      { id: 'a-discursantes',    fase: 'f6',   resp: '1º Conselheiro',                       texto: 'Definir os discursantes de todas as sessões, com tema e tempo' },
-      { id: 'a-testemunhos',     fase: 'f6',   resp: '1º Conselheiro',                       texto: 'Definir os testemunhos' },
-      { id: 'a-oracoes',         fase: 'f6',   resp: '2º Conselheiro',                       texto: 'Definir as orações inicial e final de todas as sessões' },
-      { id: 'm-escolha',         fase: 'f6',   resp: 'Líder de Música da Estaca',            texto: 'Escolher hinos, regente, pianista e coro e passar ao conselheiro responsável pela música' },
-      { id: 'm-verificar',       fase: 'f6',   resp: 'Conselheiro responsável pela música',  texto: 'Verificar a música com a líder e repassar ao Secretário da Estaca' },
-
-      // 5 semanas antes
-      { id: 'c-convites-prep',   fase: 'f5',   resp: 'Secretário da Estaca',                 texto: 'Preparar os convites de discursantes, testemunhos e orações' },
-      { id: 'c-convites-env',    fase: 'f5',   resp: 'Secretário Executivo',                 texto: 'Enviar os convites, garantindo pelo menos 1 mês de preparo' },
-      { id: 'm-ensaios',         fase: 'f5',   resp: 'Líder de Música da Estaca',            texto: 'Iniciar os ensaios do coro' },
-
-      // 4 semanas antes
-      { id: 'c-confirmar',       fase: 'f4',   resp: 'Secretário Executivo',                 texto: 'Confirmar o aceite de todos os convidados e avisar a presidência sobre substituições' },
-      { id: 't-equipamentos',    fase: 'f4',   resp: 'Especialista de Tecnologia',           texto: 'Levantar os equipamentos e comprar os materiais de tecnologia' },
-      { id: 'd-recem',           fase: 'f4',   resp: 'Bispados',                             texto: 'Levantar e convidar os recém-conversos dos últimos 12 meses' },
-      { id: 'd-planejar',        fase: 'f4',   resp: 'Presidência da Sociedade de Socorro',  texto: 'Planejar o desjejum, os utensílios e a equipe' },
-
-      // 2 semanas antes
-      { id: 'r-lista',           fase: 'f2',   resp: 'Secretário da Estaca',                 texto: 'Fechar a lista de chamados, desobrigações e ordenações' },
-      { id: 'r-cruzada',         fase: 'f2',   resp: 'Secretário da Estaca',                 texto: 'Conferir se todo chamado ao sumo conselho consta nas ordenações a sumo sacerdote' },
-      { id: 't-zoom',            fase: 'f2',   resp: 'Especialista de Tecnologia',           texto: 'Gerar o link Zoom e enviar ao bispado e ao secretário da Ala Cajazeiras' },
-      { id: 'd-contagem',        fase: 'f2',   resp: 'Presidência da Sociedade de Socorro',  texto: 'Confirmar com os bispados a contagem de convidados do desjejum' },
-      { id: 'd-transporte',      fase: 'f2',   resp: 'Bispados',                             texto: 'Organizar o transporte dos recém-conversos' },
-      { id: 'l-equipes',         fase: 'f2',   resp: 'Sumo Conselho',                        texto: 'Montar as equipes de cada frente de logística' },
-
-      // 1 semana antes
-      { id: 't-teste',           fase: 'f1',   resp: 'Especialista de Tecnologia',           texto: 'Fazer o teste completo de transmissão com a capela de Cajazeiras' },
-      { id: 't-cajazeiras',      fase: 'f1',   resp: 'Bispado da Ala Cajazeiras',            texto: 'Participar do teste e garantir prédio aberto e recepção da transmissão em Cajazeiras' },
-      { id: 'o-compras',         fase: 'f1',   resp: 'Secretário Adjunto',                   texto: 'Comprar água, lenços, pilhas, pilotos e quadro branco' },
-      { id: 'a-rascunho',        fase: 'f1',   resp: 'Secretário da Estaca',                 texto: 'Montar as agendas em rascunho e enviar à presidência' },
-      { id: 'a-revisao',         fase: 'f1',   resp: 'Presidência da Estaca',                texto: 'Revisar e aprovar as agendas' },
-
-      // Véspera
-      { id: 'a-imprimir',        fase: 'vesp', resp: 'Secretário da Estaca',                 texto: 'Imprimir as agendas e o anexo de chamados e ordenações' },
-      { id: 't-separar',         fase: 'vesp', resp: 'Especialista de Tecnologia',           texto: 'Separar e conferir equipamentos, cabos e pilhas' },
-      { id: 'l-sala',            fase: 'vesp', resp: 'Sumo Conselho',                        texto: 'Reservar a sala para as designações e ordenações' },
-
-      // Sábado
-      { id: 'o-gelo-sab',        fase: 'sab',  resp: 'Secretário Adjunto',                   texto: 'Comprar o gelo do dia' },
-      { id: 'o-pulpito-sab',     fase: 'sab',  resp: 'Secretário Adjunto',                   texto: 'Deixar água e lenços no púlpito' },
-      { id: 't-teste-sab15',     fase: 'sab',  resp: 'Especialista de Tecnologia',           texto: 'Testar som e projetor às 14h, antes da Sessão de Liderança' },
-      { id: 't-teste-sab18',     fase: 'sab',  resp: 'Especialista de Tecnologia',           texto: 'Testar som, projetor e transmissão às 17h, antes da Sessão de Adultos' },
-      { id: 'l-freq-sab',        fase: 'sab',  resp: 'Sumo Conselho',                        texto: 'Registrar a frequência das duas sessões de sábado' },
-
-      // Domingo
-      { id: 'd-desjejum',        fase: 'dom',  resp: 'Presidência da Sociedade de Socorro',  texto: 'Realizar o desjejum às 8h30 e liberar a sala até 9h30' },
-      { id: 'o-gelo-dom',        fase: 'dom',  resp: 'Secretário Adjunto',                   texto: 'Comprar o gelo do dia' },
-      { id: 'o-pulpito-dom',     fase: 'dom',  resp: 'Secretário Adjunto',                   texto: 'Deixar água e lenços no púlpito' },
-      { id: 't-teste-dom',       fase: 'dom',  resp: 'Especialista de Tecnologia',           texto: 'Testar som e transmissão com Cajazeiras às 9h' },
-      { id: 'r-apoios',          fase: 'dom',  resp: 'Conselheiro designado para os apoios', texto: 'Conduzir os apoios, desobrigações e ordenações na Sessão Geral' },
-      { id: 'l-freq-dom',        fase: 'dom',  resp: 'Sumo Conselho',                        texto: 'Registrar a frequência da Sessão Geral' },
-      { id: 'r-designar',        fase: 'dom',  resp: 'Presidência da Estaca',                texto: 'Designar os novos chamados logo após a Sessão Geral e acompanhar as ordenações' },
-      { id: 'p-alinhamento',     fase: 'dom',  resp: 'Presidente da Estaca',                 texto: 'Conduzir a reunião de alinhamento com a presidência e os secretários' },
-
-      // Depois da conferência
-      { id: 'r-registro',        fase: 'dep',  resp: 'Secretário da Estaca',                 texto: 'Registrar chamados, desobrigações e ordenações no sistema' },
-      { id: 'r-frequencia',      fase: 'dep',  resp: 'Secretário da Estaca',                 texto: 'Consolidar a frequência de todas as sessões' },
-      { id: 'o-reembolso',       fase: 'dep',  resp: 'Secretário da Estaca',                 texto: 'Reembolsar as compras mediante comprovante' },
-      { id: 't-guardar',         fase: 'dep',  resp: 'Especialista de Tecnologia',           texto: 'Recolher e guardar os equipamentos' }
-    ];
-
-
-    /*
-    ╔══════════════════════════════════════════════════════════════╗
-    ║  ONDE MEXER 3: LISTA DE RESPONSÁVEIS                         ║
-    ║                                                              ║
-    ║  São os chamados que podem aparecer como responsáveis.       ║
-    ║  Se mudar um nome aqui, mude igual nas tarefas acima.        ║
-    ╚══════════════════════════════════════════════════════════════╝
-    */
-    const RESPONSAVEIS = [
-      'Presidente da Estaca',
-      'Presidência da Estaca',
-      '1º Conselheiro',
-      '2º Conselheiro',
-      'Conselheiro designado para os apoios',
-      'Conselheiro responsável pela música',
-      'Líder de Música da Estaca',
-      'Secretário da Estaca',
-      'Secretário Executivo',
-      'Secretário Adjunto',
-      'Especialista de Tecnologia',
-      'Sumo Conselho',
-      'Presidência da Sociedade de Socorro',
-      'Bispados',
-      'Bispado da Ala Cajazeiras'
-    ];
 
 
     /* ================================================================
@@ -712,43 +683,28 @@
        Não é preciso mexer em nada abaixo desta linha.
        ================================================================ */
 
-    // Prazo de cada fase, em dias contados a partir do sábado da conferência
-    const FASES = [
-      { id: 'f8',   nome: '8 semanas antes',        dias: -56 },
-      { id: 'f6',   nome: '6 semanas antes',        dias: -42 },
-      { id: 'f5',   nome: '5 semanas antes',        dias: -35 },
-      { id: 'f4',   nome: '4 semanas antes',        dias: -28 },
-      { id: 'f2',   nome: '2 semanas antes',        dias: -14 },
-      { id: 'f1',   nome: '1 semana antes',         dias: -7 },
-      { id: 'vesp', nome: 'Véspera',                dias: -1 },
-      { id: 'sab',  nome: 'Sábado da conferência',  dias: 0 },
-      { id: 'dom',  nome: 'Domingo da conferência', dias: 1 },
-      { id: 'dep',  nome: 'Depois da conferência',  dias: 8 }
-    ];
-
     (function () {
       'use strict';
 
-      const MODO_LOCAL = !String(URL_DO_SCRIPT || '').trim();
-
-      // Chamados que aparecem no filtro (os grupos entram junto com os chamados)
-      const CHAMADOS_FILTRO = RESPONSAVEIS.filter(function (r) {
-        return r !== 'Presidência da Estaca' && r !== 'Conselheiro designado para os apoios';
-      });
-      const PRESIDENCIA = ['Presidente da Estaca', '1º Conselheiro', '2º Conselheiro'];
-      const CONSELHEIROS = ['1º Conselheiro', '2º Conselheiro'];
-
+      const URL = String(URL_DO_SCRIPT || '').trim();
+      const OPS_FILA = ['marcar', 'nome', 'criarConferencia', 'editarConferencia'];
       const SEMANA = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
       const MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+      const SECOES = [['nomes', 'Nomes'], ['tarefas', 'Tarefas'], ['frentes', 'Sumo Conselho'], ['prazos', 'Prazos'], ['chamados', 'Chamados'], ['conferencia', 'Conferência']];
+      const UNIDADES = [['semanas', 'semanas antes'], ['antes', 'dias antes'], ['depois', 'dias depois']];
 
       const ICON = {
         check: '<svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>',
         baixo: '<svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>',
+        cima: '<svg viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg>',
         mais: '<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>',
+        x: '<svg viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></svg>',
+        lapis: '<svg viewBox="0 0 24 24"><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
+        imprimir: '<svg viewBox="0 0 24 24"><path d="M6 9V3h12v6"/><rect x="3" y="9" width="18" height="8" rx="2"/><path d="M6 14h12v7H6z"/></svg>',
         atualizar: '<svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>'
       };
 
-      /* ---------- Armazenamento no aparelho ---------- */
+      /* ---------- Armazenamento no aparelho (cópia de trabalho) ---------- */
       function ler(chave, padrao) {
         try { const v = localStorage.getItem(chave); return v ? JSON.parse(v) : padrao; } catch (e) { return padrao; }
       }
@@ -758,57 +714,63 @@
       function apagar(chave) {
         try { localStorage.removeItem(chave); } catch (e) { /* sem armazenamento */ }
       }
+      ['cf_cache', 'cf_local', 'cf_filtro', 'cf_ultimo_chamado'].forEach(apagar);
 
-      function vazio() { return { conferencias: [], tarefas: [] }; }
+      /* ---------- Dados ---------- */
       function txt(v) { return v == null ? '' : String(v); }
+      function lista(v) { return Array.isArray(v) ? v.map(txt) : txt(v).split(';').map(function (s) { return s.trim(); }).filter(Boolean); }
+      function sim(v) { return v !== 'nao' && v !== false; }
+      function vazio() { return { conferencias: [], tarefas: [], frentes: [], nomes: [], prazos: [], chamados: [] }; }
+
       function normalizar(d) {
         const r = vazio();
-        if (d && Array.isArray(d.conferencias)) {
-          d.conferencias.forEach(function (c) {
-            if (c && c.id) r.conferencias.push({ id: txt(c.id), nome: txt(c.nome), sabado: txt(c.sabado) });
-          });
-        }
-        if (d && Array.isArray(d.tarefas)) {
-          d.tarefas.forEach(function (t) {
-            if (t && t.conferencia && t.tarefa) r.tarefas.push({ conferencia: txt(t.conferencia), tarefa: txt(t.tarefa), feito: txt(t.feito) });
-          });
-        }
+        if (!d) return r;
+        (d.conferencias || []).forEach(function (c) {
+          if (c && c.id) r.conferencias.push({ id: txt(c.id), nome: txt(c.nome), sabado: txt(c.sabado) });
+        });
+        (d.tarefas || []).forEach(function (t) {
+          if (t && t.conferencia && t.tarefa && t.texto) r.tarefas.push({ conferencia: txt(t.conferencia), tarefa: txt(t.tarefa), feito: txt(t.feito), texto: txt(t.texto), prazo: txt(t.prazo), chamado: txt(t.chamado), ordem: Number(t.ordem) || 0 });
+        });
+        (d.frentes || []).forEach(function (f) {
+          if (f && f.conferencia && f.frente) r.frentes.push({ conferencia: txt(f.conferencia), frente: txt(f.frente), titulo: txt(f.titulo), descricao: txt(f.descricao), chamados: lista(f.chamados), ordem: Number(f.ordem) || 0 });
+        });
+        (d.nomes || []).forEach(function (n) {
+          if (n && n.conferencia && n.chamado) r.nomes.push({ conferencia: txt(n.conferencia), chamado: txt(n.chamado), nome: txt(n.nome) });
+        });
+        (d.prazos || []).forEach(function (p) {
+          if (p && p.id) r.prazos.push({ id: txt(p.id), nome: txt(p.nome), dias: Number(p.dias) || 0, ativo: sim(p.ativo) });
+        });
+        (d.chamados || []).forEach(function (c) {
+          if (c && c.id) r.chamados.push({ id: txt(c.id), nome: txt(c.nome), filtro: sim(c.filtro), ve: lista(c.ve != null ? c.ve : c.ve_tambem), ordem: Number(c.ordem) || 0, ativo: sim(c.ativo) });
+        });
         return r;
       }
 
       /* ---------- Estado ---------- */
       let sessao = ler('cf_sessao', null);
-      if (sessao && !sessao.codigo && !MODO_LOCAL) sessao = null;
-      let dados = normalizar(MODO_LOCAL ? ler('cf_local', null) : ler('cf_cache', null));
-      let fila = MODO_LOCAL ? [] : (ler('cf_fila', []) || []);
-      let carregado = MODO_LOCAL || dados.conferencias.length > 0;
+      if (sessao && !sessao.codigo) sessao = null;
+      let dados = normalizar(sessao ? ler('cf_dados', null) : null);
+      let fila = sessao ? (ler('cf_fila', []) || []).filter(function (op) { return op && OPS_FILA.indexOf(op.acao) >= 0; }) : [];
+      let carregado = dados.chamados.length > 0;
       let rede = 'ok';
       let enviando = false;
       let atualizando = false;
+      let salvando = false;
       let ultimaSinc = null;
       let timerReenvio = null;
       let renderAdiado = false;
+      let sujo = false;
+      let confSel = null;
       let filtroResp = '';
+      let secao = 'nomes';
+      let editando = null;
       let trocarAberto = false;
-      let formAberto = null;
-      let rascunhoForm = {};
-      let confNaTela = null;
-      let feitas = new Set();
+      let novaAberta = false;
+      let ix = null;
 
-      const elPainel = document.getElementById('cf-painel');
+      const elApp = document.getElementById('cf-app');
       const elManual = document.getElementById('cf-manual');
-
-      /* ---------- Conferência dos dados de configuração ---------- */
-      const problemas = [];
-      (function verificar() {
-        const vistos = {};
-        TAREFAS.forEach(function (t) {
-          if (vistos[t.id]) problemas.push('O código "' + t.id + '" aparece em mais de uma tarefa.');
-          vistos[t.id] = true;
-          if (!FASES.some(function (f) { return f.id === t.fase; })) problemas.push('A tarefa "' + t.texto + '" usa uma fase que não existe: ' + t.fase + '.');
-          if (RESPONSAVEIS.indexOf(t.resp) < 0) problemas.push('A tarefa "' + t.texto + '" tem um responsável fora da lista: ' + t.resp + '.');
-        });
-      })();
+      const elQuadro = document.getElementById('cf-quadro-print');
 
       /* ---------- Utilidades ---------- */
       function esc(s) {
@@ -828,6 +790,9 @@
       function hhmm(d) { return dois(d.getHours()) + ':' + dois(d.getMinutes()); }
       function dia(n) { return n === 1 ? '1º' : String(n); }
       function novoId() { return 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
+      function val(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+      function erroEm(el, msg) { if (el) el.textContent = msg; return false; }
+      function plural(n, um, varios) { return n + ' ' + (n === 1 ? um : varios); }
 
       function datasConf(c) {
         const s = paraData(c.sabado);
@@ -836,87 +801,145 @@
         if (s.getMonth() === d.getMonth()) return dia(s.getDate()) + ' e ' + dia(d.getDate()) + ' de ' + MESES[s.getMonth()] + ' de ' + s.getFullYear();
         return dia(s.getDate()) + ' de ' + MESES[s.getMonth()] + ' e ' + dia(d.getDate()) + ' de ' + MESES[d.getMonth()] + ' de ' + d.getFullYear();
       }
-      function prazoFase(c, fase) {
-        const s = paraData(c.sabado);
-        return s ? somarDias(s, fase.dias) : hoje();
-      }
+      function dataDoPrazo(c, dias) { return somarDias(paraData(c.sabado) || hoje(), dias); }
 
-      function acharConf(d, id) {
-        for (let i = 0; i < d.conferencias.length; i++) if (d.conferencias[i].id === id) return d.conferencias[i];
-        return null;
-      }
-      function acharTarefa(d, conf, tarefa) {
-        for (let i = 0; i < d.tarefas.length; i++) {
-          const t = d.tarefas[i];
-          if (t.conferencia === conf && t.tarefa === tarefa) return t;
-        }
-        const n = { conferencia: conf, tarefa: tarefa, feito: '' };
-        d.tarefas.push(n);
-        return n;
-      }
+      /* ---------- Índices para consulta rápida ---------- */
       function indexar() {
-        feitas = new Set();
-        dados.tarefas.forEach(function (t) { if (t.feito === 'sim') feitas.add(t.conferencia + '|' + t.tarefa); });
+        ix = { prazo: new Map(), chamado: new Map(), tarefas: new Map(), frentes: new Map(), nomes: new Map(), feitas: new Set() };
+        dados.prazos.forEach(function (p) { ix.prazo.set(p.id, p); });
+        dados.chamados.forEach(function (c) { ix.chamado.set(c.id, c); });
+        dados.tarefas.forEach(function (t) {
+          if (!ix.tarefas.has(t.conferencia)) ix.tarefas.set(t.conferencia, []);
+          ix.tarefas.get(t.conferencia).push(t);
+          if (t.feito === 'sim') ix.feitas.add(t.conferencia + '|' + t.tarefa);
+        });
+        ix.tarefas.forEach(function (l) {
+          l.sort(function (a, b) {
+            return diasDe(a.prazo) - diasDe(b.prazo) || nomePrazo(a.prazo).localeCompare(nomePrazo(b.prazo)) || a.prazo.localeCompare(b.prazo) || a.ordem - b.ordem;
+          });
+        });
+        dados.frentes.forEach(function (f) {
+          if (!ix.frentes.has(f.conferencia)) ix.frentes.set(f.conferencia, []);
+          ix.frentes.get(f.conferencia).push(f);
+        });
+        ix.frentes.forEach(function (l) { l.sort(function (a, b) { return a.ordem - b.ordem; }); });
+        dados.nomes.forEach(function (n) {
+          if (!n.nome) return;
+          if (!ix.nomes.has(n.conferencia)) ix.nomes.set(n.conferencia, new Map());
+          ix.nomes.get(n.conferencia).set(n.chamado, n.nome);
+        });
       }
-      function feita(conf, tarefa) { return feitas.has(conf + '|' + tarefa); }
-
-      // Ao filtrar por um chamado, entram também as tarefas do grupo a que ele pertence
-      function doChamado(t, chamado) {
-        if (!chamado || t.resp === chamado) return true;
-        if (t.resp === 'Presidência da Estaca' && PRESIDENCIA.indexOf(chamado) >= 0) return true;
-        if (t.resp === 'Conselheiro designado para os apoios' && CONSELHEIROS.indexOf(chamado) >= 0) return true;
-        if (t.resp === 'Bispados' && chamado === 'Bispado da Ala Cajazeiras') return true;
-        return false;
+      function diasDe(id) { const p = ix.prazo.get(id); return p ? p.dias : 9999; }
+      function nomePrazo(id) { const p = ix.prazo.get(id); return p ? p.nome : 'Sem prazo'; }
+      function nomeChamado(id) { const c = ix.chamado.get(id); return c ? c.nome : 'Chamado removido'; }
+      function pessoa(conf, chamado) { const m = ix.nomes.get(conf); return (m && m.get(chamado)) || ''; }
+      function tarefasDe(conf) { return ix.tarefas.get(conf) || []; }
+      function frentesDe(conf) { return ix.frentes.get(conf) || []; }
+      function feita(conf, tarefa) { return ix.feitas.has(conf + '|' + tarefa); }
+      function prazosAtivos() {
+        return dados.prazos.filter(function (p) { return p.ativo; }).sort(function (a, b) { return a.dias - b.dias || a.nome.localeCompare(b.nome); });
+      }
+      function chamadosAtivos() {
+        return dados.chamados.filter(function (c) { return c.ativo; }).sort(function (a, b) { return a.ordem - b.ordem; });
+      }
+      function respTexto(conf, chamado) {
+        const p = pessoa(conf, chamado);
+        return esc(nomeChamado(chamado)) + (p ? ' · <b>' + esc(p) + '</b>' : '');
+      }
+      function respCurto(conf, chamado) {
+        const p = pessoa(conf, chamado);
+        return p ? '<b>' + esc(p) + '</b>' : esc(nomeChamado(chamado));
+      }
+      function ordenadasDesc() {
+        return dados.conferencias.slice().sort(function (a, b) { return b.sabado.localeCompare(a.sabado); });
       }
 
       // Conferência que abre primeiro: a próxima ainda em preparação ou, se não houver, a mais recente
-      function conferenciaAtual() {
+      function conferenciaPadrao() {
         const h = hoje();
         const comData = dados.conferencias.filter(function (c) { return paraData(c.sabado); });
         if (!comData.length) return dados.conferencias[0] || null;
-        const emAndamento = comData
+        const abertas = comData
           .filter(function (c) { return diasEntre(h, somarDias(paraData(c.sabado), 8)) >= 0; })
           .sort(function (a, b) { return a.sabado.localeCompare(b.sabado); });
-        if (emAndamento.length) return emAndamento[0];
-        return comData.slice().sort(function (a, b) { return b.sabado.localeCompare(a.sabado); })[0];
+        if (abertas.length) return abertas[0];
+        return ordenadasDesc()[0];
+      }
+      function confAtual() {
+        let c = null;
+        if (confSel) c = dados.conferencias.filter(function (x) { return x.id === confSel; })[0] || null;
+        if (!c) { c = conferenciaPadrao(); confSel = c ? c.id : null; }
+        return c;
       }
 
-      /* ---------- Alterações (mesma regra usada pela planilha) ---------- */
+      function agrupar(itens) {
+        const grupos = [];
+        itens.forEach(function (t) {
+          const ultimo = grupos[grupos.length - 1];
+          if (ultimo && ultimo.prazo === t.prazo) ultimo.itens.push(t);
+          else grupos.push({ prazo: t.prazo, itens: [t] });
+        });
+        return grupos;
+      }
+
+      function rotuloPrazo(c, prazoId) {
+        const p = ix.prazo.get(prazoId);
+        if (!p) return '';
+        const d = dataDoPrazo(c, p.dias);
+        const data = SEMANA[d.getDay()] + ', ' + ddmm(d);
+        return (p.dias >= -1 && p.dias <= 1) ? data : 'até ' + data;
+      }
+
+      function descrDias(d) {
+        if (d === 0) return 'No sábado da conferência';
+        if (d < 0 && d % 7 === 0) return plural(-d / 7, 'semana', 'semanas') + ' antes do sábado';
+        if (d < 0) return plural(-d, 'dia', 'dias') + ' antes do sábado';
+        return plural(d, 'dia', 'dias') + ' depois do sábado';
+      }
+      function quebrarDias(d) {
+        if (d < 0 && d % 7 === 0) return [-d / 7, 'semanas'];
+        if (d <= 0) return [-d, 'antes'];
+        return [d, 'depois'];
+      }
+      function sugestaoPrazo(n, un) {
+        if (n === 0) return 'Sábado da conferência';
+        if (un === 'semanas') return n === 1 ? '1 semana antes' : n + ' semanas antes';
+        if (un === 'antes') return n === 1 ? 'Véspera' : n + ' dias antes';
+        return n === 1 ? 'Domingo da conferência' : n + ' dias depois';
+      }
+      function diasDoForm() {
+        const n = Math.max(0, Math.min(60, Math.round(Number(val('ed-pn')) || 0)));
+        const un = val('ed-pun');
+        return { n: n, un: un, dias: un === 'semanas' ? -n * 7 : un === 'antes' ? -n : n };
+      }
+
+      /* ---------- Alterações salvas na hora, uma a uma ---------- */
       function aplicarOp(d, op) {
-        let c;
-        switch (op.acao) {
-          case 'criarConferencia':
-            if (!acharConf(d, op.id)) d.conferencias.push({ id: op.id, nome: op.nome, sabado: op.sabado });
-            break;
-          case 'editarConferencia':
-            c = acharConf(d, op.id);
-            if (c) { c.nome = op.nome; c.sabado = op.sabado; }
-            break;
-          case 'marcar':
-            acharTarefa(d, op.conferencia, op.tarefa).feito = op.feito ? 'sim' : 'nao';
-            break;
+        if (op.acao === 'marcar') {
+          const t = d.tarefas.filter(function (x) { return x.conferencia === op.conferencia && x.tarefa === op.tarefa; })[0];
+          if (t) t.feito = op.feito ? 'sim' : 'nao';
+        } else if (op.acao === 'nome') {
+          let n = d.nomes.filter(function (x) { return x.conferencia === op.conferencia && x.chamado === op.chamado; })[0];
+          if (!n) { n = { conferencia: op.conferencia, chamado: op.chamado, nome: '' }; d.nomes.push(n); }
+          n.nome = op.nome;
         }
       }
 
       function executar(op) {
         aplicarOp(dados, op);
-        if (MODO_LOCAL) {
-          gravar('cf_local', dados);
-        } else {
-          fila.push(op);
-          gravar('cf_fila', fila);
-          gravar('cf_cache', dados);
-          processarFila();
-        }
+        fila.push(op);
+        gravar('cf_fila', fila);
+        gravar('cf_dados', dados);
+        processarFila();
       }
 
       /* ---------- Comunicação com a planilha ---------- */
       async function chamar(corpo, codigo) {
         const controle = new AbortController();
-        const espera = setTimeout(function () { controle.abort(); }, 25000);
+        const espera = setTimeout(function () { controle.abort(); }, 30000);
         try {
           const pedido = Object.assign({}, corpo, { codigo: codigo != null ? codigo : (sessao ? sessao.codigo : '') });
-          const resp = await fetch(URL_DO_SCRIPT.trim(), { method: 'POST', body: JSON.stringify(pedido), signal: controle.signal });
+          const resp = await fetch(URL, { method: 'POST', body: JSON.stringify(pedido), signal: controle.signal });
           if (!resp.ok) throw new Error('HTTP ' + resp.status);
           return await resp.json();
         } finally {
@@ -925,17 +948,16 @@
       }
 
       function receber(r) {
-        const base = normalizar(r);
-        fila.forEach(function (op) { aplicarOp(base, op); });
-        dados = base;
-        gravar('cf_cache', dados);
+        dados = normalizar(r);
+        fila.forEach(function (op) { aplicarOp(dados, op); });
+        gravar('cf_dados', dados);
         carregado = true;
         rede = 'ok';
         ultimaSinc = new Date();
       }
 
       async function processarFila() {
-        if (MODO_LOCAL || !sessao) return;
+        if (!URL || !sessao) return;
         if (enviando || !fila.length) { atualizarStatus(); return; }
         enviando = true;
         atualizarStatus();
@@ -960,7 +982,7 @@
       }
 
       async function atualizar() {
-        if (MODO_LOCAL || !sessao || atualizando) return;
+        if (!URL || !sessao || atualizando) return;
         atualizando = true;
         try {
           const r = await chamar({ acao: 'listar' });
@@ -976,6 +998,33 @@
           atualizarStatus();
         } finally {
           atualizando = false;
+        }
+      }
+
+      // Alterações de estrutura: espera a planilha confirmar e recebe tudo atualizado
+      async function salvar(op, botao, mensagemOk) {
+        if (salvando) return false;
+        salvando = true;
+        atualizarStatus();
+        const rotulo = botao ? botao.innerHTML : '';
+        if (botao) { botao.disabled = true; botao.textContent = 'Salvando...'; }
+        try {
+          const r = await chamar(op);
+          if (!r.ok) {
+            if (r.codigo === 'acesso') { sair('O código de acesso foi alterado. Entre novamente.'); return false; }
+            avisar(r.erro || 'Não foi possível salvar.');
+            return false;
+          }
+          receber(r);
+          if (mensagemOk) avisar(mensagemOk);
+          return true;
+        } catch (e) {
+          avisar('Sem conexão com a planilha. Confira a internet e tente de novo.');
+          return false;
+        } finally {
+          salvando = false;
+          if (botao && botao.isConnected) { botao.disabled = false; botao.innerHTML = rotulo; }
+          atualizarStatus();
         }
       }
 
@@ -997,7 +1046,7 @@
           receber(r);
           render();
         } catch (e) {
-          elErro.textContent = 'Não foi possível falar com a planilha. Confira a internet e, se persistir, o endereço do script e a implantação para "Qualquer pessoa".';
+          elErro.textContent = 'Não foi possível falar com a planilha. Confira a internet e tente de novo.';
         } finally {
           if (botao.isConnected) { botao.disabled = false; botao.textContent = 'Entrar'; }
         }
@@ -1005,42 +1054,33 @@
 
       function sair(mensagem) {
         if (fila.length && !mensagem) {
-          if (!confirm('Há marcações que ainda não chegaram à planilha. Se sair agora, elas serão perdidas. Sair mesmo assim?')) return;
+          if (!confirm('Há alterações que ainda não chegaram à planilha. Se sair agora, elas serão perdidas. Sair mesmo assim?')) return;
         }
         sessao = null;
         dados = vazio(); fila = []; carregado = false;
-        apagar('cf_sessao'); apagar('cf_cache'); apagar('cf_fila');
-        trocarAberto = false; formAberto = null;
-        if (location.hash && location.hash !== '#manual') location.hash = '';
+        apagar('cf_sessao'); apagar('cf_dados'); apagar('cf_fila');
+        trocarAberto = false; novaAberta = false; editando = null; sujo = false; confSel = null;
         render();
         if (mensagem) avisar(mensagem);
       }
 
-      /* ---------- Montagem da tela ---------- */
+      /* ---------- Partes da tela ---------- */
       function htmlStatus() {
         let cls, texto;
-        if (MODO_LOCAL) { cls = 'local'; texto = 'Modo local, salvo só neste aparelho'; }
-        else if (rede === 'offline') { cls = 'erro'; texto = 'Sem conexão' + (fila.length ? ', ' + fila.length + (fila.length > 1 ? ' marcações pendentes' : ' marcação pendente') : ''); }
-        else if (enviando || fila.length) { cls = 'salvando'; texto = 'Salvando...'; }
+        if (rede === 'offline') { cls = 'erro'; texto = 'Sem conexão' + (fila.length ? ', ' + plural(fila.length, 'alteração pendente', 'alterações pendentes') : ''); }
+        else if (salvando || enviando || fila.length) { cls = 'salvando'; texto = 'Salvando...'; }
         else { cls = 'ok'; texto = ultimaSinc ? 'Sincronizado às ' + hhmm(ultimaSinc) : 'Sincronizado'; }
         return '<div class="cf-status cf-status-' + cls + '" id="cf-status"><span class="cf-ponto"></span><span>' + texto + '</span>' +
-          (MODO_LOCAL ? '' : '<button type="button" class="cf-icone-btn" data-acao="atualizar" aria-label="Atualizar agora" title="Atualizar agora">' + ICON.atualizar + '</button>') +
-          '</div>';
+          '<button type="button" class="cf-icone-btn" data-acao="atualizar" aria-label="Atualizar agora" title="Atualizar agora">' + ICON.atualizar + '</button></div>';
       }
       function atualizarStatus() {
         const el = document.getElementById('cf-status');
         if (el) el.outerHTML = htmlStatus();
       }
 
-      function htmlProblemas() {
-        if (!problemas.length) return '';
-        return '<div class="cf-alerta"><strong>Atenção: há um erro na lista de tarefas desta página.</strong><ul>' +
-          problemas.map(function (p) { return '<li>' + esc(p) + '</li>'; }).join('') + '</ul></div>';
-      }
-
       function htmlLogin() {
-        return htmlProblemas() + '<div class="cf-card cf-login">' +
-          '<h3>Checklist da conferência</h3>' +
+        return '<div class="cf-card cf-login">' +
+          '<h3>Conferência da Estaca</h3>' +
           '<p>Digite o código de acesso da estaca. O manual pode ser consultado na aba Manual sem código.</p>' +
           '<div class="cf-campo"><label for="cf-login-codigo">Código de acesso</label><input id="cf-login-codigo" type="password" autocomplete="current-password" data-enter="entrar"></div>' +
           '<p class="cf-erro" id="cf-login-erro"></p>' +
@@ -1048,131 +1088,405 @@
           '</div>';
       }
 
-      function htmlForm(c, primeira) {
-        const editar = !!c;
-        const nome = rascunhoForm.nome != null ? rascunhoForm.nome : (editar ? c.nome : '');
-        const data = rascunhoForm.data != null ? rascunhoForm.data : (editar ? c.sabado : '');
-        return '<div class="cf-card cf-form">' +
-          '<h3>' + (primeira ? 'Cadastre a próxima conferência' : (editar ? 'Editar conferência' : 'Nova conferência')) + '</h3>' +
+      function htmlNovaConf(primeira) {
+        const confs = ordenadasDesc();
+        let origem;
+        if (confs.length) {
+          origem = '<div class="cf-campo"><label for="nc-origem">Copiar tarefas e frentes de</label><select id="nc-origem">' +
+            confs.map(function (c, i) { return '<option value="' + esc(c.id) + '"' + (i === 0 ? ' selected' : '') + '>' + esc(c.nome) + '</option>'; }).join('') +
+            '<option value="padrao">Lista padrão do manual</option></select></div>';
+        } else {
+          origem = '<input type="hidden" id="nc-origem" value="padrao">';
+        }
+        return '<div class="cf-form-nova">' +
+          '<h3>' + (primeira ? 'Cadastre a primeira conferência' : 'Nova conferência') + '</h3>' +
           '<div class="cf-campos">' +
-          '<div class="cf-campo"><label for="cf-f-nome">Nome</label><input id="cf-f-nome" type="text" maxlength="80" placeholder="Conferência 2026.2" value="' + esc(nome) + '"></div>' +
-          '<div class="cf-campo"><label for="cf-f-data">Data do sábado</label><input id="cf-f-data" type="date" value="' + esc(data) + '"></div>' +
-          '</div>' +
-          '<p class="cf-ajuda">O domingo e todos os prazos do checklist são calculados a partir dessa data.</p>' +
-          '<p class="cf-erro" id="cf-f-erro"></p>' +
-          '<div class="cf-acoes"><button type="button" class="cf-btn cf-btn-sol" data-acao="' + (editar ? 'salvar-edicao' : 'criar') + '">' + (editar ? 'Salvar' : 'Criar checklist') + '</button>' +
-          (primeira ? '' : '<button type="button" class="cf-btn" data-acao="fechar-form">Cancelar</button>') + '</div>' +
+          '<div class="cf-campo"><label for="nc-nome">Nome</label><input id="nc-nome" type="text" maxlength="80" placeholder="Conferência 2027.1"></div>' +
+          '<div class="cf-campo"><label for="nc-data">Data do sábado</label><input id="nc-data" type="date"></div>' +
+          '</div>' + origem +
+          '<p class="cf-ajuda">Os prazos são calculados a partir do sábado. Nomes e marcações não são copiados.</p>' +
+          '<p class="cf-erro" id="nc-erro"></p>' +
+          '<div class="cf-acoes"><button type="button" class="cf-btn cf-btn-sol" data-acao="criar-conf">Criar conferência</button>' +
+          (primeira ? '' : '<button type="button" class="cf-btn" data-acao="fechar-nova">Cancelar</button>') + '</div>' +
           '</div>';
       }
 
-      function htmlTrocar(atual) {
-        const confs = dados.conferencias.slice().sort(function (a, b) { return b.sabado.localeCompare(a.sabado); });
-        return '<div class="cf-card cf-trocar-painel"><ul class="cf-confs">' +
-          confs.map(function (c) {
-            return '<li><a href="#c/' + encodeURIComponent(c.id) + '"' + (c.id === atual.id ? ' class="atual"' : '') + '><span>' + esc(c.nome) + '</span><small>' + esc(datasConf(c)) + '</small></a></li>';
-          }).join('') + '</ul>' +
-          '<div class="cf-acoes">' +
-          '<button type="button" class="cf-btn cf-btn-peq" data-acao="abrir-nova">' + ICON.mais + 'Nova conferência</button>' +
-          '<button type="button" class="cf-btn cf-btn-peq" data-acao="abrir-editar">Editar esta</button>' +
-          (MODO_LOCAL ? '' : '<button type="button" class="cf-link" data-acao="sair">Sair</button>') +
-          '</div></div>';
+      function htmlCab(c) {
+        let s = '<div class="cf-cab"><div><h2>' + esc(c.nome) + '</h2><p>' + esc(datasConf(c)) + '</p></div>' +
+          '<button type="button" class="cf-trocar' + (trocarAberto ? ' aberto' : '') + '" data-acao="trocar" aria-expanded="' + trocarAberto + '">Trocar' + ICON.baixo + '</button></div>';
+        if (!trocarAberto) return s;
+        s += '<div class="cf-card cf-trocar-painel">';
+        if (novaAberta) return s + htmlNovaConf(false) + '</div>';
+        s += '<ul class="cf-confs">' + ordenadasDesc().map(function (x) {
+          return '<li><button type="button" data-acao="sel-conf" data-id="' + esc(x.id) + '"' + (x.id === c.id ? ' class="atual"' : '') + '><span>' + esc(x.nome) + '</span><small>' + esc(datasConf(x)) + '</small></button></li>';
+        }).join('') + '</ul>' +
+          '<div class="cf-acoes"><button type="button" class="cf-btn cf-btn-peq" data-acao="nova-conf">' + ICON.mais + 'Nova conferência</button>' +
+          '<button type="button" class="cf-link" data-acao="sair">Sair</button></div></div>';
+        return s;
+      }
+
+      /* Checklist */
+      function doChamado(t, sel) {
+        if (!sel || t.chamado === sel) return true;
+        const ch = ix.chamado.get(sel);
+        return !!(ch && ch.ve.indexOf(t.chamado) >= 0);
       }
 
       function htmlChecklist(c) {
         const h = hoje();
-        const visiveis = TAREFAS.filter(function (t) { return doChamado(t, filtroResp); });
+        const chips = chamadosAtivos().filter(function (ch) { return ch.filtro; });
+        if (filtroResp && !chips.some(function (ch) { return ch.id === filtroResp; })) filtroResp = '';
+        const visiveis = tarefasDe(c.id).filter(function (t) { return doChamado(t, filtroResp); });
         let nFeitas = 0, nAtrasadas = 0;
         visiveis.forEach(function (t) {
-          if (feita(c.id, t.id)) nFeitas++;
-          else if (diasEntre(h, prazoFase(c, faseDe(t.fase))) < 0) nAtrasadas++;
+          if (feita(c.id, t.tarefa)) nFeitas++;
+          else if (diasEntre(h, dataDoPrazo(c, diasDe(t.prazo))) < 0) nAtrasadas++;
         });
         const pct = visiveis.length ? Math.round(nFeitas * 100 / visiveis.length) : 0;
 
         let s = '<div class="cf-prog"><div class="cf-prog-nums"><span>' + nFeitas + ' de ' + visiveis.length + ' feitas</span>' +
-          (nAtrasadas ? '<span class="atr">' + nAtrasadas + (nAtrasadas > 1 ? ' atrasadas' : ' atrasada') + '</span>' : '') + '</div>' +
+          (nAtrasadas ? '<span class="atr">' + plural(nAtrasadas, 'atrasada', 'atrasadas') + '</span>' : '') + '</div>' +
           '<div class="cf-barra" role="progressbar" aria-valuenow="' + pct + '" aria-valuemin="0" aria-valuemax="100"><span style="width:' + pct + '%"></span></div></div>';
 
-        s += '<div class="cf-chips" role="group" aria-label="Filtrar por chamado">' +
+        s += '<div class="cf-chips" data-faixa="filtro" role="group" aria-label="Filtrar por chamado">' +
           '<button type="button" class="cf-chip' + (!filtroResp ? ' ativo' : '') + '" data-acao="filtro" data-resp="">Todos</button>' +
-          CHAMADOS_FILTRO.map(function (r) {
-            return '<button type="button" class="cf-chip' + (filtroResp === r ? ' ativo' : '') + '" data-acao="filtro" data-resp="' + esc(r) + '">' + esc(r) + '</button>';
+          chips.map(function (ch) {
+            return '<button type="button" class="cf-chip' + (filtroResp === ch.id ? ' ativo' : '') + '" data-acao="filtro" data-resp="' + esc(ch.id) + '">' + esc(ch.nome) + '</button>';
           }).join('') + '</div>';
 
-        FASES.forEach(function (f) {
-          const lista = visiveis.filter(function (t) { return t.fase === f.id; });
-          if (!lista.length) return;
-          const prazo = prazoFase(c, f);
-          const pendentes = lista.filter(function (t) { return !feita(c.id, t.id); }).length;
-          const dataTxt = SEMANA[prazo.getDay()] + ', ' + ddmm(prazo);
-          let cls = '', rotulo = (f.dias === 0 || f.dias === 1 || f.dias === -1) ? dataTxt : 'até ' + dataTxt;
+        agrupar(visiveis).forEach(function (g) {
+          const p = ix.prazo.get(g.prazo);
+          const prazo = dataDoPrazo(c, p ? p.dias : 0);
+          const pendentes = g.itens.filter(function (t) { return !feita(c.id, t.tarefa); }).length;
+          let cls = '', rotulo = rotuloPrazo(c, g.prazo);
           if (!pendentes) { cls = 'ok'; rotulo = 'Concluído'; }
           else if (diasEntre(h, prazo) < 0) cls = 'atr';
-          s += '<section class="cf-grupo"><header class="cf-grupo-cab"><h3>' + esc(f.nome) + '</h3><span class="' + cls + '">' + rotulo + '</span></header>';
-          s += lista.map(function (t) {
-            const ok = feita(c.id, t.id);
-            return '<label class="cf-item' + (ok ? ' feita' : '') + '"><input type="checkbox" data-t="' + esc(t.id) + '"' + (ok ? ' checked' : '') + '>' +
+          s += '<section class="cf-grupo"><header class="cf-grupo-cab"><h3>' + esc(nomePrazo(g.prazo)) + '</h3><span class="' + cls + '">' + rotulo + '</span></header>';
+          s += g.itens.map(function (t) {
+            const ok = feita(c.id, t.tarefa);
+            return '<label class="cf-item' + (ok ? ' feita' : '') + '"><input type="checkbox" data-t="' + esc(t.tarefa) + '"' + (ok ? ' checked' : '') + '>' +
               '<span class="cf-caixa">' + ICON.check + '</span>' +
-              '<span class="cf-item-txt"><span class="cf-item-tarefa">' + esc(t.texto) + '</span><span class="cf-item-resp">' + esc(t.resp) + '</span></span></label>';
+              '<span class="cf-item-txt"><span class="cf-item-tarefa">' + esc(t.texto) + '</span><span class="cf-item-resp">' + respTexto(c.id, t.chamado) + '</span></span></label>';
           }).join('');
           s += '</section>';
         });
-        if (!visiveis.length) s += '<div class="cf-vazio">Nenhuma tarefa para este chamado.</div>';
+        if (!visiveis.length) {
+          s += '<div class="cf-vazio">' + (filtroResp ? 'Nenhuma tarefa para este chamado.' : 'Esta conferência ainda não tem tarefas. Crie na aba Edição.') + '</div>';
+        }
         return s;
       }
 
-      function faseDe(id) { for (let i = 0; i < FASES.length; i++) if (FASES[i].id === id) return FASES[i]; return FASES[0]; }
+      /* Sumo Conselho */
+      function htmlQuadro(c) {
+        const frentes = frentesDe(c.id);
+        const indice = new Map();
+        frentes.forEach(function (f) {
+          f.chamados.forEach(function (id) {
+            const p = pessoa(c.id, id).trim();
+            if (!p) return;
+            if (!indice.has(p)) indice.set(p, []);
+            if (indice.get(p).indexOf(f.titulo) < 0) indice.get(p).push(f.titulo);
+          });
+        });
+        const nomes = Array.from(indice.keys()).sort(function (a, b) { return a.localeCompare(b, 'pt-BR'); });
 
-      function rota() {
-        const h = decodeURIComponent(location.hash.replace(/^#/, ''));
-        if (h === 'manual') return { aba: 'manual' };
-        if (h.indexOf('c/') === 0) return { aba: 'painel', conf: h.slice(2) };
-        return { aba: 'painel' };
+        let s = '<div class="qd"><header class="qd-cab"><span class="qd-estaca">Estaca Salvador Brasil Norte</span>' +
+          '<h2 class="qd-titulo">Designações do Sumo Conselho</h2>' +
+          '<p class="qd-sub">' + esc(c.nome) + ' · ' + esc(datasConf(c)) + '</p></header>';
+        if (nomes.length) {
+          s += '<section class="qd-indice"><h3>Encontre seu nome</h3><ul>' + nomes.map(function (n) {
+            return '<li><b>' + esc(n) + '</b> <span>· ' + esc(indice.get(n).join(', ')) + '</span></li>';
+          }).join('') + '</ul></section>';
+        }
+        s += '<div class="qd-grade">' + frentes.map(function (f) {
+          const nomesFrente = f.chamados.length ? f.chamados.map(function (id) {
+            const p = pessoa(c.id, id);
+            return p ? '<li>' + esc(p) + '</li>' : '<li class="qd-falta">' + esc(nomeChamado(id)) + '</li>';
+          }).join('') : '<li class="qd-falta">Sem responsável</li>';
+          return '<article class="qd-card"><h3>' + esc(f.titulo) + '</h3><ul class="qd-nomes">' + nomesFrente + '</ul>' +
+            (f.descricao ? '<p>' + esc(f.descricao) + '</p>' : '') + '</article>';
+        }).join('') + '</div>' +
+          '<p class="qd-rodape">Cada frente pode convidar outros irmãos e irmãs para ajudar.</p></div>';
+        return s;
+      }
+
+      function htmlSumo(c) {
+        const frentes = frentesDe(c.id);
+        let faltam = 0;
+        frentes.forEach(function (f) { f.chamados.forEach(function (id) { if (!pessoa(c.id, id)) faltam++; }); });
+        let s = '<div class="cf-sumo-acoes">' +
+          '<button type="button" class="cf-btn cf-btn-sol" data-acao="imprimir-quadro"' + (frentes.length ? '' : ' disabled') + '>' + ICON.imprimir + 'Gerar PDF ou imprimir</button>' +
+          '<button type="button" class="cf-link" data-acao="ir-edicao" data-secao="nomes">Preencher nomes</button>' +
+          '<button type="button" class="cf-link" data-acao="ir-edicao" data-secao="frentes">Editar frentes</button>' +
+          '</div>' +
+          '<p class="cf-ajuda">Na janela que abrir, escolha "Salvar como PDF" para enviar no grupo, ou a impressora para imprimir em A4.</p>';
+        if (faltam) s += '<p class="cf-faltam">' + (faltam === 1 ? '1 responsável ainda está sem nome' : faltam + ' responsáveis ainda estão sem nome') + '. No quadro, aparecem em cinza com o nome do chamado.</p>';
+        s += frentes.length ? '<div class="cf-papel">' + htmlQuadro(c) + '</div>' : '<div class="cf-vazio">Nenhuma frente cadastrada nesta conferência. Crie na aba Edição, em Sumo Conselho.</div>';
+        return s;
+      }
+
+      /* Edição */
+      function emEdicao(tipo, id) { return !!(editando && editando.tipo === tipo && editando.id === id); }
+
+      function linhaEd(tipo, id, titulo, sub, primeiro, ultimo, comSetas) {
+        return '<div class="cf-ed-row">' +
+          (comSetas ? '<div class="cf-setas">' +
+            '<button type="button" data-acao="mover" data-tipo="' + tipo + '" data-id="' + esc(id) + '" data-dir="cima" aria-label="Subir"' + (primeiro ? ' disabled' : '') + '>' + ICON.cima + '</button>' +
+            '<button type="button" data-acao="mover" data-tipo="' + tipo + '" data-id="' + esc(id) + '" data-dir="baixo" aria-label="Descer"' + (ultimo ? ' disabled' : '') + '>' + ICON.baixo + '</button></div>' : '') +
+          '<div class="cf-ed-txt"><span class="cf-ed-titulo">' + titulo + '</span>' + (sub ? '<span class="cf-ed-sub">' + sub + '</span>' : '') + '</div>' +
+          '<button type="button" class="cf-icone-btn cf-lapis" data-acao="editar" data-tipo="' + tipo + '" data-id="' + esc(id) + '" aria-label="Editar">' + ICON.lapis + '</button></div>';
+      }
+      function botaoNovo(tipo, rotulo) {
+        return '<button type="button" class="cf-btn cf-ed-novo" data-acao="novo" data-tipo="' + tipo + '">' + ICON.mais + rotulo + '</button>';
+      }
+      function rodapeForm(tipo, existente) {
+        return '<p class="cf-erro" id="ed-erro"></p><div class="cf-acoes">' +
+          '<button type="button" class="cf-btn cf-btn-sol" data-acao="salvar" data-tipo="' + tipo + '">Salvar</button>' +
+          '<button type="button" class="cf-btn" data-acao="cancelar">Cancelar</button>' +
+          (existente ? '<button type="button" class="cf-btn cf-btn-perigo" data-acao="remover" data-tipo="' + tipo + '">Remover</button>' : '') +
+          '</div>';
+      }
+      function opcoesChamado(c, atual) {
+        const itens = chamadosAtivos();
+        if (atual && !itens.some(function (x) { return x.id === atual; }) && ix.chamado.has(atual)) itens.push(ix.chamado.get(atual));
+        return '<option value="">Escolha...</option>' + itens.map(function (ch) {
+          const p = pessoa(c.id, ch.id);
+          return '<option value="' + esc(ch.id) + '"' + (ch.id === atual ? ' selected' : '') + '>' + esc(ch.nome + (p ? ' · ' + p : '')) + '</option>';
+        }).join('');
+      }
+      function opcoesPrazo(c, atual) {
+        const itens = prazosAtivos();
+        if (atual && !itens.some(function (x) { return x.id === atual; }) && ix.prazo.has(atual)) itens.push(ix.prazo.get(atual));
+        return '<option value="">Escolha...</option>' + itens.map(function (p) {
+          return '<option value="' + esc(p.id) + '"' + (p.id === atual ? ' selected' : '') + '>' + esc(p.nome) + ' (' + ddmm(dataDoPrazo(c, p.dias)) + ')</option>';
+        }).join('');
+      }
+      function linhaResp(c, id) {
+        return '<div class="cf-resp-linha"><select aria-label="Responsável">' + opcoesChamado(c, id) + '</select>' +
+          '<button type="button" class="cf-icone-btn" data-acao="del-resp" aria-label="Tirar responsável">' + ICON.x + '</button></div>';
+      }
+      function intro(texto) { return '<p class="cf-intro">' + texto + '</p>'; }
+
+      function secNomes(c) {
+        return intro('Escreva quem ocupa cada chamado nesta conferência. O nome aparece sozinho em todas as tarefas e frentes desse chamado e é salvo assim que você passa para o próximo campo. Os nomes não passam para a próxima conferência.') +
+          '<div class="cf-nomes">' + chamadosAtivos().map(function (ch) {
+            return '<label class="cf-nome-row"><span>' + esc(ch.nome) + '</span><input type="text" data-nome="' + esc(ch.id) + '" value="' + esc(pessoa(c.id, ch.id)) + '" placeholder="Nome" autocomplete="off" maxlength="80"></label>';
+          }).join('') + '</div>';
+      }
+
+      function formTarefa(c, t) {
+        return '<div class="cf-card cf-ed-form"><h4>' + (t ? 'Editar tarefa' : 'Nova tarefa') + '</h4>' +
+          '<div class="cf-campo"><label for="ed-texto">O que precisa ser feito</label><textarea id="ed-texto" rows="2" maxlength="300">' + esc(t ? t.texto : '') + '</textarea></div>' +
+          '<div class="cf-campos">' +
+          '<div class="cf-campo"><label for="ed-chamado">Responsável</label><select id="ed-chamado">' + opcoesChamado(c, t ? t.chamado : '') + '</select></div>' +
+          '<div class="cf-campo"><label for="ed-prazo">Prazo</label><select id="ed-prazo">' + opcoesPrazo(c, t ? t.prazo : '') + '</select></div>' +
+          '</div>' + rodapeForm('tarefa', !!t) + '</div>';
+      }
+      function secTarefas(c) {
+        let s = intro('Tarefas desta conferência. Ao criar a próxima conferência a partir desta, a lista vai junto, sem as marcações.');
+        s += emEdicao('tarefa', '') ? formTarefa(c, null) : botaoNovo('tarefa', 'Nova tarefa');
+        const grupos = agrupar(tarefasDe(c.id));
+        if (!grupos.length) s += '<div class="cf-vazio">Nenhuma tarefa ainda.</div>';
+        grupos.forEach(function (g) {
+          s += '<section class="cf-grupo"><header class="cf-grupo-cab"><h3>' + esc(nomePrazo(g.prazo)) + '</h3><span>' + rotuloPrazo(c, g.prazo) + '</span></header>';
+          g.itens.forEach(function (t, i) {
+            s += emEdicao('tarefa', t.tarefa) ? formTarefa(c, t)
+              : linhaEd('tarefa', t.tarefa, esc(t.texto), respTexto(c.id, t.chamado), i === 0, i === g.itens.length - 1, true);
+          });
+          s += '</section>';
+        });
+        return s;
+      }
+
+      function formFrente(c, f) {
+        const resps = f && f.chamados.length ? f.chamados : [''];
+        return '<div class="cf-card cf-ed-form"><h4>' + (f ? 'Editar frente' : 'Nova frente') + '</h4>' +
+          '<div class="cf-campo"><label for="ed-titulo">Nome da frente</label><input id="ed-titulo" type="text" maxlength="80" value="' + esc(f ? f.titulo : '') + '"></div>' +
+          '<div class="cf-campo"><label for="ed-desc">O que fazer</label><textarea id="ed-desc" rows="3" maxlength="600">' + esc(f ? f.descricao : '') + '</textarea></div>' +
+          '<div class="cf-campo"><label>Responsáveis</label><div class="cf-resps">' + resps.map(function (id) { return linhaResp(c, id); }).join('') + '</div>' +
+          '<button type="button" class="cf-link cf-add" data-acao="add-resp">' + ICON.mais + 'Adicionar responsável</button></div>' +
+          rodapeForm('frente', !!f) + '</div>';
+      }
+      function secFrentes(c) {
+        const frentes = frentesDe(c.id);
+        let s = intro('Frentes do sumo conselho nesta conferência. Cada frente aponta para chamados, e os nomes vêm da seção Nomes. Ao criar a próxima conferência a partir desta, as frentes vão junto.');
+        s += emEdicao('frente', '') ? formFrente(c, null) : botaoNovo('frente', 'Nova frente');
+        s += '<div class="cf-ed-lista">';
+        frentes.forEach(function (f, i) {
+          s += emEdicao('frente', f.frente) ? formFrente(c, f)
+            : linhaEd('frente', f.frente, esc(f.titulo), f.chamados.map(function (id) { return respCurto(c.id, id); }).join(', ') || 'Sem responsável', i === 0, i === frentes.length - 1, true);
+        });
+        s += '</div>';
+        if (!frentes.length) s += '<div class="cf-vazio">Nenhuma frente ainda.</div>';
+        return s;
+      }
+
+      function formPrazo(c, p) {
+        const partes = quebrarDias(p ? p.dias : -7);
+        const sugestao = sugestaoPrazo(partes[0], partes[1]);
+        return '<div class="cf-card cf-ed-form"><h4>' + (p ? 'Editar prazo' : 'Novo prazo') + '</h4>' +
+          '<div class="cf-campo"><label for="ed-pn">Quando vence, contando do sábado da conferência</label><div class="cf-quando">' +
+          '<input id="ed-pn" type="number" min="0" max="60" step="1" inputmode="numeric" value="' + partes[0] + '" aria-label="Quantidade">' +
+          '<select id="ed-pun" aria-label="Unidade">' + UNIDADES.map(function (u) { return '<option value="' + u[0] + '"' + (u[0] === partes[1] ? ' selected' : '') + '>' + u[1] + '</option>'; }).join('') + '</select>' +
+          '</div><p class="cf-previa" id="ed-previa"></p></div>' +
+          '<div class="cf-campo"><label for="ed-pnome">Nome do prazo</label><input id="ed-pnome" type="text" maxlength="60" value="' + esc(p ? p.nome : sugestao) + '" data-auto="' + (p ? '' : esc(sugestao)) + '"></div>' +
+          rodapeForm('prazo', !!p) + '</div>';
+      }
+      function secPrazos(c) {
+        let s = intro('Os prazos valem para todas as conferências e contam a partir do sábado de cada uma.');
+        s += emEdicao('prazo', '') ? formPrazo(c, null) : botaoNovo('prazo', 'Novo prazo');
+        s += '<div class="cf-ed-lista">';
+        prazosAtivos().forEach(function (p) {
+          s += emEdicao('prazo', p.id) ? formPrazo(c, p)
+            : linhaEd('prazo', p.id, esc(p.nome), esc(descrDias(p.dias)) + ' · nesta conferência, ' + rotuloPrazo(c, p.id), false, false, false);
+        });
+        return s + '</div>';
+      }
+      function atualizarPrevia() {
+        const elPrevia = document.getElementById('ed-previa');
+        const c = confAtual();
+        if (!elPrevia || !c) return;
+        const f = diasDoForm();
+        const d = dataDoPrazo(c, f.dias);
+        elPrevia.textContent = 'Na ' + c.nome + ', vence ' + SEMANA[d.getDay()] + ', ' + ddmm(d) + '.';
+        const elNome = document.getElementById('ed-pnome');
+        if (elNome && elNome.dataset.auto && elNome.value === elNome.dataset.auto) {
+          const nova = sugestaoPrazo(f.n, f.un);
+          elNome.value = nova;
+          elNome.dataset.auto = nova;
+        }
+      }
+
+      function formChamado(c, ch) {
+        const outros = chamadosAtivos().filter(function (x) { return !ch || x.id !== ch.id; });
+        const ve = ch ? ch.ve : [];
+        return '<div class="cf-card cf-ed-form"><h4>' + (ch ? 'Editar chamado' : 'Novo chamado') + '</h4>' +
+          '<div class="cf-campo"><label for="ed-cnome">Nome do chamado</label><input id="ed-cnome" type="text" maxlength="80" value="' + esc(ch ? ch.nome : '') + '"></div>' +
+          '<label class="cf-check-linha cf-check-destaque"><input type="checkbox" id="ed-cfiltro"' + (!ch || ch.filtro ? ' checked' : '') + '><span>Mostrar como botão no filtro do Checklist</span></label>' +
+          '<details class="cf-ve"' + (ve.length ? ' open' : '') + '><summary>Ao filtrar por este chamado, mostrar também as tarefas de' + (ve.length ? ' (' + ve.length + ')' : '') + '</summary>' +
+          '<div class="cf-checks">' + outros.map(function (x) {
+            return '<label class="cf-check-linha"><input type="checkbox" data-ve="' + esc(x.id) + '"' + (ve.indexOf(x.id) >= 0 ? ' checked' : '') + '><span>' + esc(x.nome) + '</span></label>';
+          }).join('') + '</div></details>' +
+          rodapeForm('chamado', !!ch) + '</div>';
+      }
+      function secChamados(c) {
+        const itens = chamadosAtivos();
+        let s = intro('Os chamados valem para todas as conferências. Os que estão no filtro aparecem como botões no Checklist, na ordem desta lista.');
+        s += emEdicao('chamado', '') ? formChamado(c, null) : botaoNovo('chamado', 'Novo chamado');
+        s += '<div class="cf-ed-lista">';
+        itens.forEach(function (ch, i) {
+          const subs = [];
+          if (!ch.filtro) subs.push('Fora do filtro');
+          if (ch.ve.length) subs.push('Também vê: ' + ch.ve.map(nomeChamado).join(', '));
+          s += emEdicao('chamado', ch.id) ? formChamado(c, ch)
+            : linhaEd('chamado', ch.id, esc(ch.nome), esc(subs.join(' · ')), i === 0, i === itens.length - 1, true);
+        });
+        return s + '</div>';
+      }
+
+      function secConferencia(c) {
+        return '<div class="cf-card cf-ed-conf" style="margin-top:20px"><h4>Nome e data</h4>' +
+          '<div class="cf-campos">' +
+          '<div class="cf-campo"><label for="ec-nome">Nome</label><input id="ec-nome" type="text" maxlength="80" value="' + esc(c.nome) + '"></div>' +
+          '<div class="cf-campo"><label for="ec-data">Data do sábado</label><input id="ec-data" type="date" value="' + esc(c.sabado) + '"></div>' +
+          '</div><p class="cf-ajuda">Ao mudar a data, todos os prazos desta conferência são recalculados.</p>' +
+          '<p class="cf-erro" id="ec-erro"></p>' +
+          '<div class="cf-acoes"><button type="button" class="cf-btn cf-btn-sol" data-acao="salvar-conf">Salvar</button></div></div>' +
+          '<div class="cf-perigo"><h4>Excluir esta conferência</h4>' +
+          '<p>Apaga a conferência com as tarefas, as marcações, os nomes e as frentes dela. Não dá para desfazer.</p>' +
+          '<button type="button" class="cf-btn cf-btn-perigo" data-acao="excluir-conf">Excluir conferência</button></div>';
+      }
+
+      function htmlEdicao(c) {
+        let s = '<div class="cf-chips cf-secoes" data-faixa="secoes" role="group" aria-label="O que editar">' +
+          SECOES.map(function (x) {
+            return '<button type="button" class="cf-chip' + (secao === x[0] ? ' ativo' : '') + '" data-acao="secao" data-secao="' + x[0] + '">' + x[1] + '</button>';
+          }).join('') + '</div>';
+        if (secao === 'tarefas') s += secTarefas(c);
+        else if (secao === 'frentes') s += secFrentes(c);
+        else if (secao === 'prazos') s += secPrazos(c);
+        else if (secao === 'chamados') s += secChamados(c);
+        else if (secao === 'conferencia') s += secConferencia(c);
+        else s += secNomes(c);
+        return s;
+      }
+
+      /* Manual: partes que vêm da conferência aberta */
+      function renderManualDinamico() {
+        const elF = document.getElementById('cf-manual-frentes');
+        const elC = document.getElementById('cf-cronograma');
+        const c = sessao && carregado && dados.conferencias.length ? confAtual() : null;
+        if (!c) {
+          const aviso = '<div class="cf-nota">' + (sessao ? 'Cadastre uma conferência para ver esta parte.' : 'Entre na aba Checklist com o código de acesso para ver esta parte. Ela é montada a partir da conferência aberta.') + '</div>';
+          elF.innerHTML = aviso;
+          elC.innerHTML = aviso;
+          return;
+        }
+        elF.innerHTML = '<div class="cf-frentes">' + frentesDe(c.id).map(function (f) {
+          return '<div class="cf-frente"><h5>' + esc(f.titulo) + '</h5><p>' + esc(f.descricao) + '</p></div>';
+        }).join('') + '</div><div class="cf-nota">Frentes da ' + esc(c.nome) + '. Para mudar, use a aba Edição.</div>';
+        elC.innerHTML = '<p>Tarefas da ' + esc(c.nome) + ', com os prazos contados a partir do sábado. Para mudar, use a aba Edição.</p>' +
+          agrupar(tarefasDe(c.id)).map(function (g) {
+            return '<div class="cf-crono-fase"><h4>' + esc(nomePrazo(g.prazo)) + '<small>' + rotuloPrazo(c, g.prazo) + '</small></h4><ul class="cf-crono-lista">' +
+              g.itens.map(function (t) { return '<li><span>' + esc(t.texto) + '</span><em>' + esc(nomeChamado(t.chamado)) + '</em></li>'; }).join('') +
+              '</ul></div>';
+          }).join('');
+      }
+
+      /* ---------- Desenho da página ---------- */
+      function abaAtual() {
+        const h = location.hash.replace(/^#/, '');
+        return ['sumo', 'manual', 'edicao'].indexOf(h) >= 0 ? h : 'checklist';
+      }
+      function irPara(aba) {
+        const alvo = aba === 'checklist' ? '' : aba;
+        if (location.hash.replace(/^#/, '') === alvo) render();
+        else location.hash = alvo;
       }
 
       function render() {
         renderAdiado = false;
         indexar();
-        const r = rota();
-        document.querySelectorAll('.cf-aba').forEach(function (b) { b.classList.toggle('ativa', b.dataset.aba === r.aba); });
-        elManual.hidden = r.aba !== 'manual';
-        elPainel.hidden = r.aba !== 'painel';
-        if (r.aba !== 'painel') return;
+        const aba = abaAtual();
+        document.body.setAttribute('data-cf-aba', aba);
+        document.querySelectorAll('.cf-aba').forEach(function (b) { b.classList.toggle('ativa', b.dataset.aba === aba); });
+        elManual.hidden = aba !== 'manual';
+        elApp.hidden = aba === 'manual';
+        renderManualDinamico();
+        elQuadro.innerHTML = '';
+        if (aba === 'manual') return;
 
-        if (!MODO_LOCAL && !sessao) { confNaTela = null; elPainel.innerHTML = htmlLogin(); return; }
+        if (!URL) { elApp.innerHTML = '<div class="cf-alerta">Falta o endereço da planilha no bloco ONDE MEXER 1 deste arquivo.</div>'; return; }
+        if (!sessao) { elApp.innerHTML = htmlLogin(); return; }
 
-        const faixaChips = elPainel.querySelector('.cf-chips');
-        const rolagemChips = faixaChips ? faixaChips.scrollLeft : 0;
+        const rolagens = {};
+        elApp.querySelectorAll('[data-faixa]').forEach(function (f) { rolagens[f.dataset.faixa] = f.scrollLeft; });
 
-        let h = htmlProblemas() + '<div class="cf-status-linha">' + htmlStatus() + '</div>';
+        let h = '<div class="cf-status-linha">' + htmlStatus() + '</div>';
         if (!carregado) {
-          h += '<div class="cf-carregando">Carregando o checklist...</div>';
-          confNaTela = null;
+          h += '<div class="cf-carregando">Carregando...</div>';
         } else if (!dados.conferencias.length) {
-          confNaTela = null;
-          h += htmlForm(null, true);
+          h += '<div class="cf-card">' + htmlNovaConf(true) + '</div>';
         } else {
-          const c = (r.conf && acharConf(dados, r.conf)) || conferenciaAtual();
-          confNaTela = c;
-          h += '<div class="cf-cab"><div><h2>' + esc(c.nome) + '</h2><p>' + esc(datasConf(c)) + '</p></div>' +
-            '<button type="button" class="cf-trocar' + (trocarAberto ? ' aberto' : '') + '" data-acao="trocar" aria-expanded="' + trocarAberto + '">Trocar' + ICON.baixo + '</button></div>';
-          if (trocarAberto && !formAberto) h += htmlTrocar(c);
-          if (formAberto === 'nova') h += htmlForm(null, false);
-          if (formAberto === 'editar') h += htmlForm(c, false);
-          h += htmlChecklist(c);
+          const c = confAtual();
+          h += htmlCab(c);
+          if (aba === 'sumo') { h += htmlSumo(c); elQuadro.innerHTML = htmlQuadro(c); }
+          else if (aba === 'edicao') h += htmlEdicao(c);
+          else h += htmlChecklist(c);
         }
-        elPainel.innerHTML = h;
+        elApp.innerHTML = h;
 
-        const novaFaixa = elPainel.querySelector('.cf-chips');
-        if (novaFaixa) novaFaixa.scrollLeft = rolagemChips;
+        elApp.querySelectorAll('[data-faixa]').forEach(function (f) { if (rolagens[f.dataset.faixa]) f.scrollLeft = rolagens[f.dataset.faixa]; });
+        if (document.getElementById('ed-pn')) atualizarPrevia();
       }
 
-      // Não redesenha a tela enquanto alguém está digitando
       function digitando() {
         const a = document.activeElement;
-        return a && elPainel.contains(a) && (a.tagName === 'TEXTAREA' || a.tagName === 'SELECT' || (a.tagName === 'INPUT' && a.type !== 'checkbox'));
+        return !!(a && elApp.contains(a) && (a.tagName === 'TEXTAREA' || a.tagName === 'SELECT' || (a.tagName === 'INPUT' && a.type !== 'checkbox')));
       }
+      // Não redesenha a tela enquanto alguém está digitando ou com um formulário aberto
       function renderSeguro() {
-        if (digitando()) { renderAdiado = true; atualizarStatus(); return; }
+        if (digitando() || editando || novaAberta || sujo || salvando) { renderAdiado = true; atualizarStatus(); return; }
         render();
       }
 
@@ -1191,152 +1505,285 @@
         const y = alvo.getBoundingClientRect().top + window.scrollY - 90;
         if (window.scrollY > y) window.scrollTo(0, Math.max(0, y));
       }
-
-      /* ---------- Formulário de conferência ---------- */
-      function lerForm() {
-        const nome = document.getElementById('cf-f-nome').value.trim();
-        const data = document.getElementById('cf-f-data').value;
-        const elErro = document.getElementById('cf-f-erro');
-        elErro.textContent = '';
-        if (!nome) { elErro.textContent = 'Digite o nome da conferência.'; return null; }
-        const d = paraData(data);
-        if (!d) { elErro.textContent = 'Escolha a data do sábado.'; return null; }
-        if (d.getDay() !== 6 && !confirm('A data escolhida cai numa ' + SEMANA[d.getDay()] + ', não num sábado. Os prazos serão contados a partir dela. Continuar assim mesmo?')) return null;
-        return { nome: nome, sabado: data };
+      function focarFormulario() {
+        const form = elApp.querySelector('.cf-ed-form, .cf-form-nova');
+        if (!form) return;
+        form.scrollIntoView({ block: 'nearest' });
+        const campo = form.querySelector('input:not([type="checkbox"]), textarea');
+        if (campo) campo.focus({ preventScroll: true });
       }
 
-      /* ---------- Cliques e marcações ---------- */
-      elPainel.addEventListener('click', function (ev) {
+      /* ---------- Ações ---------- */
+      async function criarConferencia(botao) {
+        const elErro = document.getElementById('nc-erro');
+        elErro.textContent = '';
+        const nome = val('nc-nome').trim();
+        const data = val('nc-data');
+        if (!nome) return erroEm(elErro, 'Digite o nome da conferência.');
+        const d = paraData(data);
+        if (!d) return erroEm(elErro, 'Escolha a data do sábado.');
+        if (d.getDay() !== 6 && !confirm('A data escolhida cai numa ' + SEMANA[d.getDay()] + ', não num sábado. Os prazos serão contados a partir dela. Continuar assim mesmo?')) return false;
+        const id = novoId();
+        const ok = await salvar({ acao: 'criarConferencia', id: id, nome: nome, sabado: data, origem: val('nc-origem') || 'padrao' }, botao, 'Conferência criada.');
+        if (ok) { confSel = id; novaAberta = false; trocarAberto = false; sujo = false; filtroResp = ''; render(); rolarParaTopo(); }
+        return ok;
+      }
+
+      async function salvarFormulario(botao, c) {
+        const tipo = botao.dataset.tipo;
+        const elErro = document.getElementById('ed-erro');
+        elErro.textContent = '';
+        const id = editando ? editando.id : '';
+        let op;
+        if (tipo === 'tarefa') {
+          const texto = val('ed-texto').trim();
+          if (!texto) return erroEm(elErro, 'Escreva o que precisa ser feito.');
+          if (!val('ed-chamado')) return erroEm(elErro, 'Escolha o responsável.');
+          if (!val('ed-prazo')) return erroEm(elErro, 'Escolha o prazo.');
+          op = { acao: 'salvarTarefa', conferencia: c.id, tarefa: id, texto: texto, chamado: val('ed-chamado'), prazo: val('ed-prazo') };
+        } else if (tipo === 'frente') {
+          const titulo = val('ed-titulo').trim();
+          if (!titulo) return erroEm(elErro, 'Digite o nome da frente.');
+          const chamados = Array.from(elApp.querySelectorAll('.cf-resp-linha select')).map(function (s) { return s.value; }).filter(Boolean);
+          op = { acao: 'salvarFrente', conferencia: c.id, frente: id, titulo: titulo, descricao: val('ed-desc').trim(), chamados: chamados };
+        } else if (tipo === 'prazo') {
+          const nome = val('ed-pnome').trim();
+          if (!nome) return erroEm(elErro, 'Digite o nome do prazo.');
+          op = { acao: 'salvarPrazo', id: id, nome: nome, dias: diasDoForm().dias };
+        } else if (tipo === 'chamado') {
+          const nome = val('ed-cnome').trim();
+          if (!nome) return erroEm(elErro, 'Digite o nome do chamado.');
+          op = {
+            acao: 'salvarChamado', id: id, nome: nome,
+            filtro: document.getElementById('ed-cfiltro').checked,
+            ve_tambem: Array.from(elApp.querySelectorAll('[data-ve]:checked')).map(function (x) { return x.dataset.ve; })
+          };
+        }
+        if (!op) return false;
+        if (await salvar(op, botao, 'Salvo.')) { editando = null; sujo = false; render(); }
+        return true;
+      }
+
+      async function removerItem(botao, c) {
+        const tipo = botao.dataset.tipo;
+        const id = editando ? editando.id : '';
+        if (!id) return;
+        const perguntas = {
+          tarefa: 'Remover esta tarefa desta conferência?',
+          frente: 'Remover esta frente desta conferência?',
+          prazo: 'Remover este prazo da lista? As conferências já realizadas continuam mostrando o prazo.',
+          chamado: 'Remover este chamado da lista? As conferências já realizadas continuam mostrando o chamado.'
+        };
+        if (!confirm(perguntas[tipo])) return;
+        const ops = {
+          tarefa: { acao: 'removerTarefa', conferencia: c.id, tarefa: id },
+          frente: { acao: 'removerFrente', conferencia: c.id, frente: id },
+          prazo: { acao: 'removerPrazo', id: id },
+          chamado: { acao: 'removerChamado', id: id }
+        };
+        if (await salvar(ops[tipo], botao, 'Removido.')) { editando = null; sujo = false; render(); }
+      }
+
+      // Troca de lugar na tela na hora e confirma com a planilha em seguida
+      function trocarLocal(grupo, teste, dir) {
+        const i = grupo.findIndex(teste);
+        const j = dir === 'cima' ? i - 1 : i + 1;
+        if (i < 0 || j < 0 || j >= grupo.length) return false;
+        const ordens = grupo.map(function (x) { return x.ordem; });
+        for (let k = 1; k < ordens.length; k++) if (ordens[k] <= ordens[k - 1]) ordens[k] = ordens[k - 1] + 1;
+        const tmp = grupo[i]; grupo[i] = grupo[j]; grupo[j] = tmp;
+        grupo.forEach(function (x, k) { x.ordem = ordens[k]; });
+        return true;
+      }
+      async function moverItem(botao, c) {
+        if (salvando) return;
+        const tipo = botao.dataset.tipo, id = botao.dataset.id, dir = botao.dataset.dir;
+        let op, grupo, teste;
+        const porOrdem = function (a, b) { return a.ordem - b.ordem; };
+        if (tipo === 'tarefa') {
+          const alvo = dados.tarefas.filter(function (t) { return t.conferencia === c.id && t.tarefa === id; })[0];
+          if (!alvo) return;
+          grupo = dados.tarefas.filter(function (t) { return t.conferencia === c.id && t.prazo === alvo.prazo; }).sort(porOrdem);
+          teste = function (t) { return t === alvo; };
+          op = { acao: 'moverTarefa', conferencia: c.id, tarefa: id, direcao: dir };
+        } else if (tipo === 'frente') {
+          grupo = dados.frentes.filter(function (f) { return f.conferencia === c.id; }).sort(porOrdem);
+          teste = function (f) { return f.frente === id; };
+          op = { acao: 'moverFrente', conferencia: c.id, frente: id, direcao: dir };
+        } else {
+          grupo = dados.chamados.filter(function (x) { return x.ativo; }).sort(porOrdem);
+          teste = function (x) { return x.id === id; };
+          op = { acao: 'moverChamado', id: id, direcao: dir };
+        }
+        if (!trocarLocal(grupo, teste, dir)) return;
+        render();
+        await salvar(op, null);
+        render();
+      }
+
+      /* ---------- Cliques ---------- */
+      elApp.addEventListener('click', async function (ev) {
         const alvo = ev.target.closest('[data-acao]');
-        if (!alvo) return;
-        switch (alvo.dataset.acao) {
+        if (!alvo || !elApp.contains(alvo) || alvo.tagName === 'INPUT') return;
+        const acao = alvo.dataset.acao;
+        const c = carregado && dados.conferencias.length ? confAtual() : null;
+
+        switch (acao) {
           case 'entrar': entrar(); break;
           case 'sair': sair(); break;
           case 'atualizar': processarFila(); atualizar(); break;
           case 'trocar':
-            trocarAberto = !trocarAberto; formAberto = null; render();
+            trocarAberto = !trocarAberto; novaAberta = false; sujo = false; render();
             break;
-          case 'abrir-nova':
-            formAberto = 'nova'; rascunhoForm = {}; render();
-            document.getElementById('cf-f-nome').focus();
+          case 'sel-conf':
+            confSel = alvo.dataset.id; trocarAberto = false; editando = null; filtroResp = ''; sujo = false;
+            render(); rolarParaTopo();
             break;
-          case 'abrir-editar':
-            formAberto = 'editar'; rascunhoForm = {}; render();
-            document.getElementById('cf-f-nome').focus();
+          case 'nova-conf':
+            novaAberta = true; render(); focarFormulario();
             break;
-          case 'fechar-form':
-            formAberto = null; rascunhoForm = {}; render();
+          case 'fechar-nova':
+            novaAberta = false; sujo = false; render();
             break;
-          case 'criar': {
-            const f = lerForm();
-            if (!f) return;
-            const id = novoId();
-            executar({ acao: 'criarConferencia', id: id, nome: f.nome, sabado: f.sabado });
-            formAberto = null; trocarAberto = false; rascunhoForm = {};
-            if (location.hash === '#c/' + id) render(); else location.hash = 'c/' + id;
-            avisar('Checklist criado.');
+          case 'criar-conf':
+            await criarConferencia(alvo);
             break;
-          }
-          case 'salvar-edicao': {
-            const f = lerForm();
-            if (!f || !confNaTela) return;
-            executar({ acao: 'editarConferencia', id: confNaTela.id, nome: f.nome, sabado: f.sabado });
-            formAberto = null; trocarAberto = false; rascunhoForm = {};
-            render();
-            avisar('Conferência atualizada.');
-            break;
-          }
           case 'filtro':
-            filtroResp = alvo.dataset.resp || '';
-            render();
+            filtroResp = alvo.dataset.resp || ''; render();
+            break;
+          case 'imprimir-quadro':
+            if (c) { elQuadro.innerHTML = htmlQuadro(c); window.print(); }
+            break;
+          case 'ir-edicao':
+            secao = alvo.dataset.secao || 'nomes'; editando = null; sujo = false;
+            irPara('edicao');
+            break;
+          case 'secao':
+            secao = alvo.dataset.secao; editando = null; sujo = false; render();
+            break;
+          case 'novo':
+            editando = { tipo: alvo.dataset.tipo, id: '' }; sujo = false; render(); focarFormulario();
+            break;
+          case 'editar':
+            editando = { tipo: alvo.dataset.tipo, id: alvo.dataset.id }; sujo = false; render(); focarFormulario();
+            break;
+          case 'cancelar':
+            editando = null; sujo = false; render();
+            break;
+          case 'salvar':
+            if (c) await salvarFormulario(alvo, c);
+            break;
+          case 'remover':
+            if (c) await removerItem(alvo, c);
+            break;
+          case 'mover':
+            if (c) await moverItem(alvo, c);
+            break;
+          case 'add-resp':
+            if (c) { alvo.previousElementSibling.insertAdjacentHTML('beforeend', linhaResp(c, '')); sujo = true; }
+            break;
+          case 'del-resp': {
+            const linha = alvo.closest('.cf-resp-linha');
+            if (linha.parentElement.children.length > 1) linha.remove();
+            else linha.querySelector('select').value = '';
+            sujo = true;
+            break;
+          }
+          case 'salvar-conf': {
+            if (!c) break;
+            const elErro = document.getElementById('ec-erro');
+            elErro.textContent = '';
+            const nome = val('ec-nome').trim();
+            const data = val('ec-data');
+            if (!nome) { erroEm(elErro, 'Digite o nome da conferência.'); break; }
+            if (!paraData(data)) { erroEm(elErro, 'Escolha a data do sábado.'); break; }
+            if (await salvar({ acao: 'editarConferencia', id: c.id, nome: nome, sabado: data }, alvo, 'Conferência atualizada.')) { sujo = false; render(); }
+            break;
+          }
+          case 'excluir-conf':
+            if (!c) break;
+            if (!confirm('Excluir a ' + c.nome + '? Isso apaga as tarefas, as marcações, os nomes e as frentes dela e não dá para desfazer.')) break;
+            if (await salvar({ acao: 'excluirConferencia', id: c.id }, alvo, 'Conferência excluída.')) { confSel = null; secao = 'nomes'; sujo = false; render(); }
             break;
         }
       });
 
-      elPainel.addEventListener('change', function (ev) {
+      elApp.addEventListener('change', function (ev) {
         const el = ev.target;
-        if (el.type === 'checkbox' && el.dataset.t && confNaTela) {
-          executar({ acao: 'marcar', conferencia: confNaTela.id, tarefa: el.dataset.t, feito: el.checked });
+        const c = carregado && dados.conferencias.length ? confAtual() : null;
+        if (!c) return;
+        if (el.type === 'checkbox' && el.dataset.t) {
+          executar({ acao: 'marcar', conferencia: c.id, tarefa: el.dataset.t, feito: el.checked });
           render();
+        } else if (el.dataset.nome != null) {
+          const valor = el.value.trim();
+          if (valor !== pessoa(c.id, el.dataset.nome)) {
+            executar({ acao: 'nome', conferencia: c.id, chamado: el.dataset.nome, nome: valor });
+            indexar();
+            atualizarStatus();
+          }
+        } else if (el.id === 'ed-pun') {
+          atualizarPrevia();
         }
       });
 
-      // Guarda o que está sendo digitado, para não perder numa atualização
-      elPainel.addEventListener('input', function (ev) {
-        if (ev.target.id === 'cf-f-nome') rascunhoForm.nome = ev.target.value;
-        else if (ev.target.id === 'cf-f-data') rascunhoForm.data = ev.target.value;
+      elApp.addEventListener('input', function (ev) {
+        const el = ev.target;
+        if (el.dataset.nome != null) return;
+        if (el.closest('.cf-ed-form, .cf-ed-conf, .cf-form-nova')) sujo = true;
+        if (el.id === 'ed-pn' || el.id === 'ed-pun') atualizarPrevia();
       });
 
-      elPainel.addEventListener('keydown', function (ev) {
+      elApp.addEventListener('keydown', function (ev) {
         if (ev.key === 'Enter' && ev.target.dataset.enter === 'entrar') { ev.preventDefault(); entrar(); }
+        if (ev.key === 'Enter' && ev.target.dataset.nome != null) { ev.preventDefault(); ev.target.blur(); }
       });
 
       // Ao sair de um campo, aplica a atualização que ficou esperando
-      elPainel.addEventListener('focusout', function () {
+      elApp.addEventListener('focusout', function () {
         if (!renderAdiado) return;
         setTimeout(function () {
           const a = document.activeElement;
-          if (renderAdiado && !digitando() && !(a && a.tagName === 'BUTTON' && elPainel.contains(a))) render();
+          if (renderAdiado && !digitando() && !editando && !novaAberta && !sujo && !salvando && !(a && a.tagName === 'BUTTON' && elApp.contains(a))) render();
         }, 400);
       });
 
-      let ultimaRotaPainel = '';
       document.querySelectorAll('.cf-aba').forEach(function (b) {
-        b.addEventListener('click', function () {
-          if (b.dataset.aba === 'manual') location.hash = 'manual';
-          else location.hash = ultimaRotaPainel;
-        });
+        b.addEventListener('click', function () { irPara(b.dataset.aba); });
       });
 
       window.addEventListener('hashchange', function () {
-        const r = rota();
-        if (r.aba === 'painel') {
-          if (r.conf) filtroResp = '';
-          ultimaRotaPainel = location.hash.replace(/^#/, '');
-        }
-        trocarAberto = false;
-        formAberto = null;
-        rascunhoForm = {};
+        editando = null; trocarAberto = false; novaAberta = false; sujo = false;
         render();
         rolarParaTopo();
       });
 
-      /* ---------- Manual: cronograma e impressão ---------- */
-      (function montarCronograma() {
-        const el = document.getElementById('cf-cronograma');
-        el.innerHTML = '<p>Os prazos contam a partir do sábado da conferência. Na aba Checklist, cada conferência mostra as datas exatas.</p>' +
-          FASES.map(function (f) {
-            const lista = TAREFAS.filter(function (t) { return t.fase === f.id; });
-            if (!lista.length) return '';
-            return '<div class="cf-crono-fase"><h4>' + esc(f.nome) + '</h4><ul class="cf-crono-lista">' +
-              lista.map(function (t) { return '<li><span>' + esc(t.texto) + '</span><em>' + esc(t.resp) + '</em></li>'; }).join('') +
-              '</ul></div>';
-          }).join('');
-      })();
-
+      /* ---------- Impressão do manual ---------- */
       let abertosAntes = [];
       window.addEventListener('beforeprint', function () {
+        if (abaAtual() !== 'manual') return;
         abertosAntes = [];
         elManual.querySelectorAll('details').forEach(function (d) { abertosAntes.push(d.open); d.open = true; });
       });
       window.addEventListener('afterprint', function () {
+        if (!abertosAntes.length) return;
         elManual.querySelectorAll('details').forEach(function (d, i) { d.open = !!abertosAntes[i]; });
+        abertosAntes = [];
       });
       document.getElementById('cf-imprimir').addEventListener('click', function () { window.print(); });
 
       /* ---------- Sincronização periódica ---------- */
       setInterval(function () {
-        if (sessao && !MODO_LOCAL && document.visibilityState === 'visible' && !enviando && !fila.length) atualizar();
+        if (sessao && URL && document.visibilityState === 'visible' && !enviando && !salvando && !fila.length) atualizar();
       }, 60000);
       document.addEventListener('visibilitychange', function () {
-        if (document.visibilityState === 'visible' && sessao && !MODO_LOCAL) { processarFila(); atualizar(); }
+        if (document.visibilityState === 'visible' && sessao && URL) { processarFila(); atualizar(); }
       });
       window.addEventListener('online', function () { processarFila(); });
 
       /* ---------- Início ---------- */
-      if (rota().aba === 'painel') ultimaRotaPainel = location.hash.replace(/^#/, '');
       render();
-      if (sessao && !MODO_LOCAL) { processarFila(); atualizar(); }
+      if (sessao && URL) { processarFila(); atualizar(); }
     })();
   </script>
 </body>
