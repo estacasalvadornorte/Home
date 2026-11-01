@@ -174,6 +174,21 @@ function hojeZerado() {
   return d;
 }
 
+// Diz se dois eventos caem no mesmo dia.
+// Serve para agrupar os eventos do dia e separar um dia do outro.
+function mesmoDia(a, b) {
+  return !!(a && b) && a._data.getTime() === b._data.getTime();
+}
+
+// Classes que agrupam os eventos do mesmo dia nas listas de linhas
+// (Por mês e Ano inteiro). A linha separadora só aparece entre dias.
+function classesDoDia(lista, i) {
+  let classes = '';
+  if (mesmoDia(lista[i], lista[i - 1])) classes += ' mesmo-dia';
+  if (mesmoDia(lista[i], lista[i + 1])) classes += ' continua';
+  return classes;
+}
+
 
 /* ───────────────────────── VISÃO: PRÓXIMOS ─────────────────────────── */
 
@@ -189,7 +204,11 @@ function montarProximos() {
 
   const itens = futuros.map(function (e, idx) {
     const d = e._data;
-    return '' +
+    // Linha separadora quando muda o dia
+    const separador = (idx > 0 && !mesmoDia(e, futuros[idx - 1]))
+      ? '<div class="dia-sep" aria-hidden="true"></div>'
+      : '';
+    return separador +
       '<button class="prox-item" data-idx="' + TODOS_EVENTOS.indexOf(e) + '">' +
         '<div class="prox-data tipo-' + classeTipo(e.tipo) + '">' +
           '<span class="prox-dia">' + String(d.getDate()).padStart(2, '0') + '</span>' +
@@ -282,10 +301,10 @@ function montarMes() {
     html += '<p class="cal-vazio">Nenhum evento neste mês para o filtro selecionado.</p>';
   } else {
     html += '<div class="mes-lista">';
-    doMes.forEach(function (e) {
+    doMes.forEach(function (e, i) {
       const d = e._data;
       html += '' +
-        '<button class="mes-item" data-idx="' + TODOS_EVENTOS.indexOf(e) + '">' +
+        '<button class="mes-item' + classesDoDia(doMes, i) + '" data-idx="' + TODOS_EVENTOS.indexOf(e) + '">' +
           '<span class="mes-item-data">' +
             String(d.getDate()).padStart(2, '0') + '/' +
             String(d.getMonth() + 1).padStart(2, '0') +
@@ -331,10 +350,10 @@ function montarAno() {
       html += '<section class="ano-mes">';
       html += '<h2 class="ano-mes-titulo">' + MESES[m] + ' <span>' + ano + '</span></h2>';
       html += '<div class="ano-eventos">';
-      anos[ano][m].forEach(function (e) {
+      anos[ano][m].forEach(function (e, i, doMesAno) {
         const d = e._data;
         html += '' +
-          '<button class="ano-item" data-idx="' + TODOS_EVENTOS.indexOf(e) + '">' +
+          '<button class="ano-item' + classesDoDia(doMesAno, i) + '" data-idx="' + TODOS_EVENTOS.indexOf(e) + '">' +
             '<span class="ano-item-dia">' +
               String(d.getDate()).padStart(2, '0') +
               '<span>' + DIAS_SEMANA[d.getDay()] + '</span>' +

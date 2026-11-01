@@ -986,7 +986,7 @@ main {
   text-align: left;
   background: none;
   border: none;
-  border-bottom: 1px solid var(--gray-100);
+  border-bottom: 1px solid var(--gray-200);
   padding: 14px 6px;
   cursor: pointer;
   font-family: inherit;
@@ -1063,7 +1063,7 @@ main {
   text-align: left;
   background: none;
   border: none;
-  border-bottom: 1px solid var(--gray-100);
+  border-bottom: 1px solid var(--gray-200);
   padding: 13px 6px;
   cursor: pointer;
   font-family: inherit;
@@ -1071,6 +1071,28 @@ main {
 }
 
 .ano-item:hover { background: var(--gray-50); }
+
+/* ---------- Separação entre os dias ----------
+   Eventos do mesmo dia ficam juntos, sem linha entre eles.
+   A linha só aparece quando muda o dia.                      */
+
+.mes-item.continua,
+.ano-item.continua {
+  border-bottom-color: transparent;
+  padding-bottom: 6px;
+}
+
+.mes-item.mesmo-dia,
+.ano-item.mesmo-dia {
+  padding-top: 6px;
+}
+
+/* Na visão Próximos, uma linha entre os cartões de dias diferentes */
+.prox-lista .dia-sep {
+  height: 1px;
+  background: var(--gray-200);
+  margin: 6px 0;
+}
 
 .ano-item-dia {
   flex-shrink: 0;
