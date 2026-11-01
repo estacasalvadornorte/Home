@@ -27,7 +27,14 @@
       <!--
         ╔══════════════════════════════════════════════════════════════════╗
         ║  Esta página não precisa ser editada.                            ║
+        ║                                                                  ║
         ║  Os eventos ficam na planilha do Google, na aba Calendario.      ║
+        ║  Aqui eles aparecem separados por ano. Separar por ano é só      ║
+        ║  organização: a página pública do calendário continua igual.     ║
+        ║                                                                  ║
+        ║  Criar ano, apagar ano e eventos que se repetem precisam da      ║
+        ║  versão 2 do script da planilha (calendario-Codigo.gs).          ║
+        ║                                                                  ║
         ║  O endereço da planilha está no arquivo componentes.js.          ║
         ╚══════════════════════════════════════════════════════════════════╝
       -->
@@ -52,9 +59,18 @@
   const TIPOS = ['Reunião', 'Conferência', 'Treinamento', 'Atividade', 'Apresentação', 'Transmissão'];
   const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
                  'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+  const DIAS_PLURAL = ['domingos', 'segundas-feiras', 'terças-feiras', 'quartas-feiras',
+                       'quintas-feiras', 'sextas-feiras', 'sábados'];
+  const POSICOES = [
+    { valor: '1', nome: '1º' }, { valor: '2', nome: '2º' }, { valor: '3', nome: '3º' },
+    { valor: '4', nome: '4º' }, { valor: 'u', nome: 'Último' }
+  ];
+  const LIMITE_REPETICAO = 60;
 
   let EVENTOS = [];
-  let filtroAno = 'proximos';
+  let ANOS = [];
+  let anoAberto = 0;
+  let mostrar = 'proximos';
   let busca = '';
 
   /* ---------------- Datas ---------------- */
@@ -69,15 +85,102 @@
     return p ? p.ano * 10000 + p.mes * 100 + p.dia : 99999999;
   }
 
+  /** 15/03/2027 vira 2027-03-15, que é o formato do campo de data. */
   function paraCampo(texto) {
     const p = partesData(texto);
     if (!p) return '';
-    return p.ano + '-' + ('0' + p.mes).slice(-2) + '-' + ('0' + p.dia).slice(-2);
+    return p.ano + '-' + dois(p.mes) + '-' + dois(p.dia);
   }
+
+  /** 2027-03-15 vira um Date. */
+  function doCampo(valor) {
+    const r = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(valor || ''));
+    return r ? new Date(+r[1], +r[2] - 1, +r[3]) : null;
+  }
+
+  function dois(n) { return ('0' + n).slice(-2); }
+
+  function textoData(d) { return dois(d.getDate()) + '/' + dois(d.getMonth() + 1) + '/' + d.getFullYear(); }
 
   function hojeNumero() {
     const d = new Date();
     return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+  }
+
+  function anoDe(e) {
+    const p = partesData(e.data);
+    return p ? p.ano : 0;
+  }
+
+  /* ---------------- Repetição ---------------- */
+
+  /** Posição da data no mês: '1' a '4', ou 'u' se for o 5º (último). */
+  function posicaoNoMes(d) {
+    const n = Math.ceil(d.getDate() / 7);
+    return n >= 5 ? 'u' : String(n);
+  }
+
+  /**
+   * Gera as datas de uma repetição.
+   * inicio: primeira data (Date). posicoes: ['2','4'] ou ['u'].
+   * passo: 1 = mensal, 2 = bimestral, 3 = trimestral. fim: última data possível.
+   */
+  function gerarDatas(inicio, posicoes, passo, fim) {
+    const diaSemana = inicio.getDay();
+    const datas = [];
+    for (let m = inicio.getMonth(); ; m += passo) {
+      const base = new Date(inicio.getFullYear(), m, 1);
+      if (base > fim) break;
+      const ano = base.getFullYear();
+      const mes = base.getMonth();
+      const primeiro = 1 + ((diaSemana - base.getDay() + 7) % 7);
+      const diasNoMes = new Date(ano, mes + 1, 0).getDate();
+
+      posicoes.forEach(function (p) {
+        const dia = p === 'u'
+          ? primeiro + 7 * Math.floor((diasNoMes - primeiro) / 7)
+          : primeiro + 7 * (Number(p) - 1);
+        if (dia > diasNoMes) return;
+        const d = new Date(ano, mes, dia);
+        if (d < inicio || d > fim) return;
+        if (!datas.some(function (x) { return x.getTime() === d.getTime(); })) datas.push(d);
+      });
+    }
+    return datas.sort(function (a, b) { return a - b; });
+  }
+
+  /* ---------------- Dados ---------------- */
+
+  /** Guarda o que veio da planilha e acerta a lista de anos. */
+  function receber(resposta) {
+    EVENTOS = resposta.eventos || [];
+    const lista = {};
+    (resposta.anos || []).forEach(function (a) { lista[a] = true; });
+    EVENTOS.forEach(function (e) { const a = anoDe(e); if (a) lista[a] = true; });
+    ANOS = Object.keys(lista).map(Number).sort();
+  }
+
+  function anoInicial() {
+    const atual = new Date().getFullYear();
+    if (ANOS.indexOf(atual) !== -1) return atual;
+    const futuro = ANOS.filter(function (a) { return a > atual; })[0];
+    return futuro || ANOS[ANOS.length - 1] || atual;
+  }
+
+  function abrirAno(ano) {
+    anoAberto = ano;
+    mostrar = (ano === new Date().getFullYear()) ? 'proximos' : 'todos';
+    busca = '';
+    desenhar();
+  }
+
+  function doAnoAberto() {
+    return EVENTOS.filter(function (e) { return anoDe(e) === anoAberto; });
+  }
+
+  function daSerie(serie) {
+    if (!serie) return [];
+    return EVENTOS.filter(function (e) { return e.serie === serie; });
   }
 
   /* ---------------- Lista ---------------- */
@@ -86,12 +189,8 @@
     const hoje = hojeNumero();
     const procura = busca.trim().toLowerCase();
 
-    return EVENTOS.filter(function (e) {
-      if (filtroAno === 'proximos' && paraOrdenar(e.data) < hoje) return false;
-      if (filtroAno !== 'proximos' && filtroAno !== 'todos') {
-        const p = partesData(e.data);
-        if (!p || String(p.ano) !== filtroAno) return false;
-      }
+    return doAnoAberto().filter(function (e) {
+      if (mostrar === 'proximos' && paraOrdenar(e.data) < hoje) return false;
       if (procura) {
         const tudo = [e.evento, e.local, e.publico, e.responsavel, e.tipo].join(' ').toLowerCase();
         if (tudo.indexOf(procura) === -1) return false;
@@ -101,15 +200,6 @@
       const d = paraOrdenar(a.data) - paraOrdenar(b.data);
       return d !== 0 ? d : String(a.horario || '').localeCompare(String(b.horario || ''));
     });
-  }
-
-  function anosDisponiveis() {
-    const anos = {};
-    EVENTOS.forEach(function (e) {
-      const p = partesData(e.data);
-      if (p) anos[p.ano] = true;
-    });
-    return Object.keys(anos).sort();
   }
 
   function classeTipo(tipo) {
@@ -124,26 +214,36 @@
 
   function desenhar() {
     const area = document.getElementById('area-conteudo');
+    if (ANOS.indexOf(anoAberto) === -1 && ANOS.length) anoAberto = anoInicial();
+    if (!anoAberto) anoAberto = new Date().getFullYear();
+
     const lista = visiveis();
-    const anos = anosDisponiveis();
+    const totalDoAno = doAnoAberto().length;
+    const anosNaTela = ANOS.indexOf(anoAberto) === -1 ? ANOS.concat([anoAberto]).sort() : ANOS;
 
     let html = '' +
+      '<div class="cal-abas evt-anos">' +
+        anosNaTela.map(function (a) {
+          return '<button type="button" class="cal-aba' + (a === anoAberto ? ' ativo' : '') + '" data-ano="' + a + '">' + a + '</button>';
+        }).join('') +
+        '<button type="button" class="cal-aba evt-ano-novo" id="evt-ano-novo">+ Novo ano</button>' +
+      '</div>' +
       '<div class="evt-barra">' +
         '<button class="ed-btn" id="evt-novo" type="button">+ Novo evento</button>' +
         '<div class="evt-barra-filtros">' +
-          '<select class="ed-select" id="evt-ano">' +
-            '<option value="proximos"' + (filtroAno === 'proximos' ? ' selected' : '') + '>De hoje em diante</option>' +
-            '<option value="todos"' + (filtroAno === 'todos' ? ' selected' : '') + '>Todos</option>' +
-            anos.map(function (a) {
-              return '<option value="' + a + '"' + (filtroAno === a ? ' selected' : '') + '>' + a + '</option>';
-            }).join('') +
+          '<select class="ed-select" id="evt-mostrar">' +
+            '<option value="todos"' + (mostrar === 'todos' ? ' selected' : '') + '>Ano inteiro</option>' +
+            '<option value="proximos"' + (mostrar === 'proximos' ? ' selected' : '') + '>De hoje em diante</option>' +
           '</select>' +
           '<input class="ed-select evt-busca" id="evt-busca" type="search" ' +
                  'placeholder="Procurar evento" value="' + escaparTexto(busca) + '">' +
         '</div>' +
       '</div>';
 
-    if (!lista.length) {
+    if (!totalDoAno) {
+      html += '<p class="cal-vazio">O calendário de ' + anoAberto + ' ainda não tem eventos. ' +
+              'Use + Novo evento para começar.</p>';
+    } else if (!lista.length) {
       html += '<p class="cal-vazio">Nenhum evento encontrado.</p>';
     } else {
       let mesAtual = '';
@@ -159,7 +259,7 @@
           '<div class="evt-item">' +
             '<span class="evt-barra-tipo tipo-' + classeTipo(e.tipo) + '"></span>' +
             '<div class="evt-quando">' +
-              '<strong>' + (p ? ('0' + p.dia).slice(-2) + '/' + ('0' + p.mes).slice(-2) : '--') + '</strong>' +
+              '<strong>' + (p ? dois(p.dia) + '/' + dois(p.mes) : '--') + '</strong>' +
               (e.horario ? '<span>' + escaparTexto(e.horario) + '</span>' : '') +
             '</div>' +
             '<div class="evt-texto">' +
@@ -168,6 +268,7 @@
                 escaparTexto(e.tipo || '') +
                 (e.local ? ' &middot; ' + escaparTexto(e.local) : '') +
                 (e.publico ? ' &middot; ' + escaparTexto(e.publico) : '') +
+                (e.serie ? ' <em class="evt-tag-rep">Repete</em>' : '') +
               '</span>' +
             '</div>' +
             '<div class="evt-acoes">' +
@@ -181,8 +282,9 @@
 
     html += '' +
       '<div class="evt-rodape">' +
-        '<span>' + lista.length + (lista.length === 1 ? ' evento na tela' : ' eventos na tela') + '</span>' +
+        '<span>' + totalDoAno + (totalDoAno === 1 ? ' evento' : ' eventos') + ' em ' + anoAberto + '</span>' +
         '<button class="ed-btn ed-btn-secundario" id="evt-baixar" type="button">Baixar cópia de segurança</button>' +
+        '<button class="evt-perigo" id="evt-apagar-ano" type="button">Apagar o calendário de ' + anoAberto + '</button>' +
         '<button class="acesso-sair" id="evt-sair" type="button">Sair</button>' +
       '</div>';
 
@@ -193,12 +295,15 @@
   function ligarEventos() {
     const area = document.getElementById('area-conteudo');
 
-    document.getElementById('evt-novo').addEventListener('click', function () {
-      abrirFormulario(null);
+    area.querySelectorAll('[data-ano]').forEach(function (b) {
+      b.addEventListener('click', function () { abrirAno(Number(b.getAttribute('data-ano'))); });
     });
 
-    document.getElementById('evt-ano').addEventListener('change', function () {
-      filtroAno = this.value;
+    document.getElementById('evt-ano-novo').addEventListener('click', abrirNovoAno);
+    document.getElementById('evt-novo').addEventListener('click', function () { abrirFormulario(null); });
+
+    document.getElementById('evt-mostrar').addEventListener('change', function () {
+      mostrar = this.value;
       desenhar();
     });
 
@@ -222,20 +327,12 @@
     area.querySelectorAll('[data-excluir]').forEach(function (b) {
       b.addEventListener('click', function () {
         const alvo = EVENTOS.filter(function (e) { return e.id === b.getAttribute('data-excluir'); })[0];
-        if (!alvo) return;
-        if (!window.confirm('Excluir "' + alvo.evento + '" do dia ' + alvo.data + '?')) return;
-        b.disabled = true;
-        b.textContent = 'Excluindo...';
-        planilhaEnviar('removerEvento', { id: alvo.id })
-          .then(function (r) {
-            EVENTOS = r.eventos || [];
-            desenhar();
-          })
-          .catch(tratarErro);
+        if (alvo) excluir(alvo, b);
       });
     });
 
-    document.getElementById('evt-baixar').addEventListener('click', baixarCopia);
+    document.getElementById('evt-baixar').addEventListener('click', function () { baixarCopia(0); });
+    document.getElementById('evt-apagar-ano').addEventListener('click', abrirApagarAno);
 
     document.getElementById('evt-sair').addEventListener('click', function () {
       esquecerCodigo();
@@ -243,84 +340,207 @@
     });
   }
 
-  /* ---------------- Formulário ---------------- */
+  /* ---------------- Janelas ---------------- */
 
-  function abrirFormulario(evento) {
-    const novo = !evento;
-    const e = evento || { data: '', horario: '', tipo: 'Reunião', evento: '', local: '', publico: '', responsavel: '' };
-
-    const caixa = document.createElement('div');
-    caixa.className = 'detalhe-fundo';
-    caixa.innerHTML = '' +
+  /** Abre uma janela por cima da página e devolve a caixa e a função de fechar. */
+  function abrirJanela(conteudo) {
+    const fundo = document.createElement('div');
+    fundo.className = 'detalhe-fundo';
+    fundo.innerHTML = '' +
       '<div class="detalhe-caixa evt-form-caixa" role="dialog" aria-modal="true">' +
         '<button class="detalhe-fechar" type="button" aria-label="Fechar">' +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">' +
             '<line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>' +
           '</svg>' +
-        '</button>' +
-        '<h2>' + (novo ? 'Novo evento' : 'Editar evento') + '</h2>' +
-        '<form class="evt-form">' +
-          '<label>Data' +
-            '<input class="ed-select" name="data" type="date" required value="' + paraCampo(e.data) + '">' +
-          '</label>' +
-          '<label>Horário' +
-            '<input class="ed-select" name="horario" type="time" value="' + escaparTexto(e.horario) + '">' +
-          '</label>' +
-          '<label class="evt-form-largo">Evento' +
-            '<input class="ed-select" name="evento" type="text" required maxlength="200" ' +
-                   'value="' + escaparTexto(e.evento) + '" placeholder="Reunião com o Sumo Conselho">' +
-          '</label>' +
-          '<label>Tipo' +
-            '<select class="ed-select" name="tipo">' +
-              TIPOS.map(function (t) {
-                return '<option' + (t === e.tipo ? ' selected' : '') + '>' + t + '</option>';
-              }).join('') +
-            '</select>' +
-          '</label>' +
-          '<label>Local' +
-            '<input class="ed-select" name="local" type="text" maxlength="80" ' +
-                   'value="' + escaparTexto(e.local) + '" placeholder="Cabula">' +
-          '</label>' +
-          '<label class="evt-form-largo">Quem participa' +
-            '<input class="ed-select" name="publico" type="text" maxlength="120" ' +
-                   'value="' + escaparTexto(e.publico) + '" placeholder="Sumo Conselho">' +
-          '</label>' +
-          '<label class="evt-form-largo">Responsável' +
-            '<input class="ed-select" name="responsavel" type="text" maxlength="80" ' +
-                   'value="' + escaparTexto(e.responsavel) + '" placeholder="Estaca">' +
-          '</label>' +
-          '<p class="acesso-erro evt-form-erro" hidden></p>' +
-          '<div class="evt-form-botoes">' +
-            '<button class="ed-btn" type="submit">Salvar</button>' +
-            '<button class="ed-btn ed-btn-secundario" type="button" data-cancelar>Cancelar</button>' +
-          '</div>' +
-        '</form>' +
+        '</button>' + conteudo +
       '</div>';
 
-    document.body.appendChild(caixa);
+    document.body.appendChild(fundo);
     document.body.style.overflow = 'hidden';
 
     const fechar = function () {
-      caixa.remove();
+      fundo.remove();
       document.body.style.overflow = '';
       document.removeEventListener('keydown', aoTeclar);
     };
     const aoTeclar = function (ev) { if (ev.key === 'Escape') fechar(); };
 
-    caixa.addEventListener('click', function (ev) { if (ev.target === caixa) fechar(); });
-    caixa.querySelector('.detalhe-fechar').addEventListener('click', fechar);
-    caixa.querySelector('[data-cancelar]').addEventListener('click', fechar);
+    fundo.addEventListener('click', function (ev) { if (ev.target === fundo) fechar(); });
+    fundo.querySelector('.detalhe-fechar').addEventListener('click', fechar);
+    fundo.querySelectorAll('[data-cancelar]').forEach(function (b) { b.addEventListener('click', fechar); });
     document.addEventListener('keydown', aoTeclar);
 
-    const form = caixa.querySelector('.evt-form');
-    const aviso = caixa.querySelector('.evt-form-erro');
-    const salvar = form.querySelector('button[type="submit"]');
+    return { caixa: fundo.querySelector('.detalhe-caixa'), fechar: fechar };
+  }
 
+  function mostrarAviso(aviso, mensagem) {
+    aviso.textContent = mensagem;
+    aviso.hidden = false;
+  }
+
+  /** Mensagem mais clara quando o script da planilha ainda é o antigo. */
+  function mensagemDeErro(erro) {
+    const texto = (erro && erro.message) || 'Não foi possível salvar.';
+    if (texto === 'Ação desconhecida.') {
+      return 'O script da planilha ainda está na versão antiga. ' +
+             'Atualize o calendario-Codigo.gs para a versão 2 e tente de novo.';
+    }
+    return texto;
+  }
+
+  /* ---------------- Formulário do evento ---------------- */
+
+  function abrirFormulario(evento) {
+    const novo = !evento;
+    const e = evento || { data: '', horario: '', tipo: 'Reunião', evento: '', local: '', publico: '', responsavel: '' };
+    const serie = novo ? [] : daSerie(e.serie);
+    const limites = novo
+      ? ' min="' + anoAberto + '-01-01" max="' + anoAberto + '-12-31"'
+      : '';
+
+    const janela = abrirJanela('' +
+      '<h2>' + (novo ? 'Novo evento em ' + anoAberto : 'Editar evento') + '</h2>' +
+      '<form class="evt-form" novalidate>' +
+        '<label>Data' +
+          '<input class="ed-select" name="data" type="date" required' + limites + ' value="' + paraCampo(e.data) + '">' +
+        '</label>' +
+        '<label>Horário' +
+          '<input class="ed-select" name="horario" type="time" value="' + escaparTexto(e.horario) + '">' +
+        '</label>' +
+        '<label class="evt-form-largo">Evento' +
+          '<input class="ed-select" name="evento" type="text" required maxlength="200" ' +
+                 'value="' + escaparTexto(e.evento) + '" placeholder="Reunião com o Sumo Conselho">' +
+        '</label>' +
+        '<label>Tipo' +
+          '<select class="ed-select" name="tipo">' +
+            TIPOS.map(function (t) {
+              return '<option' + (t === e.tipo ? ' selected' : '') + '>' + t + '</option>';
+            }).join('') +
+          '</select>' +
+        '</label>' +
+        '<label>Local' +
+          '<input class="ed-select" name="local" type="text" maxlength="80" ' +
+                 'value="' + escaparTexto(e.local) + '" placeholder="Cabula">' +
+        '</label>' +
+        '<label class="evt-form-largo">Quem participa' +
+          '<input class="ed-select" name="publico" type="text" maxlength="120" ' +
+                 'value="' + escaparTexto(e.publico) + '" placeholder="Sumo Conselho">' +
+        '</label>' +
+        '<label class="evt-form-largo">Responsável' +
+          '<input class="ed-select" name="responsavel" type="text" maxlength="80" ' +
+                 'value="' + escaparTexto(e.responsavel) + '" placeholder="Estaca">' +
+        '</label>' +
+
+        (novo ? '' +
+          '<label class="evt-form-largo">Repetir' +
+            '<select class="ed-select" name="repetir">' +
+              '<option value="">Não repete</option>' +
+              '<option value="1">Mensal</option>' +
+              '<option value="2">Bimestral (a cada 2 meses)</option>' +
+              '<option value="3">Trimestral (a cada 3 meses)</option>' +
+            '</select>' +
+          '</label>' +
+          '<div class="evt-quadro evt-form-largo" id="evt-rep" hidden>' +
+            '<span class="evt-quadro-titulo" id="evt-rep-titulo">Quais domingos do mês</span>' +
+            '<div class="evt-semanas">' +
+              POSICOES.map(function (p) {
+                return '<label class="evt-chip"><input type="checkbox" name="semana" value="' + p.valor + '">' + p.nome + '</label>';
+              }).join('') +
+            '</div>' +
+            '<label class="evt-ate">Repetir até' +
+              '<input class="ed-select" name="ate" type="date">' +
+            '</label>' +
+            '<p class="evt-rep-resumo" id="evt-rep-resumo"></p>' +
+          '</div>'
+        : '') +
+
+        (serie.length > 1 ? '' +
+          '<div class="evt-quadro evt-form-largo">' +
+            '<span class="evt-quadro-titulo">Este evento se repete (' + serie.length + ' datas)</span>' +
+            '<label class="evt-opcao"><input type="radio" name="escopo" value="este" checked> Alterar só este evento</label>' +
+            '<label class="evt-opcao"><input type="radio" name="escopo" value="serie"> Alterar todos os ' + serie.length + ' eventos</label>' +
+            '<p class="evt-nota">Em todos, a data só muda neste evento. Os outros mantêm as datas deles.</p>' +
+          '</div>'
+        : '') +
+
+        '<p class="acesso-erro evt-form-erro" hidden></p>' +
+        '<div class="evt-form-botoes">' +
+          '<button class="ed-btn" type="submit">Salvar</button>' +
+          '<button class="ed-btn ed-btn-secundario" type="button" data-cancelar>Cancelar</button>' +
+        '</div>' +
+      '</form>');
+
+    const form = janela.caixa.querySelector('.evt-form');
+    const aviso = janela.caixa.querySelector('.evt-form-erro');
+    const salvar = form.querySelector('button[type="submit"]');
+    const campo = function (nome) { return form.elements[nome].value; };
+
+    /* ---- repetição (só ao criar) ---- */
+    const quadroRep = janela.caixa.querySelector('#evt-rep');
+    let datasDaRepeticao = [];
+
+    const semanasMarcadas = function () {
+      return Array.prototype.slice.call(form.querySelectorAll('input[name="semana"]:checked'))
+        .map(function (c) { return c.value; });
+    };
+
+    const atualizarRepeticao = function () {
+      if (!quadroRep) return;
+      const passo = Number(campo('repetir'));
+      quadroRep.hidden = !passo;
+      datasDaRepeticao = [];
+      if (!passo) return;
+
+      const resumo = janela.caixa.querySelector('#evt-rep-resumo');
+      const inicio = doCampo(campo('data'));
+      if (!inicio) {
+        resumo.textContent = 'Escolha a data do primeiro evento.';
+        return;
+      }
+
+      janela.caixa.querySelector('#evt-rep-titulo').textContent =
+        'Quais ' + DIAS_PLURAL[inicio.getDay()] + ' do mês';
+
+      // O "até" fica sempre dentro do ano do evento
+      const campoAte = form.elements.ate;
+      const fimDoAno = inicio.getFullYear() + '-12-31';
+      campoAte.min = campo('data');
+      campoAte.max = fimDoAno;
+      if (!campoAte.value || campoAte.value < campo('data') || campoAte.value > fimDoAno) campoAte.value = fimDoAno;
+
+      // Se nenhuma semana estiver marcada, marca a da data escolhida
+      if (!semanasMarcadas().length) {
+        const caixa = form.querySelector('input[name="semana"][value="' + posicaoNoMes(inicio) + '"]');
+        if (caixa) caixa.checked = true;
+      }
+
+      datasDaRepeticao = gerarDatas(inicio, semanasMarcadas(), passo, doCampo(campoAte.value));
+      const n = datasDaRepeticao.length;
+      if (!n) {
+        resumo.textContent = 'Nenhuma data com essas escolhas.';
+      } else if (n > LIMITE_REPETICAO) {
+        resumo.textContent = 'São ' + n + ' datas. O limite é ' + LIMITE_REPETICAO + ' de uma vez.';
+      } else {
+        const curtas = datasDaRepeticao.map(function (d) { return dois(d.getDate()) + '/' + dois(d.getMonth() + 1); });
+        const mostradas = curtas.length > 12 ? curtas.slice(0, 12).join(', ') + ' e mais ' + (curtas.length - 12)
+                        : curtas.length > 1 ? curtas.slice(0, -1).join(', ') + ' e ' + curtas[curtas.length - 1]
+                        : curtas[0];
+        resumo.textContent = (n === 1 ? 'Será criado 1 evento: ' : 'Serão criados ' + n + ' eventos: ') + mostradas + '.';
+      }
+    };
+
+    if (quadroRep) {
+      form.elements.repetir.addEventListener('change', atualizarRepeticao);
+      form.elements.data.addEventListener('change', atualizarRepeticao);
+      form.elements.ate.addEventListener('change', atualizarRepeticao);
+      form.querySelectorAll('input[name="semana"]').forEach(function (c) {
+        c.addEventListener('change', atualizarRepeticao);
+      });
+    }
+
+    /* ---- salvar ---- */
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
-      // form.elements evita confusão entre o nome do campo e
-      // propriedades que o próprio formulário já tem
-      const campo = function (nome) { return form.elements[nome].value; };
       const dados = {
         id: novo ? '' : e.id,
         data: campo('data'),
@@ -331,22 +551,35 @@
         publico: campo('publico'),
         responsavel: campo('responsavel')
       };
-      if (!dados.data) { aviso.textContent = 'Escolha a data.'; aviso.hidden = false; return; }
-      if (!dados.evento.trim()) { aviso.textContent = 'Digite o nome do evento.'; aviso.hidden = false; return; }
+      if (!dados.data) return mostrarAviso(aviso, 'Escolha a data.');
+      if (!dados.evento.trim()) return mostrarAviso(aviso, 'Digite o nome do evento.');
+
+      let acao = 'salvarEvento';
+      if (novo && quadroRep && Number(campo('repetir'))) {
+        atualizarRepeticao();
+        if (!datasDaRepeticao.length) return mostrarAviso(aviso, 'A repetição não gerou nenhuma data. Marque ao menos uma semana.');
+        if (datasDaRepeticao.length > LIMITE_REPETICAO) return mostrarAviso(aviso, 'Datas demais. Escolha um período menor.');
+        acao = 'criarRepeticao';
+        dados.datas = datasDaRepeticao.map(textoData);
+      }
+      if (!novo && serie.length > 1) {
+        const escolhido = form.querySelector('input[name="escopo"]:checked');
+        dados.escopo = escolhido && escolhido.value === 'serie' ? 'serie' : 'este';
+      }
 
       aviso.hidden = true;
       salvar.disabled = true;
       salvar.textContent = 'Salvando...';
 
-      planilhaEnviar('salvarEvento', dados)
+      planilhaEnviar(acao, dados)
         .then(function (r) {
-          EVENTOS = r.eventos || [];
-          fechar();
+          receber(r);
+          janela.fechar();
           desenhar();
         })
         .catch(function (erro) {
-          aviso.textContent = erro.message || 'Não foi possível salvar.';
-          aviso.hidden = false;
+          if (erro && erro.tipo === 'acesso') return tratarErro(erro);
+          mostrarAviso(aviso, mensagemDeErro(erro));
           salvar.disabled = false;
           salvar.textContent = 'Salvar';
         });
@@ -355,16 +588,203 @@
     form.elements.data.focus();
   }
 
+  /* ---------------- Excluir ---------------- */
+
+  function excluir(alvo, botao) {
+    const serie = daSerie(alvo.serie);
+
+    const enviar = function (escopo, aoTerminar) {
+      planilhaEnviar('removerEvento', { id: alvo.id, escopo: escopo })
+        .then(function (r) {
+          receber(r);
+          if (aoTerminar) aoTerminar();
+          desenhar();
+        })
+        .catch(tratarErro);
+    };
+
+    if (serie.length < 2) {
+      if (!window.confirm('Excluir "' + alvo.evento + '" do dia ' + alvo.data + '?')) return;
+      botao.disabled = true;
+      botao.textContent = 'Excluindo...';
+      enviar('este');
+      return;
+    }
+
+    const janela = abrirJanela('' +
+      '<h2>Excluir evento</h2>' +
+      '<p class="evt-texto-janela">"' + escaparTexto(alvo.evento) + '" se repete em ' + serie.length +
+        ' datas. O que você quer excluir?</p>' +
+      '<div class="evt-form-botoes evt-botoes-coluna">' +
+        '<button class="ed-btn ed-btn-secundario" type="button" data-escopo="este">Só o do dia ' + escaparTexto(alvo.data) + '</button>' +
+        '<button class="ed-btn ed-btn-perigo" type="button" data-escopo="serie">Todos os ' + serie.length + ' eventos</button>' +
+        '<button class="acesso-sair" type="button" data-cancelar>Cancelar</button>' +
+      '</div>');
+
+    janela.caixa.querySelectorAll('[data-escopo]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        janela.caixa.querySelectorAll('button').forEach(function (x) { x.disabled = true; });
+        b.textContent = 'Excluindo...';
+        enviar(b.getAttribute('data-escopo'), janela.fechar);
+      });
+    });
+  }
+
+  /* ---------------- Novo ano ---------------- */
+
+  function abrirNovoAno() {
+    const comEventos = ANOS.filter(function (a) {
+      return EVENTOS.some(function (e) { return anoDe(e) === a; });
+    });
+    const sugestao = (ANOS.length ? Math.max.apply(null, ANOS) : new Date().getFullYear()) + 1;
+
+    const janela = abrirJanela('' +
+      '<h2>Novo calendário</h2>' +
+      '<form class="evt-form" novalidate>' +
+        '<label class="evt-form-largo">Ano' +
+          '<input class="ed-select" name="ano" type="number" min="2000" max="2199" value="' + sugestao + '">' +
+        '</label>' +
+        '<div class="evt-quadro evt-form-largo">' +
+          '<label class="evt-opcao"><input type="radio" name="modo" value="vazio" checked> Começar vazio</label>' +
+          (comEventos.length ? '' +
+            '<label class="evt-opcao"><input type="radio" name="modo" value="copiar"> Copiar os eventos de ' +
+              '<select class="ed-select evt-select-curto" name="origem">' +
+                comEventos.map(function (a, i) {
+                  return '<option value="' + a + '"' + (i === comEventos.length - 1 ? ' selected' : '') + '>' + a + '</option>';
+                }).join('') +
+              '</select>' +
+            '</label>' +
+            '<p class="evt-nota">Na cópia, cada evento vai para a mesma posição no mês: ' +
+              'o 2º domingo de setembro vira o 2º domingo de setembro do ano novo. ' +
+              'Depois revise feriados e datas especiais, como a Conferência Geral.</p>'
+          : '') +
+        '</div>' +
+        '<p class="acesso-erro evt-form-erro" hidden></p>' +
+        '<div class="evt-form-botoes">' +
+          '<button class="ed-btn" type="submit">Criar</button>' +
+          '<button class="ed-btn ed-btn-secundario" type="button" data-cancelar>Cancelar</button>' +
+        '</div>' +
+      '</form>');
+
+    const form = janela.caixa.querySelector('.evt-form');
+    const aviso = janela.caixa.querySelector('.evt-form-erro');
+    const botao = form.querySelector('button[type="submit"]');
+
+    if (form.elements.origem) {
+      form.elements.origem.addEventListener('change', function () {
+        form.querySelector('input[name="modo"][value="copiar"]').checked = true;
+      });
+    }
+
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      const ano = Number(form.elements.ano.value);
+      if (!(ano >= 2000 && ano <= 2199) || Math.floor(ano) !== ano) return mostrarAviso(aviso, 'Digite um ano válido, por exemplo 2028.');
+      if (EVENTOS.some(function (e) { return anoDe(e) === ano; })) return mostrarAviso(aviso, 'O calendário de ' + ano + ' já existe.');
+
+      const modo = form.querySelector('input[name="modo"]:checked').value;
+      const dados = { ano: ano };
+      if (modo === 'copiar') dados.copiarDe = Number(form.elements.origem.value);
+
+      aviso.hidden = true;
+      botao.disabled = true;
+      botao.textContent = modo === 'copiar' ? 'Copiando...' : 'Criando...';
+
+      planilhaEnviar('criarAno', dados)
+        .then(function (r) {
+          receber(r);
+          janela.fechar();
+          anoAberto = ano;
+          mostrar = 'todos';
+          busca = '';
+          desenhar();
+        })
+        .catch(function (erro) {
+          if (erro && erro.tipo === 'acesso') return tratarErro(erro);
+          mostrarAviso(aviso, mensagemDeErro(erro));
+          botao.disabled = false;
+          botao.textContent = 'Criar';
+        });
+    });
+
+    form.elements.ano.focus();
+  }
+
+  /* ---------------- Apagar ano ---------------- */
+
+  function abrirApagarAno() {
+    const ano = anoAberto;
+    const total = doAnoAberto().length;
+
+    const janela = abrirJanela('' +
+      '<h2>Apagar o calendário de ' + ano + '</h2>' +
+      '<form class="evt-form" novalidate>' +
+        '<p class="evt-texto-janela evt-form-largo">' +
+          (total
+            ? 'Isso apaga os ' + total + ' eventos de ' + ano + ' da planilha. Os outros anos não mudam.'
+            : 'O calendário de ' + ano + ' está vazio. Ele sai da lista de anos.') +
+        '</p>' +
+        (total ? '<p class="evt-nota evt-form-largo">Antes de apagar, uma cópia de segurança de ' + ano +
+                 ' é baixada neste aparelho.</p>' : '') +
+        '<label class="evt-form-largo">Para confirmar, digite ' + ano +
+          '<input class="ed-select" name="confirmacao" type="text" inputmode="numeric" autocomplete="off">' +
+        '</label>' +
+        '<p class="acesso-erro evt-form-erro" hidden></p>' +
+        '<div class="evt-form-botoes">' +
+          '<button class="ed-btn ed-btn-perigo" type="submit" disabled>Apagar</button>' +
+          '<button class="ed-btn ed-btn-secundario" type="button" data-cancelar>Cancelar</button>' +
+        '</div>' +
+      '</form>');
+
+    const form = janela.caixa.querySelector('.evt-form');
+    const aviso = janela.caixa.querySelector('.evt-form-erro');
+    const botao = form.querySelector('button[type="submit"]');
+    const campo = form.elements.confirmacao;
+
+    campo.addEventListener('input', function () {
+      botao.disabled = campo.value.trim() !== String(ano);
+    });
+
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      if (campo.value.trim() !== String(ano)) return;
+
+      if (total) baixarCopia(ano);
+      aviso.hidden = true;
+      botao.disabled = true;
+      botao.textContent = 'Apagando...';
+
+      planilhaEnviar('apagarAno', { ano: ano, confirmacao: campo.value.trim() })
+        .then(function (r) {
+          receber(r);
+          janela.fechar();
+          anoAberto = anoInicial();
+          mostrar = anoAberto === new Date().getFullYear() ? 'proximos' : 'todos';
+          desenhar();
+        })
+        .catch(function (erro) {
+          if (erro && erro.tipo === 'acesso') return tratarErro(erro);
+          mostrarAviso(aviso, mensagemDeErro(erro));
+          botao.disabled = false;
+          botao.textContent = 'Apagar';
+        });
+    });
+
+    campo.focus();
+  }
+
   /* ---------------- Cópia de segurança ---------------- */
 
-  function baixarCopia() {
+  /** Baixa os eventos em CSV. Com um ano, baixa só aquele ano. */
+  function baixarCopia(ano) {
     const colunas = ['data', 'horario', 'tipo', 'evento', 'local', 'publico', 'responsavel'];
     const proteger = function (v) {
       const s = String(v == null ? '' : v);
       return /[",;\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
     };
+    const escolhidos = EVENTOS.filter(function (e) { return !ano || anoDe(e) === ano; });
     const linhas = [colunas.join(',')].concat(
-      EVENTOS.slice().sort(function (a, b) { return paraOrdenar(a.data) - paraOrdenar(b.data); })
+      escolhidos.slice().sort(function (a, b) { return paraOrdenar(a.data) - paraOrdenar(b.data); })
         .map(function (e) { return colunas.map(function (c) { return proteger(e[c]); }).join(','); })
     );
 
@@ -372,15 +792,19 @@
     const blob = new Blob(['﻿' + linhas.join('\n') + '\n'], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = 'calendario.csv';
+    a.download = ano ? 'calendario-' + ano + '.csv' : 'calendario.csv';
+    document.body.appendChild(a);
     a.click();
-    URL.revokeObjectURL(a.href);
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
   }
 
   /* ---------------- Início ---------------- */
 
   function tratarErro(erro) {
     const area = document.getElementById('area-conteudo');
+    document.querySelectorAll('.detalhe-fundo').forEach(function (f) { f.remove(); });
+    document.body.style.overflow = '';
     if (erro && erro.tipo === 'acesso') {
       esquecerCodigo();
       area.innerHTML = '<div class="cal-erro"><strong>O código mudou.</strong>' +
@@ -389,7 +813,7 @@
     }
     area.innerHTML = '<div class="cal-erro">' +
       '<strong>Não foi possível falar com a planilha.</strong>' +
-      '<p>' + escaparTexto(erro && erro.message ? erro.message : '') + '</p>' +
+      '<p>' + escaparTexto(mensagemDeErro(erro)) + '</p>' +
       '<p>Confira sua internet e atualize a página.</p></div>';
   }
 
@@ -407,9 +831,11 @@
     }
 
     area.innerHTML = '<p class="cal-vazio">Carregando os eventos...</p>';
-    planilhaEventos()
-      .then(function (lista) {
-        EVENTOS = lista;
+    planilhaEnviar('listar', {})
+      .then(function (r) {
+        receber(r);
+        anoAberto = anoInicial();
+        mostrar = anoAberto === new Date().getFullYear() ? 'proximos' : 'todos';
         desenhar();
       })
       .catch(tratarErro);

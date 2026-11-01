@@ -2109,3 +2109,145 @@ main {
 
   .evt-form { grid-template-columns: 1fr; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   EDITOR DO CALENDÁRIO: ANOS, REPETIÇÃO E EXCLUSÃO
+   ═══════════════════════════════════════════════════════════════════ */
+
+.evt-anos { margin-bottom: 24px; flex-wrap: wrap; }
+
+.evt-ano-novo {
+  font-weight: 500;
+  color: var(--gray-600);
+  margin-left: auto;
+}
+
+.evt-tag-rep {
+  display: inline-block;
+  font-style: normal;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--gold);
+  border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent);
+  background: color-mix(in srgb, var(--gold) 8%, transparent);
+  border-radius: 100px;
+  padding: 0 8px;
+  margin-left: 4px;
+  vertical-align: 1px;
+}
+
+/* Botão de texto vermelho, para ações que apagam */
+.evt-perigo {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--tipo-conferencia);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.ed-btn-perigo {
+  background: var(--tipo-conferencia);
+  border-color: var(--tipo-conferencia);
+}
+
+.ed-btn-perigo:hover { background: #63392E; }
+
+.ed-btn:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+/* Janela com formulário longo cabe na tela do celular */
+.evt-form-caixa {
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+
+/* Quadro cinza dentro do formulário (repetição, alterar todos, novo ano) */
+.evt-quadro {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-100);
+  border-radius: 6px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.evt-quadro-titulo {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gray-600);
+}
+
+.evt-semanas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.evt-form .evt-chip,
+.evt-form .evt-opcao {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--gray-800);
+  cursor: pointer;
+}
+
+.evt-form .evt-chip {
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 100px;
+  padding: 6px 14px 6px 10px;
+}
+
+.evt-chip:has(input:checked) {
+  border-color: var(--navy);
+  background: color-mix(in srgb, var(--navy) 6%, var(--white));
+}
+
+.evt-chip input,
+.evt-opcao input { accent-color: var(--navy); margin: 0; }
+
+.evt-form .evt-opcao { flex-wrap: wrap; }
+.evt-form .evt-select-curto { width: auto; }
+
+.evt-rep-resumo,
+.evt-nota {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--gray-600);
+}
+
+.evt-rep-resumo { color: var(--navy); font-weight: 500; }
+
+.evt-texto-janela {
+  font-size: 14.5px;
+  color: var(--gray-800);
+  margin-bottom: 18px;
+}
+
+.evt-botoes-coluna {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.evt-botoes-coluna .acesso-sair { align-self: center; margin-top: 4px; }
+
+@media (max-width: 768px) {
+  .evt-ano-novo { margin-left: 0; }
+  .evt-anos .cal-aba { flex: 0 0 auto; padding: 12px 14px; }
+}
