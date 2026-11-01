@@ -69,9 +69,9 @@ const ATALHOS_LIDERANCA = [
     icone: 'calendario'
   },
   {
-    nome: 'Designações do Sumo Conselho',
-    descricao: 'Montar quem responde por cada ala e cada área.',
-    link: 'lideranca/editor-x7k2m9.html',
+    nome: 'Liderança da Estaca',
+    descricao: 'Presidência, secretários e sumo conselho: nomes, fotos e designações.',
+    link: 'lideranca-editor.html',
     icone: 'pessoas'
   }
 ];
@@ -251,6 +251,24 @@ function planilhaEventos() {
     .then(function (resposta) {
       if (!resposta.ok) throw new Error(resposta.erro || 'A planilha não respondeu.');
       return resposta.eventos || [];
+    });
+}
+
+/** Lê pessoas, designações e vínculos da liderança. É público, não precisa de código. */
+function planilhaLideranca() {
+  if (!planilhaConfigurada()) {
+    return Promise.reject(new Error('sem-endereco'));
+  }
+  return fetch(ENDERECO_PLANILHA + '?acao=lideranca&v=' + Date.now())
+    .then(function (r) {
+      if (!r.ok) throw new Error('A planilha não respondeu.');
+      return r.json();
+    })
+    .then(function (resposta) {
+      if (!resposta.ok || !Array.isArray(resposta.pessoas)) {
+        throw new Error(resposta.erro || 'A planilha ainda não tem a liderança.');
+      }
+      return resposta;
     });
 }
 

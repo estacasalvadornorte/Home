@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Editar a Liderança – Estaca Salvador Brasil Norte</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- O cabeçalho é montado automaticamente pelo arquivo componentes.js.
+       Não edite aqui. Para mudar o menu, abra componentes.js -->
+  <div id="cabecalho"></div>
+
+  <main>
+    <section class="page-hero">
+      <h1>Liderança da Estaca</h1>
+      <p>O que você salvar aqui aparece no site em seguida</p>
+    </section>
+
+    <div class="container">
+
+      <!--
+        ╔══════════════════════════════════════════════════════════════════╗
+        ║  Esta página não precisa ser editada.                            ║
+        ║                                                                  ║
+        ║  Aqui a presidência e os secretários alteram:                    ║
+        ║    Pessoas: nome, data da designação e foto de cada chamado      ║
+        ║    Designações: quem responde por cada ala, organização e área   ║
+        ║    Lista de designações: criar, renomear, ordenar e remover      ║
+        ║                                                                  ║
+        ║  Os dados ficam na planilha do Google, nas abas Pessoas,         ║
+        ║  Designacoes e Vinculos. Precisa da versão 3 do script da        ║
+        ║  planilha (calendario-Codigo.gs).                                ║
+        ╚══════════════════════════════════════════════════════════════════╝
+      -->
+
+      <div id="area-conteudo">
+        <p class="cal-vazio">Carregando...</p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- O rodapé é montado automaticamente pelo arquivo componentes.js -->
+  <div id="rodape"></div>
+
+  <script src="componentes.js"></script>
+  <script src="acesso.js"></script>
+  <script>
+  /* ═══════════════════════════════════════════════════════════════════
+     EDITOR DA LIDERANÇA
+     ═══════════════════════════════════════════════════════════════════ */
+
+  const GRUPOS_PESSOAS = ['Presidência', 'Secretários', 'Sumo Conselho'];
+  const PASTA_FOTOS = 'imagens/chamados/';
+  const FOTO_LADO = 256;          // tamanho da foto guardada, em pixels
+  const FOTO_LIMITE = 45000;      // tamanho máximo do texto da foto
+  const ICONE_PESSOA =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">' +
+      '<path d="M19 21v-2a5 5 0 0 0-5-5h-4a5 5 0 0 0-5 5v2"/><circle cx="12" cy="7" r="4"/>' +
+    '</svg>';
+
+  let PESSOAS = [];
+  let DESIGNACOES = [];
+  let VINCULOS = [];
+  let aba = 'pessoas';
+  let excecoesAbertas = {};
+
+  /* ---------------- Utilidades ---------------- */
+
+  function dois(n) { return ('0' + n).slice(-2); }
+
+  function paraCampo(texto) {
+    const r = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(texto || ''));
+    return r ? r[3] + '-' + r[2] + '-' + r[1] : '';
+  }
+
+  function fotoDe(p) {
+    if (!p || p.foto === 'sem') return '';
+    if (/^data:image\//.test(p.foto || '')) return p.foto;
+    return PASTA_FOTOS + p.id + '.jpg';
+  }
+
+  function htmlFoto(endereco, classe) {
+    return '<div class="lid-foto ' + (classe || '') + (endereco ? '' : ' sem-foto') + '">' +
+      (endereco ? '<img src="' + escaparTexto(endereco) + '" alt="" ' +
+                  'onerror="this.parentNode.classList.add(\'sem-foto\'); this.remove();">' : '') +
+      ICONE_PESSOA + '</div>';
+  }
+
+  function nomeValido(nome) {
+    return !!nome && nome.trim().toLowerCase() !== 'a definir';
+  }
+
+  function rotuloPessoa(p) {
+    return nomeValido(p.nome) ? p.chamado + ' · ' + p.nome : p.chamado;
+  }
+
+  function pessoaPorId(id) {
+    return PESSOAS.filter(function (p) { return p.id === id; })[0] || null;
+  }
+
+  function gruposDeDesignacao() {
+    const grupos = [];
+    DESIGNACOES.forEach(function (d) {
+      const g = d.grupo || 'Outras';
+      if (grupos.indexOf(g) === -1) grupos.push(g);
+    });
+    return grupos;
+  }
+
+  function receber(r) {
+    if (r.pessoas) PESSOAS = r.pessoas;
+    if (r.designacoes) DESIGNACOES = r.designacoes;
+    if (r.vinculos) VINCULOS = r.vinculos;
+  }
+
+  function mensagemDeErro(erro) {
+    const texto = (erro && erro.message) || 'Não foi possível salvar.';
+    if (texto === 'Ação desconhecida.') {
+      return 'O script da planilha ainda está numa versão antiga. ' +
+             'Atualize o calendario-Codigo.gs para a versão 3 e tente de novo.';
+    }
+    return texto;
+  }
+
+  /* ---------------- Tela ---------------- */
+
+  function desenhar() {
+    const area = document.getElementById('area-conteudo');
+    const abas = [['pessoas', 'Pessoas'], ['designacoes', 'Designações'], ['lista', 'Lista de designações']];
+
+    let html = '' +
+      '<div class="cal-abas lid-ed-abas">' +
+        abas.map(function (a) {
+          return '<button type="button" class="cal-aba' + (aba === a[0] ? ' ativo' : '') + '" data-aba="' + a[0] + '">' + a[1] + '</button>';
+        }).join('') +
+        '<span class="lid-ed-status" id="lid-status"></span>' +
+      '</div>';
+
+    if (aba === 'pessoas') html += telaPessoas();
+    else if (aba === 'designacoes') html += telaDesignacoes();
+    else html += telaLista();
+
+    html += '' +
+      '<div class="evt-rodape">' +
+        '<span>' + PESSOAS.length + ' chamados &middot; ' + DESIGNACOES.length + ' designações</span>' +
+        '<a class="acesso-sair" href="lideranca.html">Ver a página pública</a>' +
+        '<button class="acesso-sair" id="lid-sair" type="button">Sair</button>' +
+      '</div>';
+
+    area.innerHTML = html;
+    atualizarStatus();
+    ligar();
+  }
+
+  function ligar() {
+    const area = document.getElementById('area-conteudo');
+
+    area.querySelectorAll('[data-aba]').forEach(function (b) {
+      b.addEventListener('click', function () { aba = b.getAttribute('data-aba'); desenhar(); });
+    });
+
+    area.querySelectorAll('[data-pessoa]').forEach(function (b) {
+      b.addEventListener('click', function () { abrirPessoa(pessoaPorId(b.getAttribute('data-pessoa'))); });
+    });
+
+    area.querySelectorAll('.ed-select[data-desig]').forEach(function (sel) {
+      sel.addEventListener('change', function () {
+        definirVinculo(sel.getAttribute('data-desig'), sel.getAttribute('data-grupo'),
+                       parseInt(sel.getAttribute('data-pos'), 10), sel.value);
+      });
+    });
+    area.querySelectorAll('[data-abrir]').forEach(function (b) {
+      b.addEventListener('click', function () { excecoesAbertas[b.getAttribute('data-abrir')] = true; desenhar(); });
+    });
+    area.querySelectorAll('[data-fechar]').forEach(function (b) {
+      b.addEventListener('click', function () { delete excecoesAbertas[b.getAttribute('data-fechar')]; desenhar(); });
+    });
+
+    const nova = document.getElementById('lid-nova-desig');
+    if (nova) nova.addEventListener('click', function () { abrirDesignacao(null); });
+    area.querySelectorAll('[data-editar-desig]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        abrirDesignacao(DESIGNACOES.filter(function (d) { return d.id === b.getAttribute('data-editar-desig'); })[0]);
+      });
+    });
+    area.querySelectorAll('[data-mover]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        b.disabled = true;
+        enviarEstrutura('moverDesignacao', { id: b.getAttribute('data-mover'), direcao: b.getAttribute('data-direcao') });
+      });
+    });
+    area.querySelectorAll('[data-remover-desig]').forEach(function (b) {
+      b.addEventListener('click', function () { removerDesignacao(b.getAttribute('data-remover-desig'), b); });
+    });
+
+    document.getElementById('lid-sair').addEventListener('click', function () {
+      esquecerCodigo();
+      window.location.href = 'area-lideranca.html';
+    });
+  }
+
+  /* ---------------- Aba Pessoas ---------------- */
+
+  function telaPessoas() {
+    let html = '<p class="lid-ed-intro">Toque em Editar para trocar o nome, a data da designação ou a foto. ' +
+               'A pessoa nova aparece sozinha em todas as designações daquele chamado.</p>';
+    GRUPOS_PESSOAS.forEach(function (grupo) {
+      const doGrupo = PESSOAS.filter(function (p) { return p.grupo === grupo; });
+      if (!doGrupo.length) return;
+      html += '<section class="lid-grupo"><h2 class="lid-grupo-titulo">' + grupo + '</h2><div class="lid-grade">';
+      doGrupo.forEach(function (p) {
+        const temNome = nomeValido(p.nome);
+        html += '' +
+          '<article class="lid-cartao">' +
+            htmlFoto(fotoDe(p)) +
+            '<div class="lid-info">' +
+              '<span class="lid-cargo">' + escaparTexto(p.chamado) + '</span>' +
+              '<h3' + (temNome ? '' : ' class="lid-vago"') + '>' + escaparTexto(temNome ? p.nome : 'A definir') + '</h3>' +
+              (p.data_designacao ? '<p class="lid-tempo"><span>Desde ' + escaparTexto(p.data_designacao) + '</span></p>' : '') +
+              '<button type="button" class="evt-acao lid-ed-editar" data-pessoa="' + escaparTexto(p.id) + '">Editar</button>' +
+            '</div>' +
+          '</article>';
+      });
+      html += '</div></section>';
+    });
+    return html;
+  }
+
+  function abrirPessoa(p) {
+    if (!p) return;
+    let fotoNova;   // undefined = não mudou; 'sem' = removida; 'data:...' = nova
+    const fotoAtual = function () { return fotoNova === undefined ? fotoDe(p) : (fotoNova === 'sem' ? '' : fotoNova); };
+
+    const janela = abrirJanela('' +
+      '<h2>' + escaparTexto(p.chamado) + '</h2>' +
+      '<form class="evt-form" novalidate>' +
+        '<div class="evt-form-largo lid-ed-foto">' +
+          '<div id="lid-foto-area"></div>' +
+          '<div class="lid-ed-foto-botoes" id="lid-foto-botoes">' +
+            '<label class="ed-btn ed-btn-secundario lid-ed-arquivo">Escolher foto' +
+              '<input type="file" accept="image/*" id="lid-foto-arquivo">' +
+            '</label>' +
+            '<button type="button" class="evt-perigo" id="lid-foto-remover">Remover foto</button>' +
+          '</div>' +
+        '</div>' +
+        '<div class="evt-form-largo" id="lid-recorte" hidden></div>' +
+        '<label class="evt-form-largo">Nome' +
+          '<input class="ed-select" name="nome" type="text" maxlength="80" value="' +
+            escaparTexto(nomeValido(p.nome) ? p.nome : '') + '" placeholder="Deixe em branco se o chamado estiver vago">' +
+        '</label>' +
+        '<label class="evt-form-largo">Data da designação' +
+          '<input class="ed-select" name="data" type="date" value="' + paraCampo(p.data_designacao) + '">' +
+        '</label>' +
+        '<p class="acesso-erro evt-form-erro" hidden></p>' +
+        '<div class="evt-form-botoes">' +
+          '<button class="ed-btn" type="submit">Salvar</button>' +
+          '<button class="ed-btn ed-btn-secundario" type="button" data-cancelar>Cancelar</button>' +
+        '</div>' +
+      '</form>');
+
+    const caixa = janela.caixa;
+    const form = caixa.querySelector('.evt-form');
+    const aviso = caixa.querySelector('.evt-form-erro');
+    const botao = form.querySelector('button[type="submit"]');
+    const areaRecorte = caixa.querySelector('#lid-recorte');
+    const botoesFoto = caixa.querySelector('#lid-foto-botoes');
+
+    const mostrarFoto = function () {
+      caixa.querySelector('#lid-foto-area').innerHTML = htmlFoto(fotoAtual(), 'lid-foto-grande');
+      caixa.querySelector('#lid-foto-remover').hidden = !fotoAtual();
+    };
+    mostrarFoto();
+
+    caixa.querySelector('#lid-foto-remover').addEventListener('click', function () {
+      fotoNova = 'sem';
+      mostrarFoto();
+    });
+
+    caixa.querySelector('#lid-foto-arquivo').addEventListener('change', function () {
+      const arquivo = this.files && this.files[0];
+      this.value = '';
+      if (!arquivo) return;
+      aviso.hidden = true;
+      carregarImagem(arquivo)
+        .then(function (img) {
+          botoesFoto.hidden = true;
+          botao.disabled = true;
+          abrirRecorte(areaRecorte, img, function (resultado) {
+            botoesFoto.hidden = false;
+            botao.disabled = false;
+            if (resultado) fotoNova = resultado;
+            mostrarFoto();
+          });
+        })
+        .catch(function () {
+          mostrarAviso(aviso, 'Não foi possível abrir esta imagem. Tente uma foto em JPG ou PNG.');
+        });
+    });
+
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      const dados = { id: p.id, nome: form.elements.nome.value.trim(), data: form.elements.data.value };
+      if (fotoNova !== undefined) dados.foto = fotoNova;
+
+      aviso.hidden = true;
+      botao.disabled = true;
+      botao.textContent = 'Salvando...';
+
+      planilhaEnviar('salvarPessoa', dados)
+        .then(function (r) {
+          receber(r);
+          janela.fechar();
+          desenhar();
+        })
+        .catch(function (erro) {
+          if (erro && erro.tipo === 'acesso') return tratarErro(erro);
+          mostrarAviso(aviso, mensagemDeErro(erro));
+          botao.disabled = false;
+          botao.textContent = 'Salvar';
+        });
+    });
+  }
+
+  /* ---------------- Foto: abrir e enquadrar ---------------- */
+
+  function carregarImagem(arquivo) {
+    return new Promise(function (resolver, rejeitar) {
+      if (!/^image\//.test(arquivo.type || 'image/')) return rejeitar(new Error('tipo'));
+      const img = new Image();
+      const endereco = URL.createObjectURL(arquivo);
+      img.onload = function () { resolver(img); };
+      img.onerror = function () { URL.revokeObjectURL(endereco); rejeitar(new Error('imagem')); };
+      img.src = endereco;
+    });
+  }
+
+  /**
+   * Mostra a foto num quadro com o círculo de recorte.
+   * Arraste para posicionar e use a barra para aproximar.
+   * aoTerminar recebe a foto pronta (texto data:image/jpeg) ou null se cancelar.
+   */
+  function abrirRecorte(area, img, aoTerminar) {
+    const LADO = 260;
+    const escalaTela = window.devicePixelRatio || 1;
+    area.hidden = false;
+    area.innerHTML = '' +
+      '<div class="lid-recorte">' +
+        '<canvas class="lid-recorte-tela" width="' + LADO * escalaTela + '" height="' + LADO * escalaTela + '"></canvas>' +
+        '<p class="evt-nota">Arraste a foto para enquadrar o rosto dentro do círculo.</p>' +
+        '<label class="lid-recorte-zoom">Aproximar' +
+          '<input type="range" min="1" max="3" step="0.01" value="1">' +
+        '</label>' +
+        '<div class="evt-form-botoes">' +
+          '<button type="button" class="ed-btn" data-usar>Usar esta foto</button>' +
+          '<button type="button" class="ed-btn ed-btn-secundario" data-desistir>Cancelar</button>' +
+        '</div>' +
+      '</div>';
+
+    const tela = area.querySelector('canvas');
+    const ctx = tela.getContext('2d');
+    const barra = area.querySelector('input[type="range"]');
+    const base = Math.max(LADO / img.naturalWidth, LADO / img.naturalHeight);
+    let zoom = 1;
+    let x = (LADO - img.naturalWidth * base) / 2;
+    let y = (LADO - img.naturalHeight * base) / 4;
+
+    const prender = function () {
+      const w = img.naturalWidth * base * zoom;
+      const h = img.naturalHeight * base * zoom;
+      x = Math.min(0, Math.max(LADO - w, x));
+      y = Math.min(0, Math.max(LADO - h, y));
+    };
+
+    const pintar = function () {
+      prender();
+      ctx.setTransform(escalaTela, 0, 0, escalaTela, 0, 0);
+      ctx.clearRect(0, 0, LADO, LADO);
+      ctx.drawImage(img, x, y, img.naturalWidth * base * zoom, img.naturalHeight * base * zoom);
+      // escurece fora do círculo
+      ctx.save();
+      ctx.fillStyle = 'rgba(14, 35, 56, 0.55)';
+      ctx.beginPath();
+      ctx.rect(0, 0, LADO, LADO);
+      ctx.arc(LADO / 2, LADO / 2, LADO / 2 - 2, 0, Math.PI * 2, true);
+      ctx.fill('evenodd');
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.arc(LADO / 2, LADO / 2, LADO / 2 - 2, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.restore();
+    };
+
+    let arrasto = null;
+    tela.addEventListener('pointerdown', function (ev) {
+      arrasto = { px: ev.clientX, py: ev.clientY, x: x, y: y };
+      tela.setPointerCapture(ev.pointerId);
+    });
+    tela.addEventListener('pointermove', function (ev) {
+      if (!arrasto) return;
+      const fator = LADO / tela.getBoundingClientRect().width;
+      x = arrasto.x + (ev.clientX - arrasto.px) * fator;
+      y = arrasto.y + (ev.clientY - arrasto.py) * fator;
+      pintar();
+    });
+    const soltar = function () { arrasto = null; };
+    tela.addEventListener('pointerup', soltar);
+    tela.addEventListener('pointercancel', soltar);
+
+    barra.addEventListener('input', function () {
+      const novo = Number(barra.value);
+      // aproxima mantendo o centro do quadro no mesmo ponto da foto
+      const cx = (LADO / 2 - x) / zoom;
+      const cy = (LADO / 2 - y) / zoom;
+      zoom = novo;
+      x = LADO / 2 - cx * zoom;
+      y = LADO / 2 - cy * zoom;
+      pintar();
+    });
+
+    const terminar = function (resultado) {
+      area.hidden = true;
+      area.innerHTML = '';
+      URL.revokeObjectURL(img.src);
+      aoTerminar(resultado);
+    };
+
+    area.querySelector('[data-desistir]').addEventListener('click', function () { terminar(null); });
+    area.querySelector('[data-usar]').addEventListener('click', function () {
+      prender();
+      const saida = document.createElement('canvas');
+      saida.width = FOTO_LADO;
+      saida.height = FOTO_LADO;
+      const c = saida.getContext('2d');
+      const k = FOTO_LADO / LADO;
+      c.fillStyle = '#FFFFFF';
+      c.fillRect(0, 0, FOTO_LADO, FOTO_LADO);
+      c.drawImage(img, x * k, y * k, img.naturalWidth * base * zoom * k, img.naturalHeight * base * zoom * k);
+      let qualidade = 0.86;
+      let texto = saida.toDataURL('image/jpeg', qualidade);
+      while (texto.length > FOTO_LIMITE && qualidade > 0.4) {
+        qualidade -= 0.08;
+        texto = saida.toDataURL('image/jpeg', qualidade);
+      }
+      terminar(texto);
+    });
+
+    pintar();
+  }
+
+  /* ---------------- Aba Designações ---------------- */
+
+  // Quem responde pela designação, separado em presidência e sumo conselho.
+  // A vaga normal do sumo vem sempre antes da vaga de exceção.
+  function ocupantes(desigId) {
+    const pres = [];
+    const sum = [];
+    VINCULOS.filter(function (v) { return v.designacao === desigId; }).forEach(function (v) {
+      const p = pessoaPorId(v.chamado);
+      if (!p) return;
+      if (p.grupo === 'Presidência') pres.push(v);
+      else sum.push(v);
+    });
+    sum.sort(function (a, b) { return (a.excecao === 'sim' ? 1 : 0) - (b.excecao === 'sim' ? 1 : 0); });
+    return { pres: pres, sum: sum };
+  }
+
+  function estadoDe(oc) {
+    if (oc.pres.length && oc.sum.length) return 'completo';
+    if (!oc.pres.length && !oc.sum.length) return 'vazio';
+    return 'parcial';
+  }
+
+  function selecionar(desigId, grupo, posicao, opcoes, selecionado, usado, rotuloVazio) {
+    let html = '<select class="ed-select" data-desig="' + escaparTexto(desigId) +
+               '" data-grupo="' + grupo + '" data-pos="' + posicao + '">';
+    html += '<option value="">' + rotuloVazio + '</option>';
+    opcoes.forEach(function (p) {
+      const sel = p.id === selecionado ? ' selected' : '';
+      const ocupado = p.id !== selecionado && usado.indexOf(p.id) !== -1 ? ' disabled' : '';
+      html += '<option value="' + escaparTexto(p.id) + '"' + sel + ocupado + '>' + escaparTexto(rotuloPessoa(p)) + '</option>';
+    });
+    return html + '</select>';
+  }
+
+  function telaDesignacoes() {
+    const presidencia = PESSOAS.filter(function (p) { return p.grupo === 'Presidência'; });
+    const sumo = PESSOAS.filter(function (p) { return p.grupo === 'Sumo Conselho'; });
+    const conta = { completo: 0, parcial: 0, vazio: 0 };
+    DESIGNACOES.forEach(function (d) { conta[estadoDe(ocupantes(d.id))]++; });
+
+    let html = '' +
+      '<p class="lid-ed-intro">Cada alteração é salva sozinha, assim que você escolhe a pessoa.</p>' +
+      '<div class="ed-resumo">' +
+        '<div class="ed-resumo-item estado-completo"><strong>' + conta.completo + '</strong><span>completas</span></div>' +
+        '<div class="ed-resumo-item estado-parcial"><strong>' + conta.parcial + '</strong><span>faltando uma vaga</span></div>' +
+        '<div class="ed-resumo-item estado-vazio"><strong>' + conta.vazio + '</strong><span>sem ninguém</span></div>' +
+        '<div class="ed-resumo-item"><strong>' + DESIGNACOES.length + '</strong><span>designações</span></div>' +
+      '</div>' +
+      '<div class="ed-colunas"><div class="ed-coluna"><h2 class="ed-coluna-titulo">Designações</h2>';
+
+    gruposDeDesignacao().forEach(function (grupo) {
+      html += '<h3 class="ed-subgrupo">' + escaparTexto(grupo) + '</h3>';
+      DESIGNACOES.filter(function (d) { return (d.grupo || 'Outras') === grupo; }).forEach(function (d) {
+        const oc = ocupantes(d.id);
+        const temExtra = oc.sum.length > 1;
+        const mostrarExtra = temExtra || excecoesAbertas[d.id];
+        const usadosSumo = oc.sum.map(function (v) { return v.chamado; });
+
+        html += '<div class="ed-desig estado-' + estadoDe(oc) + '">' +
+          '<div class="ed-desig-nome">' + escaparTexto(d.designacao) + '</div>' +
+          '<div class="ed-vagas">' +
+            '<label class="ed-vaga"><span>Presidência</span>' +
+              selecionar(d.id, 'pres', 0, presidencia, oc.pres[0] ? oc.pres[0].chamado : '', [], 'A definir') +
+            '</label>' +
+            '<label class="ed-vaga"><span>Sumo conselho</span>' +
+              selecionar(d.id, 'sum', 0, sumo, oc.sum[0] ? oc.sum[0].chamado : '', usadosSumo, 'A definir') +
+            '</label>' +
+            (mostrarExtra
+              ? '<label class="ed-vaga ed-vaga-excecao"><span>Sumo conselho <em>exceção</em></span>' +
+                  selecionar(d.id, 'sum', 1, sumo, oc.sum[1] ? oc.sum[1].chamado : '', usadosSumo, 'Nenhum') +
+                '</label>'
+              : '') +
+          '</div>' +
+          (!mostrarExtra
+            ? '<button type="button" class="ed-abrir-excecao" data-abrir="' + escaparTexto(d.id) + '">+ abrir exceção</button>'
+            : (!temExtra ? '<button type="button" class="ed-abrir-excecao" data-fechar="' + escaparTexto(d.id) + '">cancelar exceção</button>' : '')) +
+        '</div>';
+      });
+    });
+    html += '</div><div class="ed-coluna"><h2 class="ed-coluna-titulo">Distribuição por pessoa</h2>';
+
+    ['Presidência', 'Sumo Conselho'].forEach(function (grupo) {
+      html += '<h3 class="ed-subgrupo">' + grupo + '</h3>';
+      PESSOAS.filter(function (p) { return p.grupo === grupo; }).forEach(function (p) {
+        const suas = DESIGNACOES.map(function (d) {
+          const v = VINCULOS.filter(function (x) { return x.designacao === d.id && x.chamado === p.id; })[0];
+          return v ? { nome: d.designacao, excecao: v.excecao === 'sim' } : null;
+        }).filter(Boolean);
+        html += '<div class="ed-pessoa"><div class="ed-pessoa-topo">' +
+                  '<strong>' + escaparTexto(rotuloPessoa(p)) + '</strong>' +
+                  '<span class="ed-contador">' + suas.length + '</span></div>' +
+                (suas.length
+                  ? '<div class="ed-pessoa-tags">' + suas.map(function (s) {
+                      return '<span class="ed-tag' + (s.excecao ? ' ed-tag-excecao' : '') + '">' + escaparTexto(s.nome) + '</span>';
+                    }).join('') + '</div>'
+                  : '<p class="ed-pessoa-vazio">Sem designação</p>') +
+                '</div>';
+      });
+    });
+    return html + '</div></div>';
+  }
+
+  function definirVinculo(desigId, grupo, posicao, chamado) {
+    const oc = ocupantes(desigId);
+    const lista = grupo === 'pres' ? oc.pres : oc.sum;
+    const atual = lista[posicao];
+    if (atual) VINCULOS = VINCULOS.filter(function (v) { return v !== atual; });
+    if (chamado) {
+      VINCULOS.push({ designacao: desigId, chamado: chamado, excecao: (grupo === 'sum' && posicao === 1) ? 'sim' : '' });
+    }
+    desenhar();
+    salvarVinculosDe(desigId);
+  }
+
+  /* Salvamento automático das designações, uma de cada vez, na ordem */
+  let filaSalvar = Promise.resolve();
+  let pendentes = 0;
+  let falhouSalvar = false;
+
+  function salvarVinculosDe(desigId) {
+    const oc = ocupantes(desigId);
+    const itens = oc.pres.concat(oc.sum).map(function (v) {
+      return { chamado: v.chamado, excecao: v.excecao === 'sim' ? 'sim' : '' };
+    });
+    pendentes++;
+    atualizarStatus();
+    filaSalvar = filaSalvar.then(function () {
+      return planilhaEnviar('salvarVinculos', { designacao: desigId, itens: itens })
+        .then(function () { falhouSalvar = false; })
+        .catch(function (erro) {
+          if (erro && erro.tipo === 'acesso') return tratarErro(erro);
+          falhouSalvar = true;
+          window.alert('Uma alteração das designações não foi salva: ' + mensagemDeErro(erro) +
+                       '\nA página vai recarregar os dados da planilha.');
+          return carregar();
+        })
+        .then(function () {
+          pendentes--;
+          atualizarStatus();
+        });
+    });
+  }
+
+  function atualizarStatus() {
+    const el = document.getElementById('lid-status');
+    if (!el) return;
+    el.className = 'lid-ed-status' + (pendentes ? ' salvando' : '');
+    el.textContent = pendentes ? 'Salvando...' : (falhouSalvar ? '' : 'Tudo salvo');
+  }
+
+  window.addEventListener('beforeunload', function (ev) {
+    if (pendentes) { ev.preventDefault(); ev.returnValue = ''; }
+  });
+
+  /* ---------------- Aba Lista de designações ---------------- */
+
+  function telaLista() {
+    let html = '' +
+      '<div class="evt-barra">' +
+        '<button class="ed-btn" id="lid-nova-desig" type="button">+ Nova designação</button>' +
+      '</div>' +
+      '<p class="lid-ed-intro">As setas mudam a ordem dentro do grupo. Renomear mantém as pessoas ligadas.</p>';
+
+    gruposDeDesignacao().forEach(function (grupo) {
+      const doGrupo = DESIGNACOES.filter(function (d) { return (d.grupo || 'Outras') === grupo; });
+      html += '<h2 class="evt-mes">' + escaparTexto(grupo) + '</h2><div class="lid-lista">';
+      doGrupo.forEach(function (d, i) {
+        const n = VINCULOS.filter(function (v) { return v.designacao === d.id; }).length;
+        html += '' +
+          '<div class="lid-lista-item">' +
+            '<div class="lid-lista-nome"><strong>' + escaparTexto(d.designacao) + '</strong>' +
+              '<span>' + (n ? n + (n === 1 ? ' pessoa' : ' pessoas') : 'ninguém ainda') + '</span></div>' +
+            '<div class="lid-lista-acoes">' +
+              '<button type="button" class="lid-seta" data-mover="' + escaparTexto(d.id) + '" data-direcao="cima" aria-label="Subir"' + (i === 0 ? ' disabled' : '') + '>' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>' +
+              '<button type="button" class="lid-seta" data-mover="' + escaparTexto(d.id) + '" data-direcao="baixo" aria-label="Descer"' + (i === doGrupo.length - 1 ? ' disabled' : '') + '>' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>' +
+              '<button type="button" class="evt-acao" data-editar-desig="' + escaparTexto(d.id) + '">Editar</button>' +
+              '<button type="button" class="evt-acao evt-excluir" data-remover-desig="' + escaparTexto(d.id) + '">Remover</button>' +
+            '</div>' +
+          '</div>';
+      });
+      html += '</div>';
+    });
+    return html;
+  }
+
+  function abrirDesignacao(d) {
+    const nova = !d;
+    const grupos = gruposDeDesignacao();
+    const janela = abrirJanela('' +
+      '<h2>' + (nova ? 'Nova designação' : 'Editar designação') + '</h2>' +
+      '<form class="evt-form" novalidate>' +
+        '<label class="evt-form-largo">Nome' +
+          '<input class="ed-select" name="designacao" type="text" maxlength="60" value="' +
+            escaparTexto(nova ? '' : d.designacao) + '" placeholder="Ala Nova">' +
+        '</label>' +
+        '<label class="evt-form-largo">Grupo' +
+          '<input class="ed-select" name="grupo" type="text" maxlength="40" list="lid-grupos" value="' +
+            escaparTexto(nova ? (grupos[0] || '') : d.grupo) + '">' +
+          '<datalist id="lid-grupos">' + grupos.map(function (g) { return '<option value="' + escaparTexto(g) + '">'; }).join('') + '</datalist>' +
+        '</label>' +
+        '<p class="evt-nota evt-form-largo">Use um dos grupos que já existem (' + escaparTexto(grupos.join(', ')) +
+          ') ou escreva um novo.</p>' +
+        '<p class="acesso-erro evt-form-erro" hidden></p>' +
+        '<div class="evt-form-botoes">' +
+          '<button class="ed-btn" type="submit">Salvar</button>' +
+          '<button class="ed-btn ed-btn-secundario" type="button" data-cancelar>Cancelar</button>' +
+        '</div>' +
+      '</form>');
+
+    const form = janela.caixa.querySelector('.evt-form');
+    const aviso = janela.caixa.querySelector('.evt-form-erro');
+    const botao = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      const dados = { id: nova ? '' : d.id, designacao: form.elements.designacao.value.trim(), grupo: form.elements.grupo.value.trim() };
+      if (!dados.designacao) return mostrarAviso(aviso, 'Digite o nome da designação.');
+      aviso.hidden = true;
+      botao.disabled = true;
+      botao.textContent = 'Salvando...';
+      planilhaEnviar('salvarDesignacao', dados)
+        .then(function (r) { receber(r); janela.fechar(); desenhar(); })
+        .catch(function (erro) {
+          if (erro && erro.tipo === 'acesso') return tratarErro(erro);
+          mostrarAviso(aviso, mensagemDeErro(erro));
+          botao.disabled = false;
+          botao.textContent = 'Salvar';
+        });
+    });
+    form.elements.designacao.focus();
+  }
+
+  function removerDesignacao(id, botao) {
+    const d = DESIGNACOES.filter(function (x) { return x.id === id; })[0];
+    if (!d) return;
+    const n = VINCULOS.filter(function (v) { return v.designacao === id; }).length;
+    const texto = 'Remover "' + d.designacao + '" da lista?' +
+      (n ? '\nAs ' + n + ' pessoas ligadas a ela deixam de responder por ela.' : '');
+    if (!window.confirm(texto)) return;
+    botao.disabled = true;
+    botao.textContent = 'Removendo...';
+    enviarEstrutura('removerDesignacao', { id: id });
+  }
+
+  function enviarEstrutura(acao, dados) {
+    planilhaEnviar(acao, dados)
+      .then(function (r) { receber(r); desenhar(); })
+      .catch(function (erro) {
+        if (erro && erro.tipo === 'acesso') return tratarErro(erro);
+        window.alert(mensagemDeErro(erro));
+        desenhar();
+      });
+  }
+
+  /* ---------------- Janelas ---------------- */
+
+  function abrirJanela(conteudo) {
+    const fundo = document.createElement('div');
+    fundo.className = 'detalhe-fundo';
+    fundo.innerHTML = '' +
+      '<div class="detalhe-caixa evt-form-caixa" role="dialog" aria-modal="true">' +
+        '<button class="detalhe-fechar" type="button" aria-label="Fechar">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">' +
+            '<line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>' +
+          '</svg>' +
+        '</button>' + conteudo +
+      '</div>';
+    document.body.appendChild(fundo);
+    document.body.style.overflow = 'hidden';
+
+    const fechar = function () {
+      fundo.remove();
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', aoTeclar);
+    };
+    const aoTeclar = function (ev) { if (ev.key === 'Escape') fechar(); };
+    fundo.querySelector('.detalhe-fechar').addEventListener('click', fechar);
+    fundo.querySelectorAll('[data-cancelar]').forEach(function (b) { b.addEventListener('click', fechar); });
+    document.addEventListener('keydown', aoTeclar);
+    return { caixa: fundo.querySelector('.detalhe-caixa'), fechar: fechar };
+  }
+
+  function mostrarAviso(aviso, mensagem) {
+    aviso.textContent = mensagem;
+    aviso.hidden = false;
+  }
+
+  /* ---------------- Início ---------------- */
+
+  function tratarErro(erro) {
+    const area = document.getElementById('area-conteudo');
+    document.querySelectorAll('.detalhe-fundo').forEach(function (f) { f.remove(); });
+    document.body.style.overflow = '';
+    if (erro && erro.tipo === 'acesso') {
+      esquecerCodigo();
+      area.innerHTML = '<div class="cal-erro"><strong>O código mudou.</strong>' +
+        '<p>Abra a página de novo e digite o código atual.</p></div>';
+      return;
+    }
+    area.innerHTML = '<div class="cal-erro">' +
+      '<strong>Não foi possível falar com a planilha.</strong>' +
+      '<p>' + escaparTexto(mensagemDeErro(erro)) + '</p>' +
+      '<p>Confira sua internet e atualize a página.</p></div>';
+  }
+
+  function carregar() {
+    return planilhaEnviar('listarLideranca', {})
+      .then(function (r) {
+        receber(r);
+        desenhar();
+      })
+      .catch(tratarErro);
+  }
+
+  function iniciarEditor() {
+    const area = document.getElementById('area-conteudo');
+    if (!planilhaConfigurada()) {
+      area.innerHTML = '<div class="cal-erro"><strong>Falta ligar a planilha.</strong>' +
+        '<p>Abra o arquivo <code>componentes.js</code> e cole o endereço do App da Web ' +
+        'no bloco ENDEREÇO DA PLANILHA DO CALENDÁRIO.</p></div>';
+      return;
+    }
+    area.innerHTML = '<p class="cal-vazio">Carregando a liderança...</p>';
+    carregar();
+  }
+
+  protegerPagina(iniciarEditor);
+  </script>
+
+</body>
+</html>

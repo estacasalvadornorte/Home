@@ -1,12 +1,13 @@
 /* ═══════════════════════════════════════════════════════════════════════
    PÁGINA DE LIDERANÇA
-   Lê os três arquivos da pasta lideranca/ e monta a apresentação.
+   Lê os dados da liderança na planilha do Google e monta a apresentação.
 
    VOCÊ NÃO PRECISA MEXER NESTE ARQUIVO.
-   Para alterar os dados, edite os arquivos:
-     lideranca/pessoas.csv      quem ocupa cada cargo
-     lideranca/designacoes.csv  catálogo de designações
-     lideranca/vinculos.csv     quem responde por o quê
+   Para alterar pessoas, fotos e designações, entre em
+   Área da Liderança > Liderança da Estaca.
+
+   Os arquivos da pasta lideranca/ ficam só como reserva, para a página
+   não ficar vazia se a planilha estiver fora do ar.
    ═══════════════════════════════════════════════════════════════════════ */
 
 const PASTA_DADOS = 'lideranca/';
@@ -14,6 +15,11 @@ const PASTA_FOTOS = 'imagens/chamados/';
 
 const GRUPOS_PESSOAS = ['Presidência', 'Secretários', 'Sumo Conselho'];
 
+const CHAVE_COPIA_LIDERANCA = 'estaca-lideranca-copia';
+
+// Cada pessoa:     { id, chamado, grupo, nome, data_designacao, foto }
+// Cada designação: { id, designacao, grupo }
+// Cada vínculo:    { designacao (id), chamado (id), excecao }
 let PESSOAS = [];
 let DESIGNACOES = [];
 let VINCULOS = [];
@@ -72,20 +78,28 @@ function formatarData(d) {
          d.getFullYear();
 }
 
-// Designações de um cargo
-function designacoesDe(chamado) {
-  return VINCULOS.filter(function (v) { return v.chamado === chamado; })
-                 .map(function (v) { return v.designacao; });
+// Endereço da foto: a enviada pelo site, a antiga da pasta imagens/chamados, ou nenhuma
+function fotoDe(p) {
+  if (p.foto === 'sem') return '';
+  if (/^data:image\//.test(p.foto || '')) return p.foto;
+  return PASTA_FOTOS + p.id + '.jpg';
+}
+
+// Nomes das designações de um cargo, na ordem da lista
+function designacoesDe(id) {
+  return DESIGNACOES.filter(function (d) {
+    return VINCULOS.some(function (v) { return v.chamado === id && v.designacao === d.id; });
+  }).map(function (d) { return d.designacao; });
 }
 
 // Quem responde por uma designação, separado por grupo
 function ocupantesDe(designacao) {
-  const ligados = VINCULOS.filter(function (v) { return v.designacao === designacao; });
+  const ligados = VINCULOS.filter(function (v) { return v.designacao === designacao.id; });
   const presidencia = [];
   const sumo = [];
 
   ligados.forEach(function (v) {
-    const p = PESSOAS.find(function (x) { return x.chamado === v.chamado; });
+    const p = PESSOAS.find(function (x) { return x.id === v.chamado; });
     if (!p) return;
     if (p.grupo === 'Presidência') presidencia.push(p);
     else sumo.push({ pessoa: p, excecao: v.excecao });
@@ -112,17 +126,18 @@ function nomeValido(nome) {
 function cartaoPessoa(p) {
   const data = csvData(p.data_designacao);
   const tempo = tempoDeChamado(data);
-  const lista = designacoesDe(p.chamado);
+  const lista = designacoesDe(p.id);
   const temNome = nomeValido(p.nome);
+  const endereco = fotoDe(p);
 
-  const foto = p.foto
-    ? '<img src="' + PASTA_FOTOS + escaparTexto(p.foto) + '" alt="" ' +
+  const foto = endereco
+    ? '<img src="' + escaparTexto(endereco) + '" alt="" ' +
       'onerror="this.parentNode.classList.add(\'sem-foto\'); this.remove();">'
     : '';
 
   let html = '<article class="lid-cartao">';
 
-  html += '<div class="lid-foto' + (p.foto ? '' : ' sem-foto') + '">' + foto +
+  html += '<div class="lid-foto' + (endereco ? '' : ' sem-foto') + '">' + foto +
           '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round">' +
             '<path d="M19 21v-2a5 5 0 0 0-5-5h-4a5 5 0 0 0-5 5v2"/>' +
             '<circle cx="12" cy="7" r="4"/>' +
@@ -168,7 +183,7 @@ function montarPorPessoa() {
     html += '</div></section>';
   });
 
-  return html || '<p class="cal-vazio">Nenhuma pessoa cadastrada em pessoas.csv.</p>';
+  return html || '<p class="cal-vazio">Nenhuma pessoa cadastrada.</p>';
 }
 
 
@@ -176,7 +191,7 @@ function montarPorPessoa() {
 
 function montarPorDesignacao() {
   if (!DESIGNACOES.length) {
-    return '<p class="cal-vazio">Nenhuma designação cadastrada em designacoes.csv.</p>';
+    return '<p class="cal-vazio">Nenhuma designação cadastrada.</p>';
   }
 
   const grupos = [];
@@ -197,7 +212,7 @@ function montarPorDesignacao() {
     html += '<div class="desig-lista">';
 
     doGrupo.forEach(function (d) {
-      const oc = ocupantesDe(d.designacao);
+      const oc = ocupantesDe(d);
       const completo = oc.presidencia.length > 0 && oc.sumo.length > 0;
       const vazio = oc.presidencia.length === 0 && oc.sumo.length === 0;
       const estado = completo ? 'completo' : (vazio ? 'vazio' : 'parcial');
@@ -258,6 +273,33 @@ function ligarAbasLideranca() {
 
 /* ─────────────────────────── INICIALIZAÇÃO ─────────────────────────── */
 
+/* De onde vêm os dados:
+   1. da planilha do Google, que é onde a liderança edita
+   2. se a planilha não responder, da última cópia guardada no aparelho
+   3. se não houver cópia, dos arquivos da pasta lideranca/ (reserva)      */
+
+function receberDados(d) {
+  PESSOAS = d.pessoas || [];
+  DESIGNACOES = d.designacoes || [];
+  VINCULOS = d.vinculos || [];
+}
+
+function guardarCopiaLideranca(d) {
+  try {
+    window.localStorage.setItem(CHAVE_COPIA_LIDERANCA, JSON.stringify(d));
+  } catch (e) { /* aparelho sem espaço ou sem permissão: segue sem cópia */ }
+}
+
+function lerCopiaLideranca() {
+  try {
+    const texto = window.localStorage.getItem(CHAVE_COPIA_LIDERANCA);
+    const d = texto ? JSON.parse(texto) : null;
+    return d && Array.isArray(d.pessoas) && d.pessoas.length ? d : null;
+  } catch (e) {
+    return null;
+  }
+}
+
 function buscarCSV(nome) {
   return fetch(PASTA_DADOS + nome + '?v=' + Date.now())
     .then(function (r) {
@@ -267,20 +309,49 @@ function buscarCSV(nome) {
     .then(csvLer);
 }
 
+// Converte os arquivos antigos para o mesmo formato da planilha
+function lerReserva() {
+  return Promise.all([
+    buscarCSV('pessoas.csv'),
+    buscarCSV('designacoes.csv'),
+    buscarCSV('vinculos.csv')
+  ]).then(function (res) {
+    const idDoChamado = {};
+    const pessoas = res[0].map(function (p) {
+      const id = String(p.foto || p.chamado).replace(/\.[a-z]+$/i, '');
+      idDoChamado[p.chamado] = id;
+      return { id: id, chamado: p.chamado, grupo: p.grupo, nome: p.nome, data_designacao: p.data_designacao, foto: '' };
+    });
+    const designacoes = res[1].map(function (d) {
+      return { id: d.designacao, designacao: d.designacao, grupo: d.grupo };
+    });
+    const vinculos = res[2].filter(function (v) { return v.designacao && idDoChamado[v.chamado]; })
+      .map(function (v) { return { designacao: v.designacao, chamado: idDoChamado[v.chamado], excecao: v.excecao }; });
+    return { pessoas: pessoas, designacoes: designacoes, vinculos: vinculos };
+  });
+}
+
 function iniciarLideranca() {
   const area = document.getElementById('lid-conteudo');
   if (!area) return;
 
-  Promise.all([
-    buscarCSV('pessoas.csv'),
-    buscarCSV('designacoes.csv'),
-    buscarCSV('vinculos.csv')
-  ])
-    .then(function (res) {
-      PESSOAS = res[0];
-      DESIGNACOES = res[1];
-      VINCULOS = res[2];
+  const temPlanilha = typeof planilhaConfigurada === 'function' && planilhaConfigurada() &&
+                      typeof planilhaLideranca === 'function';
 
+  const daPlanilha = temPlanilha
+    ? planilhaLideranca().then(function (d) {
+        const dados = { pessoas: d.pessoas, designacoes: d.designacoes, vinculos: d.vinculos };
+        guardarCopiaLideranca(dados);
+        return dados;
+      })
+    : Promise.reject(new Error('sem planilha'));
+
+  daPlanilha
+    .catch(function () {
+      return lerCopiaLideranca() || lerReserva();
+    })
+    .then(function (dados) {
+      receberDados(dados);
       ligarAbasLideranca();
       renderizarLideranca();
     })
@@ -288,13 +359,7 @@ function iniciarLideranca() {
       area.innerHTML = '' +
         '<div class="cal-erro">' +
           '<strong>Não foi possível carregar os dados da liderança.</strong>' +
-          '<p>Se você abriu este arquivo direto do computador com dois cliques, ' +
-          'o navegador bloqueia a leitura dos CSVs por segurança. Isso é normal. ' +
-          'Depois de enviar os arquivos para o GitHub, a página funciona.</p>' +
-          '<p>Se já está no GitHub e o erro continua, confira se a pasta ' +
-          '<code>lideranca</code> contém os três arquivos: ' +
-          '<code>pessoas.csv</code>, <code>designacoes.csv</code> e ' +
-          '<code>vinculos.csv</code>.</p>' +
+          '<p>Confira sua internet e atualize a página.</p>' +
         '</div>';
     });
 }

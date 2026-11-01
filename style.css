@@ -2251,3 +2251,156 @@ main {
   .evt-ano-novo { margin-left: 0; }
   .evt-anos .cal-aba { flex: 0 0 auto; padding: 12px 14px; }
 }
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   EDITOR DA LIDERANÇA (Área da Liderança)
+   ═══════════════════════════════════════════════════════════════════ */
+
+.lid-ed-abas { margin-bottom: 22px; flex-wrap: wrap; }
+
+.lid-ed-status {
+  margin-left: auto;
+  align-self: center;
+  font-size: 12.5px;
+  color: var(--gray-600);
+  padding: 0 4px;
+}
+
+.lid-ed-status.salvando { color: var(--gold); font-weight: 600; }
+
+.lid-ed-intro {
+  font-size: 14px;
+  color: var(--gray-600);
+  margin-bottom: 24px;
+}
+
+.lid-ed-editar { margin-top: 8px; }
+
+/* Foto dentro da janela de edição */
+.lid-ed-foto {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.lid-foto.lid-foto-grande { width: 112px; height: 112px; }
+.lid-foto.lid-foto-grande svg { width: 48px; height: 48px; }
+
+.lid-ed-foto-botoes {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.evt-form .lid-ed-arquivo {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  flex-direction: row;
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--navy);
+  cursor: pointer;
+}
+
+.lid-ed-arquivo input {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Quadro para enquadrar a foto */
+.lid-recorte {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-100);
+  border-radius: 6px;
+  padding: 16px;
+}
+
+.lid-recorte-tela {
+  width: 260px;
+  max-width: 100%;
+  aspect-ratio: 1;
+  border-radius: 6px;
+  background: var(--gray-100);
+  touch-action: none;
+  cursor: grab;
+}
+
+.lid-recorte-tela:active { cursor: grabbing; }
+
+.evt-form .lid-recorte-zoom {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 260px;
+}
+
+.lid-recorte-zoom input { flex: 1; accent-color: var(--navy); }
+
+/* Lista de designações */
+.lid-lista { margin-bottom: 8px; }
+
+.lid-lista-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 11px 4px;
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.lid-lista-nome { flex: 1; min-width: 0; }
+
+.lid-lista-nome strong {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--gray-800);
+}
+
+.lid-lista-nome span { font-size: 12.5px; color: var(--gray-600); }
+
+.lid-lista-acoes {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.lid-seta {
+  width: 30px;
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+  border: 1px solid var(--gray-200);
+  border-radius: 5px;
+  color: var(--navy);
+  cursor: pointer;
+}
+
+.lid-seta svg { width: 15px; height: 15px; }
+.lid-seta:hover { border-color: var(--navy); }
+.lid-seta:disabled { opacity: 0.35; cursor: default; border-color: var(--gray-200); }
+
+@media (max-width: 768px) {
+  .lid-ed-status { margin-left: 0; width: 100%; padding: 8px 0 0; }
+  .lid-ed-abas .cal-aba { flex: 0 0 auto; padding: 12px 12px; }
+  .lid-ed-foto { flex-direction: column; align-items: flex-start; }
+  .lid-lista-item { flex-wrap: wrap; }
+  .lid-lista-acoes { width: 100%; justify-content: flex-end; }
+}
+
+/* Elementos escondidos pelo próprio site ficam sempre escondidos */
+[hidden] { display: none !important; }
