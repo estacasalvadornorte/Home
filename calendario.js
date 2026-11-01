@@ -26,8 +26,34 @@ let visaoAtual = 'proximos';
 
 /* ───────────────────────────── LEITURA DO CSV ───────────────────────── */
 
+// Descobre o separador do arquivo: vírgula, ponto e vírgula ou tabulação.
+// Isso evita quebrar quando o arquivo vem colado de uma planilha (tabulação)
+// ou exportado pelo Excel em português (ponto e vírgula).
+function detectarSeparador(linhaCabecalho) {
+  const candidatos = [',', ';', '\t'];
+  let melhor = ',';
+  let maior = 0;
+
+  candidatos.forEach(function (sep) {
+    let contagem = 0;
+    let dentroDeAspas = false;
+    for (let i = 0; i < linhaCabecalho.length; i++) {
+      const c = linhaCabecalho[i];
+      if (c === '"') dentroDeAspas = !dentroDeAspas;
+      else if (c === sep && !dentroDeAspas) contagem++;
+    }
+    if (contagem > maior) {
+      maior = contagem;
+      melhor = sep;
+    }
+  });
+
+  return melhor;
+}
+
 // Divide uma linha de CSV respeitando textos entre aspas
-function dividirLinha(linha) {
+function dividirLinha(linha, sep) {
+  sep = sep || ',';
   const campos = [];
   let atual = '';
   let dentroDeAspas = false;
@@ -41,7 +67,7 @@ function dividirLinha(linha) {
       } else {
         dentroDeAspas = !dentroDeAspas;
       }
-    } else if (c === ',' && !dentroDeAspas) {
+    } else if (c === sep && !dentroDeAspas) {
       campos.push(atual);
       atual = '';
     } else {
@@ -53,18 +79,23 @@ function dividirLinha(linha) {
 }
 
 function lerCSV(texto) {
+  // Remove a marca invisível que o Excel coloca no início do arquivo (BOM)
+  texto = texto.replace(/^\uFEFF/, '');
+
   const linhas = texto.replace(/\r/g, '').split('\n').filter(function (l) {
     return l.trim() !== '';
   });
   if (linhas.length < 2) return [];
 
-  const cabecalho = dividirLinha(linhas[0]).map(function (h) {
+  const sep = detectarSeparador(linhas[0]);
+
+  const cabecalho = dividirLinha(linhas[0], sep).map(function (h) {
     return h.toLowerCase();
   });
 
   const registros = [];
   for (let i = 1; i < linhas.length; i++) {
-    const campos = dividirLinha(linhas[i]);
+    const campos = dividirLinha(linhas[i], sep);
     const obj = {};
     cabecalho.forEach(function (coluna, idx) {
       obj[coluna] = campos[idx] || '';
@@ -459,20 +490,83 @@ function ligarAbas() {
 
 /* ──────────────────────────── INICIALIZAÇÃO ────────────────────────── */
 
-function iniciarCalendario() {
-  const area = document.getElementById('cal-conteudo');
-  if (!area) return;
+/* De onde vem o calendário:
+   1. da planilha do Google, que é onde a liderança edita os eventos
+   2. se a planilha não responder, da última cópia guardada no aparelho
+   3. se não houver cópia, do arquivo calendario.csv                      */
 
-  fetch(ARQUIVO_CSV + '?v=' + Date.now())
+const CHAVE_COPIA = 'estaca-calendario-copia';
+
+/** Prepara a lista que veio da planilha, do mesmo jeito que a do CSV. */
+function prepararEventos(registros) {
+  const prontos = [];
+  (registros || []).forEach(function (r) {
+    const data = interpretarData(r.data);
+    if (!data) return;
+    const e = Object.assign({}, r);
+    e._data = data;
+    prontos.push(e);
+  });
+
+  prontos.sort(function (a, b) {
+    const dif = a._data - b._data;
+    if (dif !== 0) return dif;
+    return (a.horario || '').localeCompare(b.horario || '');
+  });
+
+  return prontos;
+}
+
+function guardarCopia(lista) {
+  try {
+    window.localStorage.setItem(CHAVE_COPIA, JSON.stringify(lista));
+  } catch (e) { /* navegador sem permissão de guardar */ }
+}
+
+function lerCopia() {
+  try {
+    const texto = window.localStorage.getItem(CHAVE_COPIA);
+    return texto ? JSON.parse(texto) : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function lerDoArquivo() {
+  return fetch(ARQUIVO_CSV + '?v=' + Date.now())
     .then(function (r) {
       if (!r.ok) throw new Error('Não foi possível ler o arquivo');
       return r.text();
     })
-    .then(function (texto) {
-      TODOS_EVENTOS = lerCSV(texto);
+    .then(lerCSV);
+}
+
+function iniciarCalendario() {
+  const area = document.getElementById('cal-conteudo');
+  if (!area) return;
+
+  const temPlanilha = typeof planilhaConfigurada === 'function' && planilhaConfigurada();
+
+  const daPlanilha = temPlanilha
+    ? planilhaEventos().then(function (lista) {
+        const prontos = prepararEventos(lista);
+        if (!prontos.length) throw new Error('planilha vazia');
+        guardarCopia(lista);
+        return prontos;
+      })
+    : Promise.reject(new Error('sem planilha'));
+
+  daPlanilha
+    .catch(function () {
+      const copia = lerCopia();
+      const prontos = copia ? prepararEventos(copia) : [];
+      return prontos.length ? prontos : lerDoArquivo();
+    })
+    .then(function (lista) {
+      TODOS_EVENTOS = lista;
 
       if (TODOS_EVENTOS.length === 0) {
-        area.innerHTML = '<p class="cal-vazio">O arquivo calendario.csv está vazio ou as datas estão em formato inválido. Use o formato dia/mês/ano, por exemplo 15/03/2026.</p>';
+        area.innerHTML = '<p class="cal-vazio">Nenhum evento cadastrado no calendário.</p>';
         return;
       }
 
@@ -496,10 +590,10 @@ function iniciarCalendario() {
         '<div class="cal-erro">' +
           '<strong>Não foi possível carregar o calendário.</strong>' +
           '<p>Se você abriu este arquivo direto do computador com dois cliques, ' +
-          'o navegador bloqueia a leitura do CSV por segurança. Isso é normal. ' +
+          'o navegador bloqueia a leitura por segurança. Isso é normal. ' +
           'Depois de enviar os arquivos para o GitHub, o calendário funciona normalmente.</p>' +
-          '<p>Se já está no GitHub e o erro continua, confira se o arquivo ' +
-          '<code>calendario.csv</code> foi enviado para a mesma pasta das páginas.</p>' +
+          '<p>Se já está no GitHub e o erro continua, confira sua internet e se o arquivo ' +
+          '<code>calendario.csv</code> está na mesma pasta das páginas.</p>' +
         '</div>';
     });
 }

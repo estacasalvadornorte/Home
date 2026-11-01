@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Área da Liderança – Estaca Salvador Brasil Norte</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- O cabeçalho é montado automaticamente pelo arquivo componentes.js.
+       Não edite aqui. Para mudar o menu, abra componentes.js -->
+  <div id="cabecalho"></div>
+
+  <main>
+    <section class="page-hero">
+      <h1>Área da Liderança</h1>
+      <p>Atalhos de uso interno da presidência e do secretariado</p>
+    </section>
+
+    <div class="container">
+
+      <!--
+        ╔══════════════════════════════════════════════════════════════════╗
+        ║  COMO MEXER NESTA PÁGINA                                         ║
+        ║                                                                  ║
+        ║  Você não precisa editar nada aqui.                              ║
+        ║                                                                  ║
+        ║  Os atalhos que aparecem depois do código ficam no arquivo       ║
+        ║  componentes.js, no bloco LINKS DA ÁREA DA LIDERANÇA.            ║
+        ║                                                                  ║
+        ║  O código de acesso fica na planilha do Google, no arquivo       ║
+        ║  calendario-Codigo.gs, no bloco CÓDIGO DE ACESSO.                ║
+        ╚══════════════════════════════════════════════════════════════════╝
+      -->
+
+      <div id="area-conteudo">
+        <p class="cal-vazio">Carregando...</p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- O rodapé é montado automaticamente pelo arquivo componentes.js -->
+  <div id="rodape"></div>
+
+  <script src="componentes.js"></script>
+  <script src="acesso.js"></script>
+  <script>
+    const ICONES_ATALHO = {
+      conferencia:
+        '<path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H19v15H6.5A2.5 2.5 0 0 0 4 20.5z"/>' +
+        '<line x1="8" y1="8" x2="15" y2="8"/><line x1="8" y1="12" x2="13" y2="12"/>',
+      calendario:
+        '<rect x="3" y="5" width="18" height="16" rx="2"/>' +
+        '<line x1="3" y1="10" x2="21" y2="10"/>' +
+        '<line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/>',
+      pessoas:
+        '<path d="M16 20v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="9.5" cy="7" r="3.5"/>' +
+        '<path d="M21 20v-2a4 4 0 0 0-3-3.87"/><path d="M16.5 3.6a3.5 3.5 0 0 1 0 6.8"/>',
+      documento:
+        '<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>' +
+        '<polyline points="14 3 14 8 19 8"/><line x1="9" y1="13" x2="15" y2="13"/>'
+    };
+
+    function desenharAtalhos() {
+      const area = document.getElementById('area-conteudo');
+
+      const cartoes = ATALHOS_LIDERANCA.map(function (a) {
+        const desenho = ICONES_ATALHO[a.icone] || ICONES_ATALHO.documento;
+        return '' +
+          '<a class="section-box" href="' + a.link + '">' +
+            '<div class="section-box-icon">' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+                   'stroke-linecap="round" stroke-linejoin="round">' + desenho + '</svg>' +
+            '</div>' +
+            '<h3>' + escaparTexto(a.nome) + '</h3>' +
+            '<p>' + escaparTexto(a.descricao) + '</p>' +
+            '<div class="section-box-action">' +
+              '<span>Abrir</span>' +
+              '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+                   'stroke-linecap="round" stroke-linejoin="round">' +
+                '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/>' +
+              '</svg>' +
+            '</div>' +
+          '</a>';
+      }).join('');
+
+      area.innerHTML =
+        '<div class="section-grid">' + cartoes + '</div>' +
+        '<div class="acesso-rodape">' +
+          '<span>Você está com o acesso liberado neste aparelho.</span>' +
+          '<button class="acesso-sair" type="button">Sair desta área</button>' +
+        '</div>';
+
+      area.querySelector('.acesso-sair').addEventListener('click', function () {
+        esquecerCodigo();
+        window.location.reload();
+      });
+    }
+
+    protegerPagina(desenharAtalhos);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Editar o Calendário – Estaca Salvador Brasil Norte</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- O cabeçalho é montado automaticamente pelo arquivo componentes.js.
+       Não edite aqui. Para mudar o menu, abra componentes.js -->
+  <div id="cabecalho"></div>
+
+  <main>
+    <section class="page-hero">
+      <h1>Editar o Calendário</h1>
+      <p>O que você salvar aqui aparece no site em seguida</p>
+    </section>
+
+    <div class="container">
+
+      <!--
+        ╔══════════════════════════════════════════════════════════════════╗
+        ║  Esta página não precisa ser editada.                            ║
+        ║  Os eventos ficam na planilha do Google, na aba Calendario.      ║
+        ║  O endereço da planilha está no arquivo componentes.js.          ║
+        ╚══════════════════════════════════════════════════════════════════╝
+      -->
+
+      <div id="area-conteudo">
+        <p class="cal-vazio">Carregando...</p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- O rodapé é montado automaticamente pelo arquivo componentes.js -->
+  <div id="rodape"></div>
+
+  <script src="componentes.js"></script>
+  <script src="acesso.js"></script>
+  <script>
+  /* ═══════════════════════════════════════════════════════════════════
+     TELA DE EDIÇÃO DO CALENDÁRIO
+     ═══════════════════════════════════════════════════════════════════ */
+
+  const TIPOS = ['Reunião', 'Conferência', 'Treinamento', 'Atividade', 'Apresentação', 'Transmissão'];
+  const MESES = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+
+  let EVENTOS = [];
+  let filtroAno = 'proximos';
+  let busca = '';
+
+  /* ---------------- Datas ---------------- */
+
+  function partesData(texto) {
+    const r = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(String(texto || ''));
+    return r ? { dia: +r[1], mes: +r[2], ano: +r[3] } : null;
+  }
+
+  function paraOrdenar(texto) {
+    const p = partesData(texto);
+    return p ? p.ano * 10000 + p.mes * 100 + p.dia : 99999999;
+  }
+
+  function paraCampo(texto) {
+    const p = partesData(texto);
+    if (!p) return '';
+    return p.ano + '-' + ('0' + p.mes).slice(-2) + '-' + ('0' + p.dia).slice(-2);
+  }
+
+  function hojeNumero() {
+    const d = new Date();
+    return d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+  }
+
+  /* ---------------- Lista ---------------- */
+
+  function visiveis() {
+    const hoje = hojeNumero();
+    const procura = busca.trim().toLowerCase();
+
+    return EVENTOS.filter(function (e) {
+      if (filtroAno === 'proximos' && paraOrdenar(e.data) < hoje) return false;
+      if (filtroAno !== 'proximos' && filtroAno !== 'todos') {
+        const p = partesData(e.data);
+        if (!p || String(p.ano) !== filtroAno) return false;
+      }
+      if (procura) {
+        const tudo = [e.evento, e.local, e.publico, e.responsavel, e.tipo].join(' ').toLowerCase();
+        if (tudo.indexOf(procura) === -1) return false;
+      }
+      return true;
+    }).sort(function (a, b) {
+      const d = paraOrdenar(a.data) - paraOrdenar(b.data);
+      return d !== 0 ? d : String(a.horario || '').localeCompare(String(b.horario || ''));
+    });
+  }
+
+  function anosDisponiveis() {
+    const anos = {};
+    EVENTOS.forEach(function (e) {
+      const p = partesData(e.data);
+      if (p) anos[p.ano] = true;
+    });
+    return Object.keys(anos).sort();
+  }
+
+  function classeTipo(tipo) {
+    const mapa = {
+      'reunião': 'reuniao', 'reuniao': 'reuniao',
+      'treinamento': 'treinamento',
+      'conferência': 'conferencia', 'conferencia': 'conferencia',
+      'atividade': 'atividade'
+    };
+    return mapa[String(tipo || '').toLowerCase()] || 'outro';
+  }
+
+  function desenhar() {
+    const area = document.getElementById('area-conteudo');
+    const lista = visiveis();
+    const anos = anosDisponiveis();
+
+    let html = '' +
+      '<div class="evt-barra">' +
+        '<button class="ed-btn" id="evt-novo" type="button">+ Novo evento</button>' +
+        '<div class="evt-barra-filtros">' +
+          '<select class="ed-select" id="evt-ano">' +
+            '<option value="proximos"' + (filtroAno === 'proximos' ? ' selected' : '') + '>De hoje em diante</option>' +
+            '<option value="todos"' + (filtroAno === 'todos' ? ' selected' : '') + '>Todos</option>' +
+            anos.map(function (a) {
+              return '<option value="' + a + '"' + (filtroAno === a ? ' selected' : '') + '>' + a + '</option>';
+            }).join('') +
+          '</select>' +
+          '<input class="ed-select evt-busca" id="evt-busca" type="search" ' +
+                 'placeholder="Procurar evento" value="' + escaparTexto(busca) + '">' +
+        '</div>' +
+      '</div>';
+
+    if (!lista.length) {
+      html += '<p class="cal-vazio">Nenhum evento encontrado.</p>';
+    } else {
+      let mesAtual = '';
+      html += '<div class="evt-lista">';
+      lista.forEach(function (e) {
+        const p = partesData(e.data);
+        const chave = p ? p.ano + '-' + p.mes : 'sem-data';
+        if (chave !== mesAtual) {
+          mesAtual = chave;
+          html += '<h2 class="evt-mes">' + (p ? MESES[p.mes - 1] + ' ' + p.ano : 'Sem data') + '</h2>';
+        }
+        html += '' +
+          '<div class="evt-item">' +
+            '<span class="evt-barra-tipo tipo-' + classeTipo(e.tipo) + '"></span>' +
+            '<div class="evt-quando">' +
+              '<strong>' + (p ? ('0' + p.dia).slice(-2) + '/' + ('0' + p.mes).slice(-2) : '--') + '</strong>' +
+              (e.horario ? '<span>' + escaparTexto(e.horario) + '</span>' : '') +
+            '</div>' +
+            '<div class="evt-texto">' +
+              '<strong>' + escaparTexto(e.evento) + '</strong>' +
+              '<span>' +
+                escaparTexto(e.tipo || '') +
+                (e.local ? ' &middot; ' + escaparTexto(e.local) : '') +
+                (e.publico ? ' &middot; ' + escaparTexto(e.publico) : '') +
+              '</span>' +
+            '</div>' +
+            '<div class="evt-acoes">' +
+              '<button type="button" class="evt-acao" data-editar="' + escaparTexto(e.id) + '">Editar</button>' +
+              '<button type="button" class="evt-acao evt-excluir" data-excluir="' + escaparTexto(e.id) + '">Excluir</button>' +
+            '</div>' +
+          '</div>';
+      });
+      html += '</div>';
+    }
+
+    html += '' +
+      '<div class="evt-rodape">' +
+        '<span>' + lista.length + (lista.length === 1 ? ' evento na tela' : ' eventos na tela') + '</span>' +
+        '<button class="ed-btn ed-btn-secundario" id="evt-baixar" type="button">Baixar cópia de segurança</button>' +
+        '<button class="acesso-sair" id="evt-sair" type="button">Sair</button>' +
+      '</div>';
+
+    area.innerHTML = html;
+    ligarEventos();
+  }
+
+  function ligarEventos() {
+    const area = document.getElementById('area-conteudo');
+
+    document.getElementById('evt-novo').addEventListener('click', function () {
+      abrirFormulario(null);
+    });
+
+    document.getElementById('evt-ano').addEventListener('change', function () {
+      filtroAno = this.value;
+      desenhar();
+    });
+
+    const campoBusca = document.getElementById('evt-busca');
+    campoBusca.addEventListener('input', function () {
+      busca = this.value;
+      const posicao = this.selectionStart;
+      desenhar();
+      const novo = document.getElementById('evt-busca');
+      novo.focus();
+      novo.setSelectionRange(posicao, posicao);
+    });
+
+    area.querySelectorAll('[data-editar]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        const alvo = EVENTOS.filter(function (e) { return e.id === b.getAttribute('data-editar'); })[0];
+        if (alvo) abrirFormulario(alvo);
+      });
+    });
+
+    area.querySelectorAll('[data-excluir]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        const alvo = EVENTOS.filter(function (e) { return e.id === b.getAttribute('data-excluir'); })[0];
+        if (!alvo) return;
+        if (!window.confirm('Excluir "' + alvo.evento + '" do dia ' + alvo.data + '?')) return;
+        b.disabled = true;
+        b.textContent = 'Excluindo...';
+        planilhaEnviar('removerEvento', { id: alvo.id })
+          .then(function (r) {
+            EVENTOS = r.eventos || [];
+            desenhar();
+          })
+          .catch(tratarErro);
+      });
+    });
+
+    document.getElementById('evt-baixar').addEventListener('click', baixarCopia);
+
+    document.getElementById('evt-sair').addEventListener('click', function () {
+      esquecerCodigo();
+      window.location.href = 'area-lideranca.html';
+    });
+  }
+
+  /* ---------------- Formulário ---------------- */
+
+  function abrirFormulario(evento) {
+    const novo = !evento;
+    const e = evento || { data: '', horario: '', tipo: 'Reunião', evento: '', local: '', publico: '', responsavel: '' };
+
+    const caixa = document.createElement('div');
+    caixa.className = 'detalhe-fundo';
+    caixa.innerHTML = '' +
+      '<div class="detalhe-caixa evt-form-caixa" role="dialog" aria-modal="true">' +
+        '<button class="detalhe-fechar" type="button" aria-label="Fechar">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">' +
+            '<line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>' +
+          '</svg>' +
+        '</button>' +
+        '<h2>' + (novo ? 'Novo evento' : 'Editar evento') + '</h2>' +
+        '<form class="evt-form">' +
+          '<label>Data' +
+            '<input class="ed-select" name="data" type="date" required value="' + paraCampo(e.data) + '">' +
+          '</label>' +
+          '<label>Horário' +
+            '<input class="ed-select" name="horario" type="time" value="' + escaparTexto(e.horario) + '">' +
+          '</label>' +
+          '<label class="evt-form-largo">Evento' +
+            '<input class="ed-select" name="evento" type="text" required maxlength="200" ' +
+                   'value="' + escaparTexto(e.evento) + '" placeholder="Reunião com o Sumo Conselho">' +
+          '</label>' +
+          '<label>Tipo' +
+            '<select class="ed-select" name="tipo">' +
+              TIPOS.map(function (t) {
+                return '<option' + (t === e.tipo ? ' selected' : '') + '>' + t + '</option>';
+              }).join('') +
+            '</select>' +
+          '</label>' +
+          '<label>Local' +
+            '<input class="ed-select" name="local" type="text" maxlength="80" ' +
+                   'value="' + escaparTexto(e.local) + '" placeholder="Cabula">' +
+          '</label>' +
+          '<label class="evt-form-largo">Quem participa' +
+            '<input class="ed-select" name="publico" type="text" maxlength="120" ' +
+                   'value="' + escaparTexto(e.publico) + '" placeholder="Sumo Conselho">' +
+          '</label>' +
+          '<label class="evt-form-largo">Responsável' +
+            '<input class="ed-select" name="responsavel" type="text" maxlength="80" ' +
+                   'value="' + escaparTexto(e.responsavel) + '" placeholder="Estaca">' +
+          '</label>' +
+          '<p class="acesso-erro evt-form-erro" hidden></p>' +
+          '<div class="evt-form-botoes">' +
+            '<button class="ed-btn" type="submit">Salvar</button>' +
+            '<button class="ed-btn ed-btn-secundario" type="button" data-cancelar>Cancelar</button>' +
+          '</div>' +
+        '</form>' +
+      '</div>';
+
+    document.body.appendChild(caixa);
+    document.body.style.overflow = 'hidden';
+
+    const fechar = function () {
+      caixa.remove();
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', aoTeclar);
+    };
+    const aoTeclar = function (ev) { if (ev.key === 'Escape') fechar(); };
+
+    caixa.addEventListener('click', function (ev) { if (ev.target === caixa) fechar(); });
+    caixa.querySelector('.detalhe-fechar').addEventListener('click', fechar);
+    caixa.querySelector('[data-cancelar]').addEventListener('click', fechar);
+    document.addEventListener('keydown', aoTeclar);
+
+    const form = caixa.querySelector('.evt-form');
+    const aviso = caixa.querySelector('.evt-form-erro');
+    const salvar = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      // form.elements evita confusão entre o nome do campo e
+      // propriedades que o próprio formulário já tem
+      const campo = function (nome) { return form.elements[nome].value; };
+      const dados = {
+        id: novo ? '' : e.id,
+        data: campo('data'),
+        horario: campo('horario'),
+        tipo: campo('tipo'),
+        evento: campo('evento'),
+        local: campo('local'),
+        publico: campo('publico'),
+        responsavel: campo('responsavel')
+      };
+      if (!dados.data) { aviso.textContent = 'Escolha a data.'; aviso.hidden = false; return; }
+      if (!dados.evento.trim()) { aviso.textContent = 'Digite o nome do evento.'; aviso.hidden = false; return; }
+
+      aviso.hidden = true;
+      salvar.disabled = true;
+      salvar.textContent = 'Salvando...';
+
+      planilhaEnviar('salvarEvento', dados)
+        .then(function (r) {
+          EVENTOS = r.eventos || [];
+          fechar();
+          desenhar();
+        })
+        .catch(function (erro) {
+          aviso.textContent = erro.message || 'Não foi possível salvar.';
+          aviso.hidden = false;
+          salvar.disabled = false;
+          salvar.textContent = 'Salvar';
+        });
+    });
+
+    form.elements.data.focus();
+  }
+
+  /* ---------------- Cópia de segurança ---------------- */
+
+  function baixarCopia() {
+    const colunas = ['data', 'horario', 'tipo', 'evento', 'local', 'publico', 'responsavel'];
+    const proteger = function (v) {
+      const s = String(v == null ? '' : v);
+      return /[",;\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    };
+    const linhas = [colunas.join(',')].concat(
+      EVENTOS.slice().sort(function (a, b) { return paraOrdenar(a.data) - paraOrdenar(b.data); })
+        .map(function (e) { return colunas.map(function (c) { return proteger(e[c]); }).join(','); })
+    );
+
+    // O ﻿ no começo faz o Excel abrir os acentos corretamente
+    const blob = new Blob(['﻿' + linhas.join('\n') + '\n'], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'calendario.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  /* ---------------- Início ---------------- */
+
+  function tratarErro(erro) {
+    const area = document.getElementById('area-conteudo');
+    if (erro && erro.tipo === 'acesso') {
+      esquecerCodigo();
+      area.innerHTML = '<div class="cal-erro"><strong>O código mudou.</strong>' +
+        '<p>Abra a página de novo e digite o código atual.</p></div>';
+      return;
+    }
+    area.innerHTML = '<div class="cal-erro">' +
+      '<strong>Não foi possível falar com a planilha.</strong>' +
+      '<p>' + escaparTexto(erro && erro.message ? erro.message : '') + '</p>' +
+      '<p>Confira sua internet e atualize a página.</p></div>';
+  }
+
+  function iniciarEditor() {
+    const area = document.getElementById('area-conteudo');
+
+    if (!planilhaConfigurada()) {
+      area.innerHTML = '<div class="cal-erro">' +
+        '<strong>Falta ligar a planilha.</strong>' +
+        '<p>Abra o arquivo <code>componentes.js</code> e cole o endereço do App da Web ' +
+        'no bloco ENDEREÇO DA PLANILHA DO CALENDÁRIO. O endereço termina com /exec.</p>' +
+        '<p>Enquanto isso, o calendário do site continua funcionando pelo arquivo ' +
+        '<code>calendario.csv</code>.</p></div>';
+      return;
+    }
+
+    area.innerHTML = '<p class="cal-vazio">Carregando os eventos...</p>';
+    planilhaEventos()
+      .then(function (lista) {
+        EVENTOS = lista;
+        desenhar();
+      })
+      .catch(tratarErro);
+  }
+
+  protegerPagina(iniciarEditor);
+  </script>
+
+</body>
+</html>

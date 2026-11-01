@@ -21,11 +21,59 @@
    ╚═════════════════════════════════════════════════════════════════════╝ */
 
 const PAGINAS = [
-  { arquivo: 'index.html',        nome: 'Início' },
-  { arquivo: 'calendario.html',   nome: 'Calendário' },
-  { arquivo: 'discursos.html',    nome: 'Discursos' },
-  { arquivo: 'lideranca.html',    nome: 'Liderança' },
-  { arquivo: 'treinamentos.html', nome: 'Treinamentos' }
+  { arquivo: 'index.html',          nome: 'Início' },
+  { arquivo: 'calendario.html',     nome: 'Calendário' },
+  { arquivo: 'discursos.html',      nome: 'Discursos' },
+  { arquivo: 'lideranca.html',      nome: 'Liderança' },
+  { arquivo: 'treinamentos.html',   nome: 'Treinamentos' },
+  { arquivo: 'area-lideranca.html', nome: 'Área da Liderança' }
+];
+
+
+/* ╔═════════════════════════════════════════════════════════════════════╗
+   ║  ONDE MEXER: ENDEREÇO DA PLANILHA DO CALENDÁRIO                     ║
+   ║                                                                     ║
+   ║  É o endereço do App da Web que você copia no final da              ║
+   ║  instalação do script calendario-Codigo.gs.                         ║
+   ║  Termina sempre com /exec.                                          ║
+   ║                                                                     ║
+   ║  Enquanto este endereço não for colado, o calendário do site        ║
+   ║  continua funcionando pelo arquivo calendario.csv.                  ║
+   ╚═════════════════════════════════════════════════════════════════════╝ */
+
+const ENDERECO_PLANILHA = 'https://script.google.com/macros/s/AKfycbzDdvkdd7rz-qljvy1Mn-_xsOov69DO3NpJGX0Wn5NcLIDmZVUIqYxCy3Lw6oKNNhIg/exec';
+
+
+/* ╔═════════════════════════════════════════════════════════════════════╗
+   ║  ONDE MEXER: LINKS DA ÁREA DA LIDERANÇA                             ║
+   ║                                                                     ║
+   ║  São os atalhos que aparecem depois de digitar o código.            ║
+   ║  Para acrescentar um, copie um bloco inteiro { ... } e cole         ║
+   ║  abaixo do último, trocando o nome, a descrição e o link.           ║
+   ║                                                                     ║
+   ║  Use "icone" com uma destas palavras:                               ║
+   ║  conferencia, calendario, pessoas, documento                        ║
+   ╚═════════════════════════════════════════════════════════════════════╝ */
+
+const ATALHOS_LIDERANCA = [
+  {
+    nome: 'Conferência da Estaca',
+    descricao: 'Checklist de preparação, designações do sumo e manual.',
+    link: 'conferencia.html',
+    icone: 'conferencia'
+  },
+  {
+    nome: 'Calendário da Estaca',
+    descricao: 'Criar, alterar e excluir os eventos que aparecem no site.',
+    link: 'calendario-editor.html',
+    icone: 'calendario'
+  },
+  {
+    nome: 'Designações do Sumo Conselho',
+    descricao: 'Montar quem responde por cada ala e cada área.',
+    link: 'lideranca/editor-x7k2m9.html',
+    icone: 'pessoas'
+  }
 ];
 
 
@@ -151,4 +199,87 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', iniciarComponentes);
 } else {
   iniciarComponentes();
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════
+   ÁREA DA LIDERANÇA: CÓDIGO DE ACESSO E CONVERSA COM A PLANILHA
+
+   O código NÃO fica escrito aqui. Ele é digitado pela pessoa e quem
+   confere se está certo é a planilha do Google. Aqui o código só fica
+   guardado no aparelho de quem já entrou, para não ter que digitar
+   toda vez.
+   ═══════════════════════════════════════════════════════════════════════ */
+
+const CHAVE_CODIGO = 'estaca-codigo-lideranca';
+
+/** O endereço da planilha já foi colado lá em cima? */
+function planilhaConfigurada() {
+  return /^https:\/\/script\.google\.com\/.+\/exec$/.test(String(ENDERECO_PLANILHA).trim());
+}
+
+function codigoSalvo() {
+  try {
+    return window.localStorage.getItem(CHAVE_CODIGO) || '';
+  } catch (e) {
+    return '';
+  }
+}
+
+function salvarCodigo(codigo) {
+  try {
+    window.localStorage.setItem(CHAVE_CODIGO, codigo);
+  } catch (e) { /* navegador sem permissão de guardar */ }
+}
+
+function esquecerCodigo() {
+  try {
+    window.localStorage.removeItem(CHAVE_CODIGO);
+  } catch (e) { /* nada a fazer */ }
+}
+
+/** Lê os eventos do calendário. É público, não precisa de código. */
+function planilhaEventos() {
+  if (!planilhaConfigurada()) {
+    return Promise.reject(new Error('sem-endereco'));
+  }
+  return fetch(ENDERECO_PLANILHA + '?acao=eventos&v=' + Date.now())
+    .then(function (r) {
+      if (!r.ok) throw new Error('A planilha não respondeu.');
+      return r.json();
+    })
+    .then(function (resposta) {
+      if (!resposta.ok) throw new Error(resposta.erro || 'A planilha não respondeu.');
+      return resposta.eventos || [];
+    });
+}
+
+/** Envia uma alteração para a planilha. Precisa do código. */
+function planilhaEnviar(acao, dados, codigo) {
+  if (!planilhaConfigurada()) {
+    return Promise.reject(new Error('O endereço da planilha ainda não foi colado no arquivo componentes.js.'));
+  }
+  const corpo = Object.assign({}, dados || {}, {
+    acao: acao,
+    codigo: codigo != null ? codigo : codigoSalvo()
+  });
+
+  return fetch(ENDERECO_PLANILHA, {
+    method: 'POST',
+    // texto simples evita a verificação extra do navegador, que o Google recusa
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify(corpo)
+  })
+    .then(function (r) {
+      if (!r.ok) throw new Error('A planilha não respondeu.');
+      return r.json();
+    })
+    .then(function (resposta) {
+      if (!resposta.ok) {
+        const erro = new Error(resposta.erro || 'Não foi possível salvar.');
+        erro.tipo = resposta.codigo || '';
+        throw erro;
+      }
+      return resposta;
+    });
 }
