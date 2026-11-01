@@ -1273,7 +1273,9 @@ Total: </pre>
         if (confs.length) {
           origem = '<div class="cf-campo"><label for="nc-origem">Copiar tarefas e frentes de</label><select id="nc-origem">' +
             confs.map(function (c, i) { return '<option value="' + esc(c.id) + '"' + (i === 0 ? ' selected' : '') + '>' + esc(c.nome) + '</option>'; }).join('') +
-            '<option value="padrao">Lista padrão do manual</option></select></div>';
+            '<option value="padrao">Lista padrão do manual</option></select></div>' +
+            '<label class="cf-check-linha cf-check-destaque" id="nc-nomes-linha"><input type="checkbox" id="nc-nomes" checked>' +
+            '<span>Copiar também os nomes dos responsáveis</span></label>';
         } else {
           origem = '<input type="hidden" id="nc-origem" value="padrao">';
         }
@@ -1283,7 +1285,8 @@ Total: </pre>
           '<div class="cf-campo"><label for="nc-nome">Nome</label><input id="nc-nome" type="text" maxlength="80" placeholder="Conferência 2027.1"></div>' +
           '<div class="cf-campo"><label for="nc-data">Data do sábado</label><input id="nc-data" type="date"></div>' +
           '</div>' + origem +
-          '<p class="cf-ajuda">Os prazos são calculados a partir do sábado. Nomes e marcações não são copiados.</p>' +
+          '<p class="cf-ajuda">Os prazos são calculados a partir do sábado. As marcações não são copiadas. ' +
+          (confs.length ? 'Os nomes copiados podem ser trocados depois em Edição &gt; Nomes.' : '') + '</p>' +
           '<p class="cf-erro" id="nc-erro"></p>' +
           '<div class="cf-acoes"><button type="button" class="cf-btn cf-btn-sol" data-acao="criar-conf">Criar conferência</button>' +
           (primeira ? '' : '<button type="button" class="cf-btn" data-acao="fechar-nova">Cancelar</button>') + '</div>' +
@@ -1467,7 +1470,7 @@ Total: </pre>
       function intro(texto) { return '<p class="cf-intro">' + texto + '</p>'; }
 
       function secNomes(c) {
-        return intro('Escreva quem ocupa cada chamado nesta conferência. O nome aparece sozinho em todas as tarefas e frentes desse chamado e é salvo assim que você passa para o próximo campo. Os nomes não passam para a próxima conferência.') +
+        return intro('Escreva quem ocupa cada chamado nesta conferência. O nome aparece sozinho em todas as tarefas e frentes desse chamado e é salvo assim que você passa para o próximo campo. Ao criar a próxima conferência, você pode copiar estes nomes e trocar só o que mudou.') +
           '<div class="cf-nomes">' + chamadosAtivos().map(function (ch) {
             return '<label class="cf-nome-row"><span>' + esc(ch.nome) + '</span><input type="text" data-nome="' + esc(ch.id) + '" value="' + esc(pessoa(c.id, ch.id)) + '" placeholder="Nome" autocomplete="off" maxlength="80"></label>';
           }).join('') + '</div>';
@@ -1723,9 +1726,25 @@ Total: </pre>
         if (!d) return erroEm(elErro, 'Escolha a data do sábado.');
         if (d.getDay() !== 6 && !confirm('A data escolhida cai numa ' + SEMANA[d.getDay()] + ', não num sábado. Os prazos serão contados a partir dela. Continuar assim mesmo?')) return false;
         const id = novoId();
-        const ok = await salvar({ acao: 'criarConferencia', id: id, nome: nome, sabado: data, origem: val('nc-origem') || 'padrao' }, botao, 'Conferência criada.');
+        const origem = val('nc-origem') || 'padrao';
+        const caixaNomes = document.getElementById('nc-nomes');
+        const copiarNomes = origem !== 'padrao' && !!caixaNomes && caixaNomes.checked;
+        const ok = await salvar({ acao: 'criarConferencia', id: id, nome: nome, sabado: data, origem: origem }, botao,
+          copiarNomes ? 'Conferência criada com os nomes da anterior.' : 'Conferência criada.');
+        if (ok && copiarNomes) copiarNomesDe(origem, id);
         if (ok) { confSel = id; novaAberta = false; trocarAberto = false; sujo = false; filtroResp = ''; render(); rolarParaTopo(); }
         return ok;
+      }
+
+      // Copia os nomes dos responsáveis de uma conferência para outra.
+      // Cada nome entra na fila de salvamento, como se fosse digitado na aba Nomes:
+      // aparece na hora e vai para a planilha em seguida, mesmo com internet instável.
+      function copiarNomesDe(origem, destino) {
+        const ativos = new Set(dados.chamados.filter(function (ch) { return ch.ativo; }).map(function (ch) { return ch.id; }));
+        const jaTem = new Set(dados.nomes.filter(function (n) { return n.conferencia === destino && n.nome.trim(); }).map(function (n) { return n.chamado; }));
+        dados.nomes
+          .filter(function (n) { return n.conferencia === origem && n.nome.trim() && ativos.has(n.chamado) && !jaTem.has(n.chamado); })
+          .forEach(function (n) { executar({ acao: 'nome', conferencia: destino, chamado: n.chamado, nome: n.nome.trim() }); });
       }
 
       async function salvarFormulario(botao, c) {
@@ -1909,6 +1928,11 @@ Total: </pre>
 
       elApp.addEventListener('change', function (ev) {
         const el = ev.target;
+        if (el.id === 'nc-origem') {
+          const linha = document.getElementById('nc-nomes-linha');
+          if (linha) linha.hidden = el.value === 'padrao';
+          return;
+        }
         const c = carregado && dados.conferencias.length ? confAtual() : null;
         if (!c) return;
         if (el.type === 'checkbox' && el.dataset.t) {
