@@ -89,7 +89,8 @@ const ATALHOS_LIDERANCA = [
    ╚═════════════════════════════════════════════════════════════════════╝ */
 
 const NOME_DA_ESTACA = 'Estaca Salvador Brasil Norte';
-const TEXTO_DO_RODAPE = 'Estaca Salvador Brasil Norte &middot; 2026';
+// O ano do rodapé muda sozinho todo ano
+const TEXTO_DO_RODAPE = 'Estaca Salvador Brasil Norte &middot; ' + new Date().getFullYear();
 
 
 /* ╔═════════════════════════════════════════════════════════════════════╗
