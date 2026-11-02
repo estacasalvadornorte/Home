@@ -52,7 +52,7 @@ const ENDERECO_PLANILHA = 'https://script.google.com/macros/s/AKfycbzDdvkdd7rz-q
    ║  abaixo do último, trocando o nome, a descrição e o link.           ║
    ║                                                                     ║
    ║  Use "icone" com uma destas palavras:                               ║
-   ║  conferencia, calendario, pessoas, discurso, documento              ║
+   ║  conferencia, calendario, pessoas, discurso, treinamento, documento ║
    ╚═════════════════════════════════════════════════════════════════════╝ */
 
 const ATALHOS_LIDERANCA = [
@@ -79,6 +79,12 @@ const ATALHOS_LIDERANCA = [
     descricao: 'Quem discursa no 3º domingo de cada mês: sumo, alas ou organizações.',
     link: 'discursos-editor.html',
     icone: 'discurso'
+  },
+  {
+    nome: 'Treinamentos',
+    descricao: 'Criar, alterar, ordenar e remover os materiais de treinamento.',
+    link: 'treinamentos-editor.html',
+    icone: 'treinamento'
   }
 ];
 

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Editar os Treinamentos – Estaca Salvador Brasil Norte</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- O cabeçalho é montado automaticamente pelo arquivo componentes.js.
+       Não edite aqui. Para mudar o menu, abra componentes.js -->
+  <div id="cabecalho"></div>
+
+  <main>
+    <section class="page-hero">
+      <h1>Treinamentos</h1>
+      <p>O que você salvar aqui aparece no site em seguida</p>
+    </section>
+
+    <div class="container">
+
+      <!--
+        ╔══════════════════════════════════════════════════════════════════╗
+        ║  Esta página não precisa ser editada.                            ║
+        ║                                                                  ║
+        ║  Os treinamentos ficam na planilha do Google, na aba             ║
+        ║  Treinamentos. Precisa da versão 5 do script da planilha         ║
+        ║  (calendario-Codigo.gs).                                         ║
+        ╚══════════════════════════════════════════════════════════════════╝
+      -->
+
+      <div id="area-conteudo">
+        <p class="cal-vazio">Carregando...</p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- O rodapé é montado automaticamente pelo arquivo componentes.js -->
+  <div id="rodape"></div>
+
+  <script src="componentes.js"></script>
+  <script src="acesso.js"></script>
+  <script src="treinamentos.js"></script>
+  <script>
+  /* ═══════════════════════════════════════════════════════════════════
+     EDITOR DOS TREINAMENTOS
+     O reconhecimento dos links e o player vêm do arquivo treinamentos.js.
+     ═══════════════════════════════════════════════════════════════════ */
+
+  let edTreinos = [];
+
+  function mensagemDeErro(erro) {
+    const texto = (erro && erro.message) || 'Não foi possível salvar.';
+    if (texto === 'Ação desconhecida.') {
+      return 'O script da planilha ainda está numa versão antiga. ' +
+             'Atualize o calendario-Codigo.gs para a versão 5 e tente de novo.';
+    }
+    return texto;
+  }
+
+  function receber(r) {
+    if (r.treinamentos) edTreinos = r.treinamentos;
+  }
+
+  /* ---------------- Lista ---------------- */
+
+  function desenhar() {
+    const area = document.getElementById('area-conteudo');
+    let html = '' +
+      '<div class="evt-barra"><button class="ed-btn" id="trein-novo" type="button">+ Novo treinamento</button></div>' +
+      '<p class="lid-ed-intro">A ordem aqui é a ordem da página de Treinamentos. Use as setas para mudar.</p>';
+
+    if (!edTreinos.length) {
+      html += '<p class="cal-vazio">Nenhum treinamento cadastrado.</p>';
+    } else {
+      html += '<div class="lid-lista">' + edTreinos.map(function (t, i) {
+        const r = reconhecerConteudo(t.conteudo);
+        return '' +
+          '<div class="lid-lista-item">' +
+            '<div class="lid-lista-nome"><strong>' + escaparTexto(t.titulo) + '</strong>' +
+              '<span>' + (r ? r.tipo : 'Material em preparação') + (t.descricao ? ' &middot; ' + escaparTexto(t.descricao) : '') + '</span></div>' +
+            '<div class="lid-lista-acoes">' +
+              '<button type="button" class="lid-seta" data-mover="' + escaparTexto(t.id) + '" data-direcao="cima" aria-label="Subir"' + (i === 0 ? ' disabled' : '') + '>' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg></button>' +
+              '<button type="button" class="lid-seta" data-mover="' + escaparTexto(t.id) + '" data-direcao="baixo" aria-label="Descer"' + (i === edTreinos.length - 1 ? ' disabled' : '') + '>' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></button>' +
+              '<button type="button" class="evt-acao" data-editar="' + escaparTexto(t.id) + '">Editar</button>' +
+              '<button type="button" class="evt-acao evt-excluir" data-remover="' + escaparTexto(t.id) + '">Remover</button>' +
+            '</div>' +
+          '</div>';
+      }).join('') + '</div>';
+    }
+
+    html += '' +
+      '<div class="evt-rodape">' +
+        '<span>' + edTreinos.length + (edTreinos.length === 1 ? ' treinamento' : ' treinamentos') + '</span>' +
+        '<a class="acesso-sair" href="treinamentos.html">Ver a página pública</a>' +
+        '<button class="acesso-sair" id="trein-sair" type="button">Sair</button>' +
+      '</div>';
+
+    area.innerHTML = html;
+
+    document.getElementById('trein-novo').addEventListener('click', function () { abrirFormulario(null); });
+    area.querySelectorAll('[data-editar]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        abrirFormulario(edTreinos.filter(function (t) { return t.id === b.getAttribute('data-editar'); })[0]);
+      });
+    });
+    area.querySelectorAll('[data-mover]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        b.disabled = true;
+        enviar('moverTreinamento', { id: b.getAttribute('data-mover'), direcao: b.getAttribute('data-direcao') });
+      });
+    });
+    area.querySelectorAll('[data-remover]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        const t = edTreinos.filter(function (x) { return x.id === b.getAttribute('data-remover'); })[0];
+        if (!t || !window.confirm('Remover o treinamento "' + t.titulo + '"?')) return;
+        b.disabled = true;
+        b.textContent = 'Removendo...';
+        enviar('removerTreinamento', { id: t.id });
+      });
+    });
+    document.getElementById('trein-sair').addEventListener('click', function () {
+      esquecerCodigo();
+      window.location.href = 'area-lideranca.html';
+    });
+  }
+
+  function enviar(acao, dados) {
+    planilhaEnviar(acao, dados)
+      .then(function (r) { receber(r); desenhar(); })
+      .catch(function (erro) {
+        if (erro && erro.tipo === 'acesso') return tratarErro(erro);
+        window.alert(mensagemDeErro(erro));
+        desenhar();
+      });
+  }
+
+  /* ---------------- Formulário ---------------- */
+
+  function abrirJanela(conteudo) {
+    const fundo = document.createElement('div');
+    fundo.className = 'detalhe-fundo';
+    fundo.innerHTML = '' +
+      '<div class="detalhe-caixa evt-form-caixa trein-form-caixa" role="dialog" aria-modal="true">' +
+        '<button class="detalhe-fechar" type="button" aria-label="Fechar">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">' +
+            '<line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>' +
+          '</svg>' +
+        '</button>' + conteudo +
+      '</div>';
+    document.body.appendChild(fundo);
+    document.body.style.overflow = 'hidden';
+    const fechar = function () {
+      fundo.remove();
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', aoTeclar);
+    };
+    const aoTeclar = function (ev) { if (ev.key === 'Escape') fechar(); };
+    fundo.querySelector('.detalhe-fechar').addEventListener('click', fechar);
+    fundo.querySelectorAll('[data-cancelar]').forEach(function (b) { b.addEventListener('click', fechar); });
+    document.addEventListener('keydown', aoTeclar);
+    return { caixa: fundo.querySelector('.detalhe-caixa'), fechar: fechar };
+  }
+
+  function abrirFormulario(t) {
+    const novo = !t;
+    const e = t || { titulo: '', descricao: '', conteudo: '', proporcao: 56.25 };
+
+    const janela = abrirJanela('' +
+      '<h2>' + (novo ? 'Novo treinamento' : 'Editar treinamento') + '</h2>' +
+      '<form class="evt-form" novalidate>' +
+        '<label class="evt-form-largo">Título' +
+          '<input class="ed-select" name="titulo" type="text" maxlength="120" value="' + escaparTexto(e.titulo) + '" placeholder="Treinamento de Secretários de Ala">' +
+        '</label>' +
+        '<label class="evt-form-largo">Descrição' +
+          '<input class="ed-select" name="descricao" type="text" maxlength="200" value="' + escaparTexto(e.descricao) + '" placeholder="Aparece embaixo do título">' +
+        '</label>' +
+        '<label class="evt-form-largo">Material' +
+          '<textarea class="ed-select trein-campo" name="conteudo" rows="4" placeholder="Cole aqui o código de incorporação do Canva ou o link do Google Drive, Sway ou YouTube">' +
+            escaparTexto(e.conteudo) + '</textarea>' +
+        '</label>' +
+        '<details class="evt-form-largo trein-ajuda">' +
+          '<summary>Onde pego o código ou o link?</summary>' +
+          '<p><strong>Canva:</strong> no design, Compartilhar &gt; Mais &gt; Incorporar &gt; Código de incorporação inteligente. Copie o código inteiro e cole aqui.</p>' +
+          '<p><strong>Google Drive (vídeo ou PowerPoint):</strong> botão direito no arquivo &gt; Compartilhar. Em "Acesso geral", escolha "Qualquer pessoa com o link" como Leitor e clique em Copiar link.</p>' +
+          '<p><strong>Sway ou YouTube:</strong> copie o link de compartilhamento ou o código de incorporação.</p>' +
+          '<p>Deixe em branco se o material ainda estiver em preparação.</p>' +
+        '</details>' +
+        '<div class="evt-form-largo">' +
+          '<p class="trein-status" id="trein-status"></p>' +
+          '<div id="trein-previa"></div>' +
+        '</div>' +
+        '<p class="acesso-erro evt-form-erro" hidden></p>' +
+        '<div class="evt-form-botoes">' +
+          '<button class="ed-btn" type="submit">Salvar</button>' +
+          '<button class="ed-btn ed-btn-secundario" type="button" data-cancelar>Cancelar</button>' +
+        '</div>' +
+      '</form>');
+
+    const form = janela.caixa.querySelector('.evt-form');
+    const aviso = janela.caixa.querySelector('.evt-form-erro');
+    const botao = form.querySelector('button[type="submit"]');
+    const status = janela.caixa.querySelector('#trein-status');
+    const previa = janela.caixa.querySelector('#trein-previa');
+    let reconhecido = null;
+    let mostrado = '';
+
+    const conferir = function () {
+      const texto = form.elements.conteudo.value.trim();
+      reconhecido = reconhecerConteudo(texto);
+      // mantém a proporção guardada quando o material não mudou
+      const original = reconhecerConteudo(e.conteudo || '');
+      if (reconhecido && !novo && original && reconhecido.src === original.src) {
+        reconhecido.proporcao = Number(e.proporcao) || reconhecido.proporcao;
+      }
+      if (!texto) {
+        status.className = 'trein-status';
+        status.textContent = 'Sem material: o treinamento aparece como "Material em preparação".';
+      } else if (reconhecido) {
+        status.className = 'trein-status certo';
+        status.textContent = 'Reconhecido: ' + reconhecido.tipo + '. Veja abaixo como vai aparecer.';
+      } else {
+        status.className = 'trein-status errado';
+        status.textContent = 'Não reconheci este conteúdo. Use o código do Canva ou o link do Google Drive, Sway ou YouTube.';
+      }
+      const chave = reconhecido ? reconhecido.src + '|' + reconhecido.proporcao : '';
+      if (chave !== mostrado) {
+        mostrado = chave;
+        previa.innerHTML = reconhecido ? htmlPlayer(reconhecido.src, reconhecido.proporcao, true) : '';
+      }
+    };
+    let espera = null;
+    form.elements.conteudo.addEventListener('input', function () {
+      clearTimeout(espera);
+      espera = setTimeout(conferir, 350);
+    });
+    conferir();
+
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      conferir();
+      const texto = form.elements.conteudo.value.trim();
+      const dados = {
+        id: novo ? '' : e.id,
+        titulo: form.elements.titulo.value.trim(),
+        descricao: form.elements.descricao.value.trim(),
+        conteudo: reconhecido ? reconhecido.src : '',
+        proporcao: reconhecido ? reconhecido.proporcao : 56.25
+      };
+      if (!dados.titulo) return mostrarAviso(aviso, 'Digite o título do treinamento.');
+      if (texto && !reconhecido) return mostrarAviso(aviso, 'O material não foi reconhecido. Confira o código ou o link colado.');
+
+      aviso.hidden = true;
+      botao.disabled = true;
+      botao.textContent = 'Salvando...';
+      planilhaEnviar('salvarTreinamento', dados)
+        .then(function (r) { receber(r); janela.fechar(); desenhar(); })
+        .catch(function (erro) {
+          if (erro && erro.tipo === 'acesso') return tratarErro(erro);
+          mostrarAviso(aviso, mensagemDeErro(erro));
+          botao.disabled = false;
+          botao.textContent = 'Salvar';
+        });
+    });
+    form.elements.titulo.focus();
+  }
+
+  function mostrarAviso(aviso, mensagem) {
+    aviso.textContent = mensagem;
+    aviso.hidden = false;
+  }
+
+  /* ---------------- Início ---------------- */
+
+  function tratarErro(erro) {
+    const area = document.getElementById('area-conteudo');
+    document.querySelectorAll('.detalhe-fundo').forEach(function (f) { f.remove(); });
+    document.body.style.overflow = '';
+    if (erro && erro.tipo === 'acesso') {
+      esquecerCodigo();
+      area.innerHTML = '<div class="cal-erro"><strong>O código mudou.</strong>' +
+        '<p>Abra a página de novo e digite o código atual.</p></div>';
+      return;
+    }
+    area.innerHTML = '<div class="cal-erro"><strong>Não foi possível falar com a planilha.</strong>' +
+      '<p>' + escaparTexto(mensagemDeErro(erro)) + '</p>' +
+      '<p>Confira sua internet e atualize a página.</p></div>';
+  }
+
+  function iniciarEditor() {
+    const area = document.getElementById('area-conteudo');
+    if (!planilhaConfigurada()) {
+      area.innerHTML = '<div class="cal-erro"><strong>Falta ligar a planilha.</strong>' +
+        '<p>Abra o arquivo <code>componentes.js</code> e cole o endereço do App da Web.</p></div>';
+      return;
+    }
+    area.innerHTML = '<p class="cal-vazio">Carregando os treinamentos...</p>';
+    planilhaEnviar('listarTreinamentos', {})
+      .then(function (r) { receber(r); desenhar(); })
+      .catch(tratarErro);
+  }
+
+  protegerPagina(iniciarEditor);
+  </script>
+
+</body>
+</html>
