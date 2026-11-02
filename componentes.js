@@ -18,6 +18,10 @@
    ║                                                                     ║
    ║  Atenção: toda linha termina com vírgula, menos a última.           ║
    ║  A ordem da lista é a ordem que aparece no menu.                    ║
+   ║                                                                     ║
+   ║  A Área da Liderança NÃO fica no menu, de propósito. O acesso é     ║
+   ║  pelo cadeado pequeno no rodapé, ou pelo endereço direto:           ║
+   ║  estacasalvadornorte.com.br/area-lideranca.html                     ║
    ╚═════════════════════════════════════════════════════════════════════╝ */
 
 const PAGINAS = [
@@ -25,8 +29,7 @@ const PAGINAS = [
   { arquivo: 'calendario.html',     nome: 'Calendário' },
   { arquivo: 'discursos.html',      nome: 'Discursos' },
   { arquivo: 'lideranca.html',      nome: 'Liderança' },
-  { arquivo: 'treinamentos.html',   nome: 'Treinamentos' },
-  { arquivo: 'area-lideranca.html', nome: 'Área da Liderança' }
+  { arquivo: 'treinamentos.html',   nome: 'Treinamentos' }
 ];
 
 
@@ -148,8 +151,17 @@ function montarCabecalho() {
 }
 
 // Monta o HTML do rodapé
+// O cadeado discreto no fim do rodapé leva à Área da Liderança
 function montarRodape() {
-  return '<footer class="site-footer">' + TEXTO_DO_RODAPE + '</footer>';
+  return '<footer class="site-footer">' + TEXTO_DO_RODAPE +
+    '<a href="area-lideranca.html" class="rodape-acesso" title="Acesso restrito" aria-label="Acesso restrito">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" ' +
+           'stroke-linecap="round" stroke-linejoin="round">' +
+        '<rect x="5" y="11" width="14" height="10" rx="2"/>' +
+        '<path d="M8 11V8a4 4 0 0 1 8 0v3"/>' +
+      '</svg>' +
+    '</a>' +
+  '</footer>';
 }
 
 // Coloca o ícone do site na aba do navegador, em todas as páginas
