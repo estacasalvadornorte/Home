@@ -52,7 +52,7 @@ const ENDERECO_PLANILHA = 'https://script.google.com/macros/s/AKfycbzDdvkdd7rz-q
    ║  abaixo do último, trocando o nome, a descrição e o link.           ║
    ║                                                                     ║
    ║  Use "icone" com uma destas palavras:                               ║
-   ║  conferencia, calendario, pessoas, documento                        ║
+   ║  conferencia, calendario, pessoas, discurso, documento              ║
    ╚═════════════════════════════════════════════════════════════════════╝ */
 
 const ATALHOS_LIDERANCA = [
@@ -73,6 +73,12 @@ const ATALHOS_LIDERANCA = [
     descricao: 'Presidência, secretários e sumo conselho: nomes, fotos e designações.',
     link: 'lideranca-editor.html',
     icone: 'pessoas'
+  },
+  {
+    nome: 'Discursos nas Alas',
+    descricao: 'Quem discursa no 3º domingo de cada mês: sumo, alas ou organizações.',
+    link: 'discursos-editor.html',
+    icone: 'discurso'
   }
 ];
 
@@ -267,6 +273,24 @@ function planilhaLideranca() {
     .then(function (resposta) {
       if (!resposta.ok || !Array.isArray(resposta.pessoas)) {
         throw new Error(resposta.erro || 'A planilha ainda não tem a liderança.');
+      }
+      return resposta;
+    });
+}
+
+/** Lê o calendário de discursos nas alas. É público, não precisa de código. */
+function planilhaDiscursos() {
+  if (!planilhaConfigurada()) {
+    return Promise.reject(new Error('sem-endereco'));
+  }
+  return fetch(ENDERECO_PLANILHA + '?acao=discursos&v=' + Date.now())
+    .then(function (r) {
+      if (!r.ok) throw new Error('A planilha não respondeu.');
+      return r.json();
+    })
+    .then(function (resposta) {
+      if (!resposta.ok || !Array.isArray(resposta.discursos)) {
+        throw new Error(resposta.erro || 'A planilha ainda não tem os discursos.');
       }
       return resposta;
     });

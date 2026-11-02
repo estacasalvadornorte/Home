@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Editar os Discursos – Estaca Salvador Brasil Norte</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- O cabeçalho é montado automaticamente pelo arquivo componentes.js.
+       Não edite aqui. Para mudar o menu, abra componentes.js -->
+  <div id="cabecalho"></div>
+
+  <main>
+    <section class="page-hero">
+      <h1>Discursos nas Alas</h1>
+      <p>O que você salvar aqui aparece no site em seguida</p>
+    </section>
+
+    <div class="container">
+
+      <!--
+        ╔══════════════════════════════════════════════════════════════════╗
+        ║  Esta página não precisa ser editada.                            ║
+        ║                                                                  ║
+        ║  Os domingos de discursos ficam na planilha do Google, na aba    ║
+        ║  Discursos. A lista de alas e de organizações vem da Liderança   ║
+        ║  (Lista de designações). Precisa da versão 4 do script da        ║
+        ║  planilha (calendario-Codigo.gs).                                ║
+        ╚══════════════════════════════════════════════════════════════════╝
+      -->
+
+      <div id="area-conteudo">
+        <p class="cal-vazio">Carregando...</p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- O rodapé é montado automaticamente pelo arquivo componentes.js -->
+  <div id="rodape"></div>
+
+  <script src="componentes.js"></script>
+  <script src="acesso.js"></script>
+  <script src="discursos.js"></script>
+  <script>
+  /* ═══════════════════════════════════════════════════════════════════
+     EDITOR DOS DISCURSOS NAS ALAS
+     Os tipos e o desenho dos cartões vêm do arquivo discursos.js.
+     ═══════════════════════════════════════════════════════════════════ */
+
+  const EXTRAS_ALA = ['Conferência da Ala', 'Apresentação da Primária'];
+
+  let edLista = [];
+  let edAlas = [];
+  let edOrgs = [];
+  let edAno = 0;
+
+  /* ---------------- Dados ---------------- */
+
+  function edReceber(r) {
+    if (r.discursos) edLista = r.discursos.slice().sort(function (a, b) { return ordemDiscurso(a) - ordemDiscurso(b); });
+    if (r.alas) edAlas = r.alas;
+    if (r.organizacoes) edOrgs = r.organizacoes;
+  }
+
+  function edAnos() {
+    const anos = [];
+    edLista.forEach(function (d) {
+      const p = partesDataDiscurso(d.data);
+      if (p && anos.indexOf(p.ano) === -1) anos.push(p.ano);
+    });
+    return anos.sort();
+  }
+
+  function edAnoInicial() {
+    const anos = edAnos();
+    const atual = new Date().getFullYear();
+    if (anos.indexOf(atual) !== -1) return atual;
+    return anos.filter(function (a) { return a > atual; })[0] || anos[anos.length - 1] || atual;
+  }
+
+  function doAno(ano) {
+    return edLista.filter(function (d) {
+      const p = partesDataDiscurso(d.data);
+      return p && p.ano === ano;
+    });
+  }
+
+  function paraCampo(texto) {
+    const p = partesDataDiscurso(texto);
+    return p ? p.ano + '-' + ('0' + p.mes).slice(-2) + '-' + ('0' + p.dia).slice(-2) : '';
+  }
+
+  function mensagemDeErro(erro) {
+    const texto = (erro && erro.message) || 'Não foi possível salvar.';
+    if (texto === 'Ação desconhecida.') {
+      return 'O script da planilha ainda está numa versão antiga. ' +
+             'Atualize o calendario-Codigo.gs para a versão 4 e tente de novo.';
+    }
+    return texto;
+  }
+
+  /* ---------------- Tela ---------------- */
+
+  function desenhar() {
+    const area = document.getElementById('area-conteudo');
+    const anos = edAnos();
+    if (!edAno) edAno = edAnoInicial();
+    const naTela = anos.indexOf(edAno) === -1 ? anos.concat([edAno]).sort() : anos;
+    const lista = doAno(edAno);
+
+    let html = '' +
+      '<div class="cal-abas evt-anos">' +
+        naTela.map(function (a) {
+          return '<button type="button" class="cal-aba' + (a === edAno ? ' ativo' : '') + '" data-ano="' + a + '">' + a + '</button>';
+        }).join('') +
+        '<button type="button" class="cal-aba evt-ano-novo" id="disc-ano-novo">+ Novo ano</button>' +
+      '</div>' +
+      '<div class="evt-barra">' +
+        '<button class="ed-btn" id="disc-nova" type="button">+ Nova data</button>' +
+      '</div>';
+
+    if (!lista.length) {
+      html += '<p class="cal-vazio">O calendário de discursos de ' + edAno + ' ainda não tem datas. ' +
+              'Use + Novo ano para criar os 12 domingos.</p>';
+    } else {
+      html += '<div class="disc-grade">' + lista.map(function (d) {
+        return cartaoDiscurso(d, {
+          atual: ehMesCorrente(d),
+          rodape: '<div class="disc-rodape">' +
+                    '<button type="button" class="evt-acao" data-editar="' + escaparTexto(d.id) + '">Editar</button>' +
+                    '<button type="button" class="evt-acao evt-excluir" data-excluir="' + escaparTexto(d.id) + '">Excluir</button>' +
+                  '</div>'
+        });
+      }).join('') + '</div>';
+    }
+
+    html += '' +
+      '<div class="evt-rodape">' +
+        '<span>' + lista.length + (lista.length === 1 ? ' domingo' : ' domingos') + ' em ' + edAno + '</span>' +
+        '<a class="acesso-sair" href="discursos.html">Ver a página pública</a>' +
+        (lista.length ? '<button class="evt-perigo" id="disc-apagar-ano" type="button">Apagar os discursos de ' + edAno + '</button>' : '') +
+        '<button class="acesso-sair" id="disc-sair" type="button">Sair</button>' +
+      '</div>';
+
+    area.innerHTML = html;
+    ligar();
+  }
+
+  function ligar() {
+    const area = document.getElementById('area-conteudo');
+    area.querySelectorAll('[data-ano]').forEach(function (b) {
+      b.addEventListener('click', function () { edAno = Number(b.getAttribute('data-ano')); desenhar(); });
+    });
+    document.getElementById('disc-ano-novo').addEventListener('click', abrirNovoAno);
+    document.getElementById('disc-nova').addEventListener('click', function () { abrirFormulario(null); });
+    area.querySelectorAll('[data-editar]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        abrirFormulario(edLista.filter(function (d) { return d.id === b.getAttribute('data-editar'); })[0]);
+      });
+    });
+    area.querySelectorAll('[data-excluir]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        const d = edLista.filter(function (x) { return x.id === b.getAttribute('data-excluir'); })[0];
+        if (!d || !window.confirm('Excluir o domingo ' + d.data + '?')) return;
+        b.disabled = true;
+        b.textContent = 'Excluindo...';
+        planilhaEnviar('removerDiscurso', { id: d.id })
+          .then(function (r) { edReceber(r); desenhar(); })
+          .catch(tratarErro);
+      });
+    });
+    const apagar = document.getElementById('disc-apagar-ano');
+    if (apagar) apagar.addEventListener('click', abrirApagarAno);
+    document.getElementById('disc-sair').addEventListener('click', function () {
+      esquecerCodigo();
+      window.location.href = 'area-lideranca.html';
+    });
+  }
+
+  /* ---------------- Janelas ---------------- */
+
+  function abrirJanela(conteudo) {
+    const fundo = document.createElement('div');
+    fundo.className = 'detalhe-fundo';
+    fundo.innerHTML = '' +
+      '<div class="detalhe-caixa evt-form-caixa" role="dialog" aria-modal="true">' +
+        '<button class="detalhe-fechar" type="button" aria-label="Fechar">' +
+          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">' +
+            '<line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>' +
+          '</svg>' +
+        '</button>' + conteudo +
+      '</div>';
+    document.body.appendChild(fundo);
+    document.body.style.overflow = 'hidden';
+    const fechar = function () {
+      fundo.remove();
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', aoTeclar);
+    };
+    const aoTeclar = function (ev) { if (ev.key === 'Escape') fechar(); };
+    fundo.addEventListener('click', function (ev) { if (ev.target === fundo) fechar(); });
+    fundo.querySelector('.detalhe-fechar').addEventListener('click', fechar);
+    fundo.querySelectorAll('[data-cancelar]').forEach(function (b) { b.addEventListener('click', fechar); });
+    document.addEventListener('keydown', aoTeclar);
+    return { caixa: fundo.querySelector('.detalhe-caixa'), fechar: fechar };
+  }
+
+  function mostrarAviso(aviso, mensagem) {
+    aviso.textContent = mensagem;
+    aviso.hidden = false;
+  }
+
+  /* ---------------- Formulário de um domingo ---------------- */
+
+  function abrirFormulario(d) {
+    const novo = !d;
+    const e = d || { data: '', tipo: '', titulo: '', texto: '', itens: [] };
+    const valores = {};
+    (e.itens || []).forEach(function (i) { valores[i.ala] = i.valor; });
+    const alas = edAlas.concat(Object.keys(valores).filter(function (a) { return edAlas.indexOf(a) === -1; }));
+    const sugestoes = edOrgs.concat(EXTRAS_ALA);
+
+    const janela = abrirJanela('' +
+      '<h2>' + (novo ? 'Nova data em ' + edAno : 'Editar domingo') + '</h2>' +
+      '<form class="evt-form" novalidate>' +
+        '<label>Data' +
+          '<input class="ed-select" name="data" type="date" value="' + paraCampo(e.data) + '"' +
+            (novo ? ' min="' + edAno + '-01-01" max="' + edAno + '-12-31"' : '') + '>' +
+        '</label>' +
+        '<label>Tipo' +
+          '<select class="ed-select" name="tipo">' +
+            (e.tipo ? '' : '<option value="">Escolha...</option>') +
+            Object.keys(TIPOS_DISCURSO).map(function (t) {
+              return '<option value="' + t + '"' + (t === e.tipo ? ' selected' : '') + '>' + escaparTexto(TIPOS_DISCURSO[t].nome) + '</option>';
+            }).join('') +
+          '</select>' +
+        '</label>' +
+        '<label class="evt-form-largo" id="disc-titulo">Título' +
+          '<input class="ed-select" name="titulo" type="text" maxlength="80" value="' + escaparTexto(e.titulo) + '" placeholder="Devocional especial">' +
+        '</label>' +
+        '<label class="evt-form-largo">Observação' +
+          '<input class="ed-select" name="texto" type="text" maxlength="300" value="' + escaparTexto(e.texto) + '">' +
+        '</label>' +
+        '<div class="evt-quadro evt-form-largo" id="disc-alas">' +
+          '<span class="evt-quadro-titulo">Organização que discursa em cada ala</span>' +
+          '<div class="disc-ed-alas">' +
+            alas.map(function (a) {
+              return '<label class="disc-ed-ala"><span>' + escaparTexto(nomeCurtoAla(a)) + '</span>' +
+                '<input class="ed-select" type="text" maxlength="80" list="disc-sugestoes" data-ala="' + escaparTexto(a) + '" value="' +
+                  escaparTexto(valores[a] || '') + '" placeholder="Escolha ou escreva">' +
+                '</label>';
+            }).join('') +
+          '</div>' +
+          '<datalist id="disc-sugestoes">' + sugestoes.map(function (s) { return '<option value="' + escaparTexto(s) + '">'; }).join('') + '</datalist>' +
+          '<p class="evt-nota">Ala sem nada escrito não aparece no site.</p>' +
+        '</div>' +
+        '<p class="acesso-erro evt-form-erro" hidden></p>' +
+        '<div class="evt-form-botoes">' +
+          '<button class="ed-btn" type="submit">Salvar</button>' +
+          '<button class="ed-btn ed-btn-secundario" type="button" data-cancelar>Cancelar</button>' +
+        '</div>' +
+      '</form>');
+
+    const form = janela.caixa.querySelector('.evt-form');
+    const aviso = janela.caixa.querySelector('.evt-form-erro');
+    const botao = form.querySelector('button[type="submit"]');
+    let tipoAnterior = e.tipo;
+
+    const ajustar = function () {
+      const tipo = form.elements.tipo.value;
+      janela.caixa.querySelector('#disc-titulo').hidden = tipo !== 'outro';
+      janela.caixa.querySelector('#disc-alas').hidden = tipo !== 'organizacoes';
+      // troca a observação padrão quando muda o tipo, sem apagar o que foi escrito à mão
+      const campo = form.elements.texto;
+      const padraoAntes = TIPOS_DISCURSO[tipoAnterior] ? TIPOS_DISCURSO[tipoAnterior].texto : '';
+      if (tipo !== tipoAnterior && (!campo.value || campo.value === padraoAntes)) {
+        campo.value = TIPOS_DISCURSO[tipo] ? TIPOS_DISCURSO[tipo].texto : '';
+      }
+      tipoAnterior = tipo;
+    };
+    form.elements.tipo.addEventListener('change', ajustar);
+    ajustar();
+
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      const tipo = form.elements.tipo.value;
+      const dados = {
+        id: novo ? '' : e.id,
+        data: form.elements.data.value,
+        tipo: tipo,
+        titulo: form.elements.titulo.value.trim(),
+        texto: form.elements.texto.value.trim(),
+        itens: tipo === 'organizacoes'
+          ? Array.prototype.slice.call(form.querySelectorAll('[data-ala]')).map(function (c) {
+              return { ala: c.getAttribute('data-ala'), valor: c.value.trim() };
+            }).filter(function (i) { return i.valor; })
+          : []
+      };
+      if (!dados.data) return mostrarAviso(aviso, 'Escolha a data.');
+      if (!dados.tipo) return mostrarAviso(aviso, 'Escolha o tipo do domingo.');
+      if (dados.tipo === 'outro' && !dados.titulo) return mostrarAviso(aviso, 'Digite o título.');
+
+      aviso.hidden = true;
+      botao.disabled = true;
+      botao.textContent = 'Salvando...';
+      planilhaEnviar('salvarDiscurso', dados)
+        .then(function (r) { edReceber(r); janela.fechar(); desenhar(); })
+        .catch(function (erro) {
+          if (erro && erro.tipo === 'acesso') return tratarErro(erro);
+          mostrarAviso(aviso, mensagemDeErro(erro));
+          botao.disabled = false;
+          botao.textContent = 'Salvar';
+        });
+    });
+  }
+
+  /* ---------------- Novo ano ---------------- */
+
+  function abrirNovoAno() {
+    const anos = edAnos();
+    const sugestao = (anos.length ? Math.max.apply(null, anos) : new Date().getFullYear()) + 1;
+
+    const janela = abrirJanela('' +
+      '<h2>Novo ano de discursos</h2>' +
+      '<form class="evt-form" novalidate>' +
+        '<label class="evt-form-largo">Ano' +
+          '<input class="ed-select" name="ano" type="number" min="2000" max="2199" value="' + sugestao + '">' +
+        '</label>' +
+        '<div class="evt-quadro evt-form-largo">' +
+          (anos.length
+            ? '<label class="evt-opcao"><input type="radio" name="modo" value="copiar" checked> Copiar tudo de ' +
+                '<select class="ed-select evt-select-curto" name="origem">' +
+                  anos.map(function (a, i) {
+                    return '<option value="' + a + '"' + (i === anos.length - 1 ? ' selected' : '') + '>' + a + '</option>';
+                  }).join('') +
+                '</select></label>'
+            : '') +
+          '<label class="evt-opcao"><input type="radio" name="modo" value="datas"' + (anos.length ? '' : ' checked') + '> Só as 12 datas, sem tipo</label>' +
+          '<p class="evt-nota">As datas caem sempre no 3º domingo de cada mês. Na cópia, vêm também o tipo de cada mês ' +
+            'e as organizações de cada ala; depois é só ajustar o rodízio.</p>' +
+        '</div>' +
+        '<p class="acesso-erro evt-form-erro" hidden></p>' +
+        '<div class="evt-form-botoes">' +
+          '<button class="ed-btn" type="submit">Criar</button>' +
+          '<button class="ed-btn ed-btn-secundario" type="button" data-cancelar>Cancelar</button>' +
+        '</div>' +
+      '</form>');
+
+    const form = janela.caixa.querySelector('.evt-form');
+    const aviso = janela.caixa.querySelector('.evt-form-erro');
+    const botao = form.querySelector('button[type="submit"]');
+
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      const ano = Number(form.elements.ano.value);
+      if (!(ano >= 2000 && ano <= 2199) || Math.floor(ano) !== ano) return mostrarAviso(aviso, 'Digite um ano válido, por exemplo 2027.');
+      if (anos.indexOf(ano) !== -1) return mostrarAviso(aviso, 'O calendário de discursos de ' + ano + ' já existe.');
+      const modo = form.querySelector('input[name="modo"]:checked').value;
+      const dados = { ano: ano };
+      if (modo === 'copiar') dados.copiarDe = Number(form.elements.origem.value);
+
+      aviso.hidden = true;
+      botao.disabled = true;
+      botao.textContent = 'Criando...';
+      planilhaEnviar('criarAnoDiscursos', dados)
+        .then(function (r) { edReceber(r); janela.fechar(); edAno = ano; desenhar(); })
+        .catch(function (erro) {
+          if (erro && erro.tipo === 'acesso') return tratarErro(erro);
+          mostrarAviso(aviso, mensagemDeErro(erro));
+          botao.disabled = false;
+          botao.textContent = 'Criar';
+        });
+    });
+    form.elements.ano.focus();
+  }
+
+  /* ---------------- Apagar ano ---------------- */
+
+  function abrirApagarAno() {
+    const ano = edAno;
+    const total = doAno(ano).length;
+    const janela = abrirJanela('' +
+      '<h2>Apagar os discursos de ' + ano + '</h2>' +
+      '<form class="evt-form" novalidate>' +
+        '<p class="evt-texto-janela evt-form-largo">Isso apaga os ' + total + ' domingos de ' + ano + ' da planilha. Os outros anos não mudam.</p>' +
+        '<p class="evt-nota evt-form-largo">Antes de apagar, uma cópia de segurança é baixada neste aparelho.</p>' +
+        '<label class="evt-form-largo">Para confirmar, digite ' + ano +
+          '<input class="ed-select" name="confirmacao" type="text" inputmode="numeric" autocomplete="off">' +
+        '</label>' +
+        '<p class="acesso-erro evt-form-erro" hidden></p>' +
+        '<div class="evt-form-botoes">' +
+          '<button class="ed-btn ed-btn-perigo" type="submit" disabled>Apagar</button>' +
+          '<button class="ed-btn ed-btn-secundario" type="button" data-cancelar>Cancelar</button>' +
+        '</div>' +
+      '</form>');
+
+    const form = janela.caixa.querySelector('.evt-form');
+    const aviso = janela.caixa.querySelector('.evt-form-erro');
+    const botao = form.querySelector('button[type="submit"]');
+    const campo = form.elements.confirmacao;
+    campo.addEventListener('input', function () { botao.disabled = campo.value.trim() !== String(ano); });
+
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+      if (campo.value.trim() !== String(ano)) return;
+      baixarCopia(ano);
+      botao.disabled = true;
+      botao.textContent = 'Apagando...';
+      planilhaEnviar('apagarAnoDiscursos', { ano: ano, confirmacao: campo.value.trim() })
+        .then(function (r) { edReceber(r); janela.fechar(); edAno = edAnoInicial(); desenhar(); })
+        .catch(function (erro) {
+          if (erro && erro.tipo === 'acesso') return tratarErro(erro);
+          mostrarAviso(aviso, mensagemDeErro(erro));
+          botao.disabled = false;
+          botao.textContent = 'Apagar';
+        });
+    });
+    campo.focus();
+  }
+
+  function baixarCopia(ano) {
+    const proteger = function (v) {
+      const s = String(v == null ? '' : v);
+      return /[",;\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+    };
+    const linhas = ['data,tipo,titulo,observacao,alas'].concat(doAno(ano).map(function (d) {
+      const alas = (d.itens || []).map(function (i) { return nomeCurtoAla(i.ala) + ': ' + i.valor; }).join(' | ');
+      return [d.data, tituloDiscurso(d), d.titulo, d.texto, alas].map(proteger).join(',');
+    }));
+    const blob = new Blob(['﻿' + linhas.join('\n') + '\n'], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'discursos-' + ano + '.csv';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  }
+
+  /* ---------------- Início ---------------- */
+
+  function tratarErro(erro) {
+    const area = document.getElementById('area-conteudo');
+    document.querySelectorAll('.detalhe-fundo').forEach(function (f) { f.remove(); });
+    document.body.style.overflow = '';
+    if (erro && erro.tipo === 'acesso') {
+      esquecerCodigo();
+      area.innerHTML = '<div class="cal-erro"><strong>O código mudou.</strong>' +
+        '<p>Abra a página de novo e digite o código atual.</p></div>';
+      return;
+    }
+    area.innerHTML = '<div class="cal-erro"><strong>Não foi possível falar com a planilha.</strong>' +
+      '<p>' + escaparTexto(mensagemDeErro(erro)) + '</p>' +
+      '<p>Confira sua internet e atualize a página.</p></div>';
+  }
+
+  function iniciarEditor() {
+    const area = document.getElementById('area-conteudo');
+    if (!planilhaConfigurada()) {
+      area.innerHTML = '<div class="cal-erro"><strong>Falta ligar a planilha.</strong>' +
+        '<p>Abra o arquivo <code>componentes.js</code> e cole o endereço do App da Web.</p></div>';
+      return;
+    }
+    area.innerHTML = '<p class="cal-vazio">Carregando os discursos...</p>';
+    planilhaEnviar('listarDiscursos', {})
+      .then(function (r) { edReceber(r); edAno = edAnoInicial(); desenhar(); })
+      .catch(tratarErro);
+  }
+
+  protegerPagina(iniciarEditor);
+  </script>
+
+</body>
+</html>
