@@ -30,7 +30,9 @@
         ║                                                                  ║
         ║  Os domingos de discursos ficam na planilha do Google, na aba    ║
         ║  Discursos. A lista de alas e de organizações vem da Liderança   ║
-        ║  (Lista de designações). Precisa da versão 4 do script da        ║
+        ║  (Lista de designações). Conferência da Ala e Apresentação da    ║
+        ║  Primária vêm sozinhas do calendário da estaca, na mesma data.   ║
+        ║  Precisa da versão 4 do script da                                ║
         ║  planilha (calendario-Codigo.gs).                                ║
         ╚══════════════════════════════════════════════════════════════════╝
       -->
@@ -47,6 +49,7 @@
 
   <script src="componentes.js"></script>
   <script src="acesso.js"></script>
+  <script src="csv.js"></script>
   <script src="discursos.js"></script>
   <script>
   /* ═══════════════════════════════════════════════════════════════════
@@ -248,6 +251,7 @@
         '<label class="evt-form-largo">Observação' +
           '<input class="ed-select" name="texto" type="text" maxlength="300" value="' + escaparTexto(e.texto) + '">' +
         '</label>' +
+        '<p class="evt-form-largo disc-ed-calendario" id="disc-calendario" hidden></p>' +
         '<div class="evt-quadro evt-form-largo" id="disc-alas">' +
           '<span class="evt-quadro-titulo">Organização que discursa em cada ala</span>' +
           '<div class="disc-ed-alas">' +
@@ -287,6 +291,23 @@
     };
     form.elements.tipo.addEventListener('change', ajustar);
     ajustar();
+
+    // Mostra o que o calendário da estaca já define nesta data (prevalece no site)
+    const avisoCalendario = janela.caixa.querySelector('#disc-calendario');
+    const conferirCalendario = function () {
+      const v = form.elements.data.value;
+      const data = v ? v.slice(8, 10) + '/' + v.slice(5, 7) + '/' + v.slice(0, 4) : '';
+      const achadas = data && form.elements.tipo.value !== 'conferencia' ? excecoesDoCalendario(data) : [];
+      avisoCalendario.hidden = !achadas.length;
+      avisoCalendario.innerHTML = achadas.length
+        ? 'Pelo calendário da estaca, nesta data: ' + achadas.map(function (x) {
+            return '<strong>' + escaparTexto(nomeCurtoAla(x.ala)) + '</strong>, ' + escaparTexto(x.valor);
+          }).join('; ') + '. Isso aparece sozinho no site e prevalece sobre o que estiver escrito para essa ala.'
+        : '';
+    };
+    form.elements.data.addEventListener('change', conferirCalendario);
+    form.elements.tipo.addEventListener('change', conferirCalendario);
+    conferirCalendario();
 
     form.addEventListener('submit', function (ev) {
       ev.preventDefault();
@@ -469,8 +490,13 @@
       return;
     }
     area.innerHTML = '<p class="cal-vazio">Carregando os discursos...</p>';
-    planilhaEnviar('listarDiscursos', {})
-      .then(function (r) { edReceber(r); edAno = edAnoInicial(); desenhar(); })
+    Promise.all([planilhaEnviar('listarDiscursos', {}), carregarEventosCalendario()])
+      .then(function (res) {
+        EVENTOS_CALENDARIO = res[1];
+        edReceber(res[0]);
+        edAno = edAnoInicial();
+        desenhar();
+      })
       .catch(tratarErro);
   }
 

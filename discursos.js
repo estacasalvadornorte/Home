@@ -73,6 +73,82 @@ function nomeCurtoAla(ala) {
   return String(ala || '').replace(/^Ala\s+/i, '');
 }
 
+
+/* ──────── CONFERÊNCIA DA ALA E APRESENTAÇÃO DA PRIMÁRIA (automático) ────────
+   O site procura no calendário da estaca, na mesma data do domingo de
+   discursos, os eventos "Conferência da Ala ..." e "Apresentação da
+   Primária - Ala ...". Quando acha, isso aparece naquela ala e prevalece
+   sobre o que foi escrito no editor. Nada precisa ser digitado à mão.    */
+
+// Eventos do calendário da estaca: [{ data: '15/11/2026', evento: '...' }]
+let EVENTOS_CALENDARIO = [];
+
+function semAcento(texto) {
+  return String(texto || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().trim();
+}
+
+/** Diz se o evento é a conferência ou a apresentação da Primária de uma ala. */
+function alaDoEvento(nome) {
+  const t = String(nome || '').trim();
+  let r = /^confer[eê]ncia da ala\s+(.+)$/i.exec(t);
+  if (r) return { ala: 'Ala ' + r[1].trim(), valor: 'Conferência da Ala', peso: 2 };
+  r = /apresenta[cç][aã]o da prim[aá]ria\s*[-–—:]?\s*(?:da\s+)?ala\s+(.+)$/i.exec(t);
+  if (r) return { ala: 'Ala ' + r[1].trim(), valor: 'Apresentação da Primária', peso: 1 };
+  return null;
+}
+
+/** Alas que, nesta data, têm conferência ou apresentação da Primária no calendário. */
+function excecoesDoCalendario(data) {
+  const achadas = [];
+  EVENTOS_CALENDARIO.forEach(function (e) {
+    if (e.data !== data) return;
+    const x = alaDoEvento(e.evento);
+    if (!x) return;
+    const mesma = achadas.filter(function (a) { return semAcento(a.ala) === semAcento(x.ala); })[0];
+    if (!mesma) achadas.push(x);
+    else if (x.peso > mesma.peso) { mesma.valor = x.valor; mesma.peso = x.peso; }
+  });
+  return achadas;
+}
+
+/**
+ * Lista final de alas do cartão: o que foi escrito no editor, com a conferência
+ * ou a apresentação da Primária do calendário prevalecendo. No domingo da
+ * Conferência da Estaca não há exceção, porque a estaca toda está reunida.
+ */
+function itensFinais(d) {
+  const itens = (Array.isArray(d.itens) ? d.itens : []).map(function (i) {
+    return { ala: i.ala, valor: i.valor, auto: false };
+  });
+  if (d.tipo === 'conferencia') return itens;
+  excecoesDoCalendario(d.data).forEach(function (x) {
+    const i = itens.filter(function (it) { return semAcento(it.ala) === semAcento(x.ala); })[0];
+    if (i) { i.valor = x.valor; i.auto = true; }
+    else itens.push({ ala: x.ala, valor: x.valor, auto: true });
+  });
+  return itens;
+}
+
+/** Lê o calendário da estaca: planilha, cópia do aparelho ou calendario.csv. */
+function carregarEventosCalendario() {
+  const temPlanilha = typeof planilhaConfigurada === 'function' && planilhaConfigurada() &&
+                      typeof planilhaEventos === 'function';
+  return (temPlanilha ? planilhaEventos() : Promise.reject(new Error('sem planilha')))
+    .catch(function () {
+      try {
+        const copia = JSON.parse(window.localStorage.getItem('estaca-calendario-copia') || 'null');
+        if (Array.isArray(copia) && copia.length) return copia;
+      } catch (e) { /* segue para o arquivo */ }
+      return fetch('calendario.csv?v=' + Date.now())
+        .then(function (r) { if (!r.ok) throw new Error('csv'); return r.text(); })
+        .then(function (texto) { return typeof csvLer === 'function' ? csvLer(texto) : []; });
+    })
+    .then(function (lista) {
+      return (lista || []).map(function (e) { return { data: e.data, evento: e.evento }; });
+    })
+    .catch(function () { return []; });
+}
+
 /**
  * Desenha o cartão de um domingo.
  * opcoes.atual: marca como "Este mês". opcoes.rodape: HTML extra no fim (botões do editor).
@@ -81,7 +157,8 @@ function cartaoDiscurso(d, opcoes) {
   opcoes = opcoes || {};
   const p = partesDataDiscurso(d.data);
   const data = p ? p.dia + ' de ' + MESES_DISCURSO[p.mes - 1] : 'Data a definir';
-  const itens = Array.isArray(d.itens) ? d.itens : [];
+  const itens = itensFinais(d);
+  const soExcecoes = d.tipo !== 'organizacoes' && itens.length && itens.every(function (i) { return i.auto; });
 
   return '' +
     '<article class="disc-cartao' + (opcoes.atual ? ' atual' : '') + (d.tipo ? '' : ' a-definir') + '">' +
@@ -92,9 +169,12 @@ function cartaoDiscurso(d, opcoes) {
       '<div class="disc-corpo">' +
         '<strong class="disc-tipo">' + escaparDiscurso(tituloDiscurso(d)) + '</strong>' +
         (d.texto ? '<p class="disc-texto">' + escaparDiscurso(d.texto) + '</p>' : '') +
+        (soExcecoes ? '<p class="disc-excecoes">Exceções</p>' : '') +
         (itens.length
           ? '<ul class="disc-alas">' + itens.map(function (i) {
-              return '<li><span>' + escaparDiscurso(nomeCurtoAla(i.ala)) + '</span>' + escaparDiscurso(i.valor) + '</li>';
+              return '<li' + (i.auto ? ' class="auto" title="Pelo calendário da estaca"' : '') + '>' +
+                       '<span>' + escaparDiscurso(nomeCurtoAla(i.ala)) + '</span>' + escaparDiscurso(i.valor) +
+                     '</li>';
             }).join('') + '</ul>'
           : '') +
       '</div>' +
@@ -225,16 +305,19 @@ function iniciarDiscursos() {
       })
     : Promise.reject(new Error('sem planilha'));
 
-  daPlanilha
+  const discursos = daPlanilha
     .catch(function () {
       try {
         const copia = JSON.parse(window.localStorage.getItem(CHAVE_COPIA_DISCURSOS) || 'null');
         if (Array.isArray(copia) && copia.length) return copia;
       } catch (e) { /* segue para a reserva */ }
       return RESERVA_DISCURSOS;
-    })
-    .then(function (lista) {
-      receberDiscursos(lista);
+    });
+
+  Promise.all([discursos, carregarEventosCalendario()])
+    .then(function (res) {
+      EVENTOS_CALENDARIO = res[1];
+      receberDiscursos(res[0]);
       ligarAbasDiscursos();
       renderizarDiscursos();
     });
